@@ -1,0 +1,494 @@
+ExamNext DataBase Design :-
+
+✅ First Understand System Flow (VERY IMPORTANT)
+
+Your system has 3 actors:
+
+👉 Admin
+👉 Teacher
+👉 Student
+
+Admin → Manage Users
+Teacher → Create Exam → Add Questions → Publish Exam
+Student → Attempt Exam → Result Generated
+
+RoleTbl
+UserTbl
+ExamTbl
+QuestionTbl
+ExamAssignTbl
+StudentAttemptTbl
+ResultTable
+
+⭐ Identity Area
+
+✅ RoleTbl
+✅ UserTbl
+
+⭐ Exam Engine
+
+✅ ExamTbl
+✅ QuestionTbl
+✅ OptionTbl ⭐ MUST
+
+⭐ Exam Flow
+
+✅ ExamAssignTbl
+✅ StudentAttemptTbl
+✅ StudentAnswerTbl ⭐ MUST
+
+
+-> Table With Column :
+
+1.RoleTbl :
+	RoleId INT AUTO_INCREMENT PRIMARY KEY,
+	RoleName VARCHAR(50) NOT NULL UNIQUE,
+	CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+
+2.UserTbl :
+	UserId INT AUTO_INCREMENT PRIMARY KEY,
+	// FullName VARCHAR(150),
+	Fname VARCHAR(100) NOT NULL,
+	Mname VARCHAR(100) ,
+	Lname VARCHAR(100) NOT NULL,
+	Email VARCHAR(150) NOT NULL UNIQUE,
+	Username VARCHAR(50) UNIQUE,
+	PasswordHash VARCHAR(255) NOT NULL,
+	Phone VARCHAR(20),
+	RoleId INT NOT NULL, -- Foreign Key
+	IsActive BOOLEAN DEFAULT TRUE,
+	LastLoginAt DATETIME,
+	FailedLoginAttempts INT DEFAULT 0,
+	CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+	UpdatedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
+	FOREIGN KEY (RoleId) REFERENCES Roles(RoleId)
+	
+3.ExamTbl :
+	ExamId INT AUTO_INCREMENT PRIMARY KEY,
+	Title VARCHAR(200) NOT NULL,
+	Description TEXT,
+	DurationMinutes INT NOT NULL,
+	TotalMarks INT,
+	CreatedBy INT, -- Foreign Key from UserTable
+	StartTime DATETIME, 
+	EndTime DATETIME,  -- EndTime > StartTime
+	IsPublished BOOLEAN DEFAULT FALSE, -- fisrt teacher exam ready kare after option ready then it's Become True
+	CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (CreatedBy) REFERENCES Users(UserId)
+
+
+4.QuestionTbl :
+	QuestionId INT AUTO_INCREMENT PRIMARY KEY,
+	ExamId INT NOT NULL, -- Foreign Key From ExamTbl
+	QuestionText TEXT NOT NULL, 
+	Marks INT NOT NULL,
+	QuestionType VARCHAR(20) DEFAULT 'MCQ',
+	FOREIGN KEY (ExamId) REFERENCES Exams(ExamId) ON DELETE CASCADE
+
+
+5.OptionTbl :
+	OptionId INT AUTO_INCREMENT PRIMARY KEY,
+	QuestionId INT NOT NULL, -- Foreign Key
+	OptionText VARCHAR(255) NOT NULL,
+	IsCorrect BOOLEAN DEFAULT FALSE,
+	FOREIGN KEY (QuestionId) 
+	REFERENCES Questions(QuestionId) ON DELETE CASCADE
+	
+
+6.ExamAssignTbl :
+	AssignmentId INT AUTO_INCREMENT PRIMARY KEY,
+	ExamId INT, -- Foreign Key
+	StudentId INT, -- Foreign Key
+	AssignedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (ExamId) REFERENCES Exams(ExamId) ON DELETE CASCADE,
+	FOREIGN KEY (StudentId) REFERENCES Users(UserId)
+
+
+7.StudentAttemptTbl :
+	AttemptId INT AUTO_INCREMENT PRIMARY KEY,
+	ExamId INT, -- Foreign Key
+	StudentId INT, -- Foreign Key
+	StartTime DATETIME,
+	EndTime DATETIME,
+	Score DECIMAL(5,2),
+	IsSubmitted BOOLEAN DEFAULT FALSE,
+	FOREIGN KEY (ExamId) REFERENCES Exams(ExamId),
+	FOREIGN KEY (StudentId) REFERENCES Users(UserId)
+
+8.StudentAnswerTbl :
+	AnswerId INT AUTO_INCREMENT PRIMARY KEY,
+	AttemptId INT, -- Foreign Key
+	QuestionId INT, -- Foreign Key
+	SelectedOptionId INT,
+	MarksObtained DECIMAL(5,2),
+	FOREIGN KEY (AttemptId) REFERENCES StudentAttempts(AttemptId) ON DELETE CASCADE,
+	FOREIGN KEY (QuestionId) REFERENCES Questions(QuestionId),
+	FOREIGN KEY (SelectedOptionId) REFERENCES Options(OptionId)
+	
+	
+	
+	
+	 
+✅ STEP 1 — Role Add Karvu
+
+System start thay tyare roles ek j vaar add karvana.
+
+INSERT INTO RoleTbl (RoleName)
+VALUES 
+('Admin'),
+('Teacher'),
+('Student');
+
+
+👉 Have system ne khabar che ke kon su che.
+
+✅ STEP 2 — Users Add Karva
+
+Chalo example laiye:
+
+👉 Ek Admin
+👉 Ek Teacher
+👉 Ek Student
+
+INSERT INTO UserTbl 
+(Fname, Mname, Lname, Email, PasswordHash, Phone, RoleId)
+VALUES
+('Raj', 'Kumar', 'Shah', 'admin@gmail.com', 'HASH123', '9999999999', 1),
+('Mehul', 'K', 'Patel', 'teacher@gmail.com', 'HASH456', '8888888888', 2),
+('Sujal', 'R', 'Gopani', 'student@gmail.com', 'HASH789', '7777777777', 3);
+
+
+👉 RoleId mapping:
+
+1 → Admin
+2 → Teacher
+3 → Student
+
+
+🔥 Have Teacher login kari ne exam banavi shake.
+
+✅ STEP 3 — Teacher Exam Create Kare
+
+Teacher = UserId 2
+
+INSERT INTO ExamTbl
+(Title, Description, DurationMinutes, TotalMarks, CreatedBy, StartTime, EndTime, IsPublished)
+VALUES
+('C# Basic Test',
+ 'C# na basic questions',
+ 30,
+ 50,
+ 2,
+ '2026-03-01 10:00:00',
+ '2026-03-01 10:30:00',
+ TRUE);
+
+
+👉 ExamId auto generate thase → 1
+
+✅ STEP 4 — Teacher Questions Add Kare
+INSERT INTO QuestionTbl
+(ExamId, QuestionText, Marks)
+VALUES
+(1, 'C# ma CLR no full form su che?', 5),
+(1, 'C# compiled language che ke interpreted?', 5);
+
+
+👉 QuestionId:
+
+1
+2
+
+✅ STEP 5 — Options Add Karva (MCQ)
+Question 1 mate:
+INSERT INTO OptionTbl
+(QuestionId, OptionText, IsCorrect)
+VALUES
+(1, 'Common Language Runtime', TRUE),
+(1, 'Central Language Router', FALSE),
+(1, 'Common Logic Run', FALSE),
+(1, 'Code Language Runtime', FALSE);
+
+Question 2 mate:
+INSERT INTO OptionTbl
+(QuestionId, OptionText, IsCorrect)
+VALUES
+(2, 'Compiled', TRUE),
+(2, 'Interpreted', FALSE);
+
+
+🔥 Have tamaru exam FULL ready.
+
+✅ STEP 6 — Exam Student ne Assign Karvu
+
+Student = UserId 3
+
+INSERT INTO ExamAssignTbl
+(ExamId, StudentId)
+VALUES
+(1, 3);
+
+
+👉 Matlab:
+
+🧑‍🎓 Sujal aa exam api shake che.
+
+✅ STEP 7 — Student Exam Start Kare
+
+Jare student "Start Exam" button press kare 👇
+
+INSERT INTO StudentAttemptTbl
+(ExamId, StudentId, StartTime, IsSubmitted)
+VALUES
+(1, 3, NOW(), FALSE);
+
+
+👉 AttemptId → 1
+
+🔥 Aa VERY IMPORTANT table che.
+
+✅ STEP 8 — Student Answers Save Thay
+
+Samjo student correct answer ape che.
+
+Question 1:
+
+Correct OptionId = 1
+
+INSERT INTO StudentAnswerTbl
+(AttemptId, QuestionId, SelectedOptionId, MarksObtained)
+VALUES
+(1, 1, 1, 5);
+
+Question 2:
+
+Correct OptionId = 5 (example)
+
+INSERT INTO StudentAnswerTbl
+VALUES
+(NULL, 1, 2, 5, 5);
+
+
+👉 NULL = auto increment.
+
+✅ STEP 9 — Exam Submit
+
+System calculate kare:
+
+Total Score = 10 / 10
+
+UPDATE StudentAttemptTbl
+SET 
+EndTime = NOW(),
+Score = 10,
+IsSubmitted = TRUE
+WHERE AttemptId = 1;
+
+
+🔥 DONE 😄
+
+	
+	--x-x-x-x-x-x-x-x-x--x--xxxxxxxxxx-x-xxxxxxxxxxxxxxxxx-x-xxxxxxxxxxxxxxxxxxxxxxx
+	✅ 1️⃣ RoleTbl — (Authorization Control)
+👉 Reason:
+
+System માં અલગ અલગ users હોય:
+
+Admin
+
+Teacher
+
+Student
+
+👉 બધાને same permission આપી શકાતી નથી.
+
+🎯 Why Needed?
+
+✅ Role-based access control
+✅ Security
+✅ Feature restriction
+
+👉 Example:
+
+Admin → Manage system
+
+Teacher → Create exam
+
+Student → Give exam
+
+⭐ Viva Line:
+
+👉 "RoleTbl is used to implement role-based authorization in the system."
+
+🔥 Very professional sentence.
+
+✅ 2️⃣ UserTbl — (System Identity)
+👉 Reason:
+
+System માં login કરનાર દરેક person store થાય.
+
+🎯 Why Needed?
+
+✅ Authentication
+✅ Track activity
+✅ Link exams, attempts
+
+👉 Without User table → System impossible 😄
+
+⭐ Viva Line:
+
+👉 "UserTbl stores all registered users and enables authentication and system access."
+
+✅ 3️⃣ ExamTbl — (Core Engine)
+👉 Reason:
+
+Exam system નું heart ❤️
+
+Teacher જે exam બનાવે → અહીં store થાય.
+
+Contains:
+
+Title
+
+Duration
+
+Marks
+
+Start / End time
+
+🎯 Why Needed?
+
+✅ Exam scheduling
+✅ Control exam window
+✅ Publish / unpublish
+
+⭐ Killer Line:
+
+👉 "ExamTbl acts as the core entity that defines the examination structure."
+
+🔥 Examiner brain: 😳
+
+✅ 4️⃣ QuestionTbl — (Exam Content)
+👉 Reason:
+
+Exam without questions? 😄 Impossible.
+
+🎯 Why Needed?
+
+✅ Store question text
+✅ Assign marks
+✅ Link to exam
+
+👉 One Exam → Many Questions
+
+⭐ Viva Line:
+
+👉 "QuestionTbl maintains the question bank associated with each exam."
+
+✅ 5️⃣ OptionTbl — (MCQ Logic)
+👉 Reason:
+
+MCQ exam માટે options જરૂરી.
+
+🎯 Why Needed?
+
+✅ Multiple choices
+✅ Identify correct answer
+✅ Auto evaluation
+
+👉 System automatically check કરી શકે.
+
+⭐ Strong Line:
+
+👉 "OptionTbl enables automated evaluation by storing correct answer mappings."
+
+🔥 Sounds industry-level.
+
+✅ 6️⃣ ExamAssignTbl — (Student Mapping)
+👉 Reason:
+
+દરેક student ને દરેક exam આપવો જરૂરી નથી.
+
+👉 Teacher specific students select કરે.
+
+🎯 Why Needed?
+
+✅ Control who can take exam
+✅ Prevent unauthorized attempts
+
+👉 Many Students ↔ Many Exams
+👉 Bridge table.
+
+⭐ Viva Line:
+
+👉 "ExamAssignTbl resolves the many-to-many relationship between students and exams."
+
+🔥 BIG technical sentence.
+
+✅ 7️⃣ StudentAttemptTbl — (Exam Tracking)
+👉 Reason:
+
+Student exam start કરે ત્યારે record બનાવવો પડે.
+
+Tracks:
+
+Start time
+
+End time
+
+Score
+
+Submitted or not
+
+🎯 Why Needed?
+
+✅ Prevent multiple attempts
+✅ Track performance
+✅ Calculate result
+
+⭐ Viva Line:
+
+👉 "StudentAttemptTbl tracks each student's exam participation and completion status."
+
+✅ 8️⃣ StudentAnswerTbl — (Response Storage)
+👉 Reason:
+
+Student એ કયા question નો શું answer આપ્યો?
+
+👉 Must store.
+
+🎯 Why Needed?
+
+✅ Calculate marks
+✅ Generate result
+✅ Review answers
+
+👉 One Attempt → Many Answers
+
+⭐ Killer Line:
+
+👉 "StudentAnswerTbl captures question-level responses for accurate result computation."
+
+🔥 Ultra professional.
+
+🧠 FULL SYSTEM LOGIC (Remember This)
+Role → User → Exam
+             ↓
+          Question → Option
+             ↓
+         Assigned Students
+             ↓
+          Attempt
+             ↓
+           Answers
+
+
+👉 This is called:
+
+⭐ Relational Database Architecture
+
+Use this word 😄
+	
+
+
+

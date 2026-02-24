@@ -1,0 +1,77 @@
+body {
+  background: #f0f2f5;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.left-image img {
+  object-fit: cover;
+  height: 100vh;
+}
+
+.login-box {
+  background: #fff;
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.otp-input {
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.otp-input:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 5px rgba(13,110,253,0.3);
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+.bg-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100VH;
+
+  background: url('/LoginBackground.jpg') no-repeat center;
+  background-size: cover;
+  z-index: -2;
+}
+
+/* Overlay (Opacity 0.5) */
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(228, 226, 226, 0.4); /* 👈 opacity control */
+  z-index: -1;
+}
+
+.otp-input {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 8px;
+}
+
+.otp-input.ng-invalid.ng-touched {
+  border: 2px solid red;
+}

@@ -1,0 +1,184 @@
+<!-- BACKGROUND -->
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
+
+<!-- MAIN -->
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center py-4">
+  <div class="register-box p-4 rounded shadow">
+    <!-- LOGO -->
+    <div class="text-center mb-3">
+      <img src="logo.svg" width="180" />
+    </div>
+
+    <h4 class="text-center text-dark mb-4">Create Your Account</h4>
+
+    <!-- FORM -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <!-- FIRST NAME -->
+        <div class="col-md-4 mb-3">
+          <label>Fisrt Name</label>
+          <input type="text" class="form-control" formControlName="firstName" />
+
+          @if (registerForm.get('firstName')?.touched && registerForm.get('firstName')?.invalid) {
+            <div class="text-danger small">
+              @if (registerForm.get('firstName')?.errors?.['required']) {
+                First Name is required
+              }
+              @if (registerForm.get('firstName')?.errors?.['minlength']) {
+                Minimum 3 characters required
+              }
+            </div>
+          }
+        </div>
+
+        <!-- MIDDLE NAME -->
+        <div class="col-md-4 mb-3">
+          <label>Middle Name</label>
+          <input type="text" class="form-control" formControlName="middleName" />
+
+          @if (registerForm.get('middleName')?.touched && registerForm.get('middleName')?.invalid) {
+            <div class="text-danger small">
+              @if (registerForm.get('middleName')?.errors?.['minlength']) {
+                Minimum 2 characters required
+              }
+            </div>
+          }
+        </div>
+
+        <!-- LAST NAME -->
+        <div class="col-md-4 mb-3">
+          <label>Last Name</label>
+          <input type="text" class="form-control" formControlName="lastName" />
+
+          @if (registerForm.get('lastName')?.touched && registerForm.get('lastName')?.invalid) {
+            <div class="text-danger small">
+              @if (registerForm.get('lastName')?.errors?.['required']) {
+                Last Name is required
+              }
+              @if (registerForm.get('lastName')?.errors?.['minlength']) {
+                Minimum 3 characters required
+              }
+            </div>
+          }
+        </div>
+
+        <!-- MOBILE -->
+        <div class="col-md-6 mb-3">
+          <label>Mobile</label>
+          <input type="tel" class="form-control" formControlName="phone" />
+
+          @if (registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid) {
+            <div class="text-danger small">
+              @if (registerForm.get('phone')?.errors?.['required']) {
+                Mobile number is required
+              }
+              @if (registerForm.get('phone')?.errors?.['pattern']) {
+                Enter valid 10-digit number
+              }
+            </div>
+          }
+        </div>
+
+        <!-- EMAIL -->
+        <div class="col-md-6 mb-3">
+          <label>Email</label>
+          <input type="email" class="form-control" formControlName="email" />
+
+          @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
+            <div class="text-danger small">
+              @if (registerForm.get('email')?.errors?.['required']) {
+                Email is required
+              }
+              @if (registerForm.get('email')?.errors?.['email']) {
+                <small class="text-danger">Enter valid email</small>
+              }
+              @if (registerForm.get('email')?.errors?.['gmailInvalid']) {
+                <small class="text-danger d-block">Only Gmail allowed (@gmail.com)</small>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- USERNAME -->
+        <div class="col-md-12 mb-3">
+          <label>Username</label>
+          <input
+            type="email"
+            readonly
+            placeholder="Username Is Generate Automatic"
+            class="form-control"
+          />
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="col-md-6 mb-3">
+          <label>Password</label>
+          <input type="password" class="form-control" formControlName="password" />
+
+          @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+            <div class="text-danger small">
+              @if (registerForm.get('password')?.errors?.['required']) {
+                Password is required
+              }
+              @if (registerForm.get('password')?.errors?.['minlength']) {
+                Minimum 6 characters required
+              }
+            </div>
+          }
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="col-md-6 mb-3">
+          <label>Confirm Password</label>
+          <input type="password" class="form-control" formControlName="conformpassword" />
+
+          @if (
+            registerForm.get('conformpassword')?.touched &&
+            registerForm.get('conformpassword')?.errors?.['passwordMismatch']
+          ) {
+            <small class="text-danger">Confirm Password Is'n Match</small>
+          }
+        </div>
+      </div>
+
+      <!-- ROLE -->
+      <div class="mb-3">
+        <label for="subject" class="form-label">Register As</label>
+        <select id="subject" class="form-select" formControlName="role">
+          <option value="">-- Select Subject --</option>
+          <option value="2">Teacher</option>
+          <option value="3">Student</option>
+        </select>
+
+        @if (registerForm.get('role')?.touched && registerForm.get('role')?.invalid) {
+          <div class="text-danger small">Please select role</div>
+        }
+      </div>
+
+      <!-- BUTTON -->
+      <!-- Button -->
+      <button type="submit" class="btn btn-primary w-100" [disabled]="IsSubmitting">
+        {{ IsSubmitting ? 'Submitting...' : 'Register' }}
+      </button>
+    </form>
+    <!-- Error from backend -->
+    @if (errorMessage) {
+      <div class="text-danger my-2">
+        {{ errorMessage }}
+      </div>
+    }
+    <!-- DIVIDER -->
+    <div class="d-flex align-items-center my-3">
+      <hr class="flex-grow-1" />
+      <span class="mx-2">OR</span>
+      <hr class="flex-grow-1" />
+    </div>
+
+    <!-- LOGIN -->
+    <p class="registration-loginbtn text-center mt-3">
+      Already have an account?
+      <a routerLink="/login">Login</a>
+    </p>
+  </div>
+</div>

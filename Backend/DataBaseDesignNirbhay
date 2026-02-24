@@ -1,0 +1,209 @@
+
+1-Users
+ user_id (PK), name, email, password_hash, role_id (FK Roles), is_active, created_at, updated_at
+ 
+2-Roles
+ role_id (PK), role_name (Student, Teacher, Admin)
+ 
+ Defines user roles for RBAC.
+ 
+ 3 -Subscriptions
+ - subscription_id (PK), teacher_id (FK Users), subscription_type, start_date, end_date, status
+ - Validates teacher limits/features.
+ 
+3️⃣ Exams & Questions
+ 
+Exams
+ - exam_id (PK), teacher_id (FK Users), title, schedule_start, schedule_end, duration, status
+ 
+Questions
+  - question_id (PK), exam_id (FK Exams), question_text, difficulty_level
+ 
+Options
+  - option_id (PK), question_id (FK Questions), option_text, is_correct
+ 
+Student_Exam_Assignment
+  - assignment_id (PK), exam_id (FK Exams), student_id (FK Users), assigned_at
+ 
+4️⃣ Exam Attempts & Answers
+ 
+Exam_Attempts
+ - attempt_id (PK), exam_id (FK Exams), student_id (FK Users), start_time, end_time, status (IN_PROGRESS, COMPLETED, AUTO_SUBMITTED)
+ 
+Answers
+- answer_id (PK), attempt_id (FK Exam_Attempts), question_id (FK Questions), selected_option_id (FK Options), answered_at
+ 
+Student_Question_Mapping
+ - mapping_id (PK), attempt_id (FK Exam_Attempts), question_id (FK Questions), order_index
+ 
+Supports per-student question randomization.
+ 
+5️⃣ Anti-Cheat
+ 
+Anti_Cheat_Logs
+  - log_id (PK), attempt_id (FK Exam_Attempts), event_type (TAB_SWITCH, FULLSCREEN_EXIT), timestamp
+ 
+6️⃣ Results
+ 
+Results
+ - result_id (PK), attempt_id (FK Exam_Attempts), score, status (PUBLISHED/UNPUBLISHED), calculated_at
+ 
+7️⃣ Notifications (Optional but useful)
+ 
+Notifications
+ - notification_id (PK), user_id (FK Users), message, status (SENT/READ), created_at
+
+
+===========x=================x==================x==================x=================x====================x=====================x==========
+                                                     Merge Design
+===========x=================x==================x==================x=================x====================x=====================x==========
+
+1. Roles
+Roles
+------
+RoleId (PK)
+RoleName (Admin, Teacher, Student)
+CreatedAt
+
+2. Users
+Users
+------
+UserId (PK)
+FirstName
+MiddleName
+LastName
+Email (UNIQUE)
+Username (UNIQUE)
+PasswordHash
+Phone
+RoleId (FK)
+IsActive
+LastLoginAt
+FailedLoginAttempts
+CreatedAt
+UpdatedAt
+
+Add Profile Tables
+Teachers
+--------
+TeacherId (PK)
+UserId (FK)
+Other Teacher Detail
+
+Students
+--------
+StudentId (PK)
+UserId (FK)
+EnrollmentNo
+
+3. Subscription
+SubscriptionPlans
+----------------
+PlanId (PK)
+PlanName
+MaxStudents
+MaxExams
+Price
+
+Subscriptions
+-------------
+SubscriptionId (PK)
+TeacherId (FK Users)
+PlanId (FK)
+StartDate
+EndDate
+Status
+
+4. Exams
+Exams
+------
+ExamId (PK)
+Title
+Description
+DurationMinutes
+TotalMarks
+CreatedBy (FK Users)
+StartTime
+EndTime
+IsPublished
+CreatedAt
+
+5. Questions
+Questions
+---------
+QuestionId (PK)
+ExamId (FK)
+QuestionText
+Marks
+QuestionType (MCQ, TRUE_FALSE)
+DifficultyLevel
+
+6. Options
+Options
+--------
+OptionId (PK)
+QuestionId (FK)
+OptionText
+IsCorrect
+
+7. Exam Assignment
+ExamAssignments
+---------------
+AssignmentId (PK)
+ExamId (FK)
+StudentId (FK)
+AssignedAt
+
+UNIQUE (ExamId, StudentId)
+
+8. Exam Attempts
+ExamAttempts
+------------
+AttemptId (PK)
+ExamId (FK)
+StudentId (FK)
+StartTime
+EndTime
+Status 
+(IN_PROGRESS, COMPLETED, AUTO_SUBMITTED)
+Score
+
+9. AttemptQuestions
+AttemptQuestions
+----------------
+Id (PK)
+AttemptId (FK)
+QuestionId (FK)
+DisplayOrder
+
+10. Answers
+Answers
+--------
+AnswerId (PK)
+AttemptId (FK)
+QuestionId (FK)
+SelectedOptionId (FK)
+MarksObtained
+AnsweredAt
+
+11.Anti-Cheat Logs
+AntiCheatLogs
+-------------
+LogId (PK)
+AttemptId (FK)
+EventType
+Timestamp
+
+12.Results
+Results
+--------
+ResultId (PK)
+AttemptId (FK)
+TotalQuestions
+CorrectAnswers
+WrongAnswers
+Percentage
+Status (PUBLISHED / DRAFT)
+CalculatedAt
+
+
