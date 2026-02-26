@@ -7,8 +7,9 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginRegisterService } from '../Service/Login-Register/login-register-service';
+import { email } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,11 @@ import { LoginRegisterService } from '../Service/Login-Register/login-register-s
 export class Register implements OnInit {
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder,private cd: ChangeDetectorRef) {}
+  constructor(
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private route: Router,
+  ) {}
   service = inject(LoginRegisterService);
 
   ngOnInit(): void {
@@ -69,34 +74,44 @@ export class Register implements OnInit {
   }
 
   IsSubmitting = false;
-submitted = false;
-errorMessage = '';
+  submitted = false;
+  errorMessage = '';
 
-onSubmit() {
-  this.submitted = true;
+  onSubmit() {
+    this.submitted = true;
 
-  if (this.registerForm.invalid) {
-    return;
-  }
-
-  this.IsSubmitting = true;
-
-  const formData = { ...this.registerForm.value };
-  delete formData.conformpassword;
-
-  this.service.RegisterUser(formData).subscribe({
-    next: (res) => {
-      console.log("Success:", res);
-      this.IsSubmitting = false;
-      this.registerForm.reset();
-      this.submitted = false; // reset submitted
-      this.errorMessage = '';
-    },
-    error: (err) => {
-      this.IsSubmitting = false;
-      this.errorMessage = err.error?.message || "Something went wrong";
-      this.cd.detectChanges();
+    if (this.registerForm.invalid) {
+      return;
     }
-  });
-}
+
+    this.IsSubmitting = true;
+
+    const formData = { ...this.registerForm.value };
+    delete formData.conformpassword;
+
+    this.service.RegisterUser(formData).subscribe({
+      next: (res) => {
+        console.log('Success:', res);
+        this.IsSubmitting = false;
+        this.registerForm.reset();
+        this.submitted = false; // reset submitted
+        this.errorMessage = '';
+        // sessionStorage.setItem("UserEmail",res.Email);
+        this.route.navigate(['/emailvarify'], {
+          queryParams: { email: formData.email },
+        });
+      },
+      error: (err) => {
+        this.IsSubmitting = false;
+        if (err.status === 409) {
+          this.registerForm.get('email')?.setErrors({ emailTaken: true });
+          this.errorMessage = err.error.message;
+        } else if (err.status === 400) {
+          this.errorMessage = 'Invalid data submitted';
+        } else {
+          this.errorMessage = 'Server error. Try again later.';
+        }
+      },
+    });
+  }
 }

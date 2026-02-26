@@ -3,6 +3,8 @@ import { captureError } from 'rxjs/internal/util/errorContext';
 import { config } from './../app.config.server';
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoginRegisterService } from '../Service/Login-Register/login-register-service';
 
 @Component({
   selector: 'app-emailverify',
@@ -12,8 +14,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class Emailverify implements OnInit {
   otpForm!: FormGroup;
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private service: LoginRegisterService,
+  ) {}
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
+  email: string = '';
 
   ngOnInit(): void {
     this.otpForm = this.fb.group({
@@ -24,6 +32,12 @@ export class Emailverify implements OnInit {
       otp4: ['', [Validators.required, Validators.pattern('[0-9]')]],
       otp5: ['', [Validators.required, Validators.pattern('[0-9]')]],
     });
+    this.route.queryParams.subscribe((params) => {
+      this.email = params['email'];
+    });
+    if (!this.email) {
+      this.router.navigate(['/login']);
+    }
   }
 
   onOtpInput(event: any, index: number) {
@@ -60,6 +74,19 @@ export class Emailverify implements OnInit {
     }
 
     const otp = Object.values(this.otpForm.value).join('');
+    const OtpObj = {
+      email: this.email,
+      otp: otp,
+    };
+    this.service.OtpVarify(OtpObj).subscribe({
+      next: (res) => {
+        console.log('Otp Done');
+      },
+      error: (err) => {
+        console.log('Otp SIde Error');
+        console.log(err.message);
+      },
+    });
     console.log('OTP:', otp);
   }
 }

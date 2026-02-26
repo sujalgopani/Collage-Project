@@ -26,8 +26,8 @@ namespace ExamNest.Data
 
             // Users
             modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
+                .HasIndex(u => u.Email);
+                //.IsUnique();
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username)

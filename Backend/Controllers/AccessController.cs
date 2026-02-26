@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ExamNest.Controllers
 {
@@ -11,13 +12,14 @@ namespace ExamNest.Controllers
         [HttpGet("me")]
         public IActionResult Me()
         {
+            var roles = User.FindAll(ClaimTypes.Role)
+                            .Select(r => r.Value);
+
             return Ok(new
             {
                 Message = "Authenticated user",
                 Username = User.Identity?.Name,
-                Roles = User.Claims
-                    .Where(c => c.Type.EndsWith("/role") || c.Type == "role")
-                    .Select(c => c.Value)
+                Roles = roles
             });
         }
 

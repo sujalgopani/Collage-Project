@@ -24,7 +24,7 @@ namespace ExamNest.Controllers
             var result = await _authService.RegisterAsync(request);
 
             if (!result.Success)
-                return BadRequest(result);
+                return Conflict(result);
 
             return Ok(result);
         }
@@ -51,7 +51,7 @@ namespace ExamNest.Controllers
 
             var result = await _authService.VerifyEmailOtpAsync(request);
             if (!result.Success)
-                return BadRequest(result);
+                return Conflict(result);
 
             return Ok(result);
         }

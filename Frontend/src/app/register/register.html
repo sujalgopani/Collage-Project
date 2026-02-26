@@ -96,6 +96,11 @@
               @if (registerForm.get('email')?.errors?.['gmailInvalid']) {
                 <small class="text-danger d-block">Only Gmail allowed (@gmail.com)</small>
               }
+              @if (errorMessage) {
+                <small class="text-danger my-2 text-center">
+                  {{ errorMessage }}
+                </small>
+              }
             </div>
           }
         </div>
@@ -156,18 +161,13 @@
         }
       </div>
 
-      <!-- BUTTON -->
       <!-- Button -->
       <button type="submit" class="btn btn-primary w-100" [disabled]="IsSubmitting">
         {{ IsSubmitting ? 'Submitting...' : 'Register' }}
       </button>
     </form>
     <!-- Error from backend -->
-    @if (errorMessage) {
-      <div class="text-danger my-2">
-        {{ errorMessage }}
-      </div>
-    }
+
     <!-- DIVIDER -->
     <div class="d-flex align-items-center my-3">
       <hr class="flex-grow-1" />

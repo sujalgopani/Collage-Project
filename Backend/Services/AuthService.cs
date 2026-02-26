@@ -36,10 +36,10 @@ namespace ExamNest.Services
             var normalizedEmail = request.Email.Trim().ToLowerInvariant();
             //var normalizedUsername = request.Username.Trim().ToLowerInvariant();
 
-            if (await _context.Users.AnyAsync(u => u.Email.ToLower() == normalizedEmail))
-            {
-                return new AuthResponseDto { Success = false, Message = "Email already exists." };
-            }
+            //if (await _context.Users.AnyAsync(u => u.Email.ToLower() == normalizedEmail))
+            //{
+            //    return new AuthResponseDto { Success = false, Message = "Email already Taken." };
+            //}
 
             //if (await _context.Users.AnyAsync(u => u.Username.ToLower() == normalizedUsername))
             //{
@@ -90,8 +90,8 @@ namespace ExamNest.Services
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            //var otp = await CreateAndStoreOtpAsync(user.UserId);
-            //await SendOtpEmailAsync(user.Email, otp);
+            var otp = await CreateAndStoreOtpAsync(user.UserId);
+            await SendOtpEmailAsync(user.Email, otp);
 
             return new AuthResponseDto
             {
@@ -337,28 +337,48 @@ namespace ExamNest.Services
         private string GenerateJwtToken(User user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+
+            var keyString = jwtSettings["Key"];
+            var issuer = jwtSettings["Issuer"];
+            var audience = jwtSettings["Audience"];
+            var durationString = jwtSettings["DurationInMinutes"];
+
+            if (string.IsNullOrWhiteSpace(keyString) ||
+                string.IsNullOrWhiteSpace(issuer) ||
+                string.IsNullOrWhiteSpace(audience) ||
+                string.IsNullOrWhiteSpace(durationString))
+            {
+                throw new Exception("JWT configuration is missing or invalid.");
+            }
+
+            if (!double.TryParse(durationString, out var durationMinutes))
+            {
+                throw new Exception("Invalid JWT duration configuration.");
+            }
+
+            var key = Encoding.UTF8.GetBytes(keyString);
+
             var roleName = user.Role?.RoleName ?? "Student";
             var fullName = $"{user.FirstName} {user.LastName}".Trim();
 
             var claims = new List<Claim>
-            {
-                new(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-                new(JwtRegisteredClaimNames.Email, user.Email),
-                new(ClaimTypes.Name, user.Username),
-                new(ClaimTypes.Role, roleName),
-                new("full_name", fullName)
-            };
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, roleName),
+                    new Claim("full_name", fullName),
+                };
 
             var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: jwtSettings["Issuer"],
-                audience: jwtSettings["Audience"],
+                issuer: issuer,
+                audience: audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings["DurationInMinutes"])),
+                expires: DateTime.UtcNow.AddMinutes(durationMinutes),
                 signingCredentials: credentials
             );
 
