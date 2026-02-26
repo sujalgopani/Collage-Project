@@ -1,0 +1,61 @@
+<div class="table-container">
+  <div class="header">
+    <h2>Teacher Management</h2>
+
+    <div class="row g-3 mb-3">
+      <!-- Search -->
+      <div class="col-12 col-md-10">
+        <input type="text" class="form-control" placeholder="Search user..." />
+      </div>
+
+      <!-- Button -->
+      <div class="col-12 col-md-2">
+        <button class="btn btn-success">Search</button>
+      </div>
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>First</th>
+          <th>Middle</th>
+          <th>Last</th>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Phone</th>
+          <th>Role</th>
+          <th>Active</th>
+          <th>Last Login</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+
+      <!-- <tbody>
+        @for (user of users; track $index) {
+          <tr>
+            <td>{{ user.user_id }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.middle_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ getRoleName(user.role_id) }}</td>
+            <td>
+              <span [class.active]="user.is_active" [class.inactive]="!user.is_active">
+                {{ user.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td>{{ user.last_login_at || 'Never' }}</td>
+            <td>{{ user.created_at }}</td>
+          </tr>
+        }
+      </tbody> -->
+    </table>
+  </div>
+</div>
+
+@for (item of users; track $index) {
+  <p>{{item}}</p>
+}

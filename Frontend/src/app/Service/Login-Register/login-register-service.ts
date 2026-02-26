@@ -18,8 +18,9 @@ export class LoginRegisterService {
   }
 
   LoginUser(LoginData : any){
-    return this.http.post<any>('',LoginData);
+    return this.http.post<any>('https://localhost:44385/api/Auth/login',LoginData);
   }
+
 
 
 }

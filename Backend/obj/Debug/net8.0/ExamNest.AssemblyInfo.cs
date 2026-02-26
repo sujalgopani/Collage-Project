@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExamNest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38f96fae74b04b5901aaee4fbb7bdbebb23048a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8acfce979aeb59c4c43959b8071ca8c398edf8f9")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExamNest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExamNest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

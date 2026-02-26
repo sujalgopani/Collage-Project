@@ -53,7 +53,7 @@
         }
       }
     },
-    "/api/Admin": {
+    "/api/Admin/GetAllTeacher": {
       "get": {
         "tags": [
           "Admin"
@@ -65,7 +65,7 @@
         }
       }
     },
-    "/api/Admin/{id}": {
+    "/api/Admin/GetTeacherById/{id}": {
       "get": {
         "tags": [
           "Admin"
@@ -86,7 +86,40 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/Admin/CreateTeacher/AddTeacher": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Admin/UpdateTeacher/{id}": {
       "put": {
         "tags": [
           "Admin"
@@ -126,7 +159,9 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/Admin/DeleteTeacher/{id}": {
       "delete": {
         "tags": [
           "Admin"
@@ -142,37 +177,6 @@
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Admin/AddTeacher": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserCreateDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserCreateDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserCreateDTO"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"

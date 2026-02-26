@@ -16,7 +16,9 @@
         </div>
 
         <h5 class="text-center mb-4">Sign In With Email</h5>
-
+        @if (loginfrm.errors?.['LoginFail']) {
+          <div class="alert alert-warning" role="alert">Username / Password Invalid ! ❌</div>
+        }
         <!-- FORM -->
         <form [formGroup]="loginfrm" (ngSubmit)="Onlogin()">
           <div class="mb-3">
@@ -25,13 +27,14 @@
               type="text"
               class="form-control"
               placeholder="example@gmail.com"
-              formControlName="username"
+              formControlName="emailOrUsername"
             />
-            @if (loginfrm.get('username')?.touched && loginfrm.get('username')?.invalid) {
-              @if (loginfrm.get('username')?.errors?.['required']) {
+            @if (
+              loginfrm.get('emailOrUsername')?.touched && loginfrm.get('emailOrUsername')?.invalid
+            ) {
+              @if (loginfrm.get('emailOrUsername')?.errors?.['required']) {
                 <small class="text-danger">Username Is Required !</small>
-              }
-              @if (loginfrm.get('username')?.errors?.['minlength']) {
+              } @else if (loginfrm.get('emailOrUsername')?.errors?.['minlength']) {
                 <small class="text-danger">Minimum 5 characters required</small>
               }
             }
@@ -68,8 +71,8 @@
             <a href="#">Forgot password?</a>
           </div>
 
-          <button class="btn btn-primary w-100" [disabled]="loginfrm.invalid">
-            <strong>Sign In</strong>
+          <button class="btn btn-primary w-100" [disabled]="loginfrm.invalid || IsLogin">
+            <strong>{{ IsLogin ? 'Logging...' : 'Sign In' }}</strong>
           </button>
         </form>
 

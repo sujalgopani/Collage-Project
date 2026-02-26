@@ -34,8 +34,13 @@
             }
           </div>
 
+        
+          @if (otpForm.errors?.['invalidOtp']) {
+            <div class="text-danger">Invalid OTP ❌</div>
+          }
+
           <button type="submit" class="btn btn-primary w-100" [disabled]="otpForm.invalid">
-            Verify
+            {{ IsVarify ? 'Please Wait...' : 'Varify Otp' }}
           </button>
         </form>
 

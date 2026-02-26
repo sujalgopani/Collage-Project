@@ -368,6 +368,7 @@ namespace ExamNest.Services
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Role, roleName),
                     new Claim("full_name", fullName),
+                    new Claim("role_id", user.Role?.RoleId.ToString() ?? "0"),
                 };
 
             var credentials = new SigningCredentials(

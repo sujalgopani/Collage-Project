@@ -1,0 +1,50 @@
+.table-container {
+  padding: 20px;
+  background: #f4f8fb;
+  min-height: 100vh;
+}
+
+h2 {
+  color: #0d6efd;
+  margin-bottom: 15px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.custom-table thead {
+  background: #0d6efd;
+  color: white;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.custom-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: 0.2s;
+}
+
+.custom-table tbody tr:hover {
+  background: #f1f7ff;
+}
+
+.active {
+  color: green;
+  font-weight: bold;
+}
+
+.inactive {
+  color: red;
+  font-weight: bold;
+}

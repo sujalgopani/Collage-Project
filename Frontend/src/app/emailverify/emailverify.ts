@@ -67,7 +67,10 @@ export class Emailverify implements OnInit {
     }
   }
 
+  IsVarify = false;
+
   verifyOtp() {
+    this.IsVarify = true;
     if (this.otpForm.invalid) {
       this.otpForm.markAllAsTouched();
       return;
@@ -78,15 +81,22 @@ export class Emailverify implements OnInit {
       email: this.email,
       otp: otp,
     };
+
     this.service.OtpVarify(OtpObj).subscribe({
       next: (res) => {
-        console.log('Otp Done');
+        this.IsVarify = false;
+
+        this.router.navigate(['/login']);
+
+        // console.log('Otp Done');
       },
       error: (err) => {
-        console.log('Otp SIde Error');
-        console.log(err.message);
+        this.IsVarify = false;
+        // console.log('Otp SIde Error');
+
+        this.otpForm.setErrors({ invalidOtp: true });
       },
     });
-    console.log('OTP:', otp);
+    // console.log(OtpObj);
   }
 }

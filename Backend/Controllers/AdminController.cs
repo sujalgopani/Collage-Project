@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamNest.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     //[Authorize]
     public class AdminController : Controller
@@ -18,14 +18,14 @@ namespace ExamNest.Controllers
 
         // teacher side
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllTeacher()
         {
             var teachers = await _adminServices.GetAllAsync();
             return Ok(teachers);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetTeacherById(int id)
         {
             var teacher = await _adminServices.GetByIdAsync(id);
             if (teacher == null) return NotFound();
@@ -34,14 +34,14 @@ namespace ExamNest.Controllers
         }
 
         [HttpPost("AddTeacher")]
-        public async Task<IActionResult> Create(UserCreateDTO dto)
+        public async Task<IActionResult> CreateTeacher(UserCreateDTO dto)
         {
             var teacher = await _adminServices.CreateAsync(dto);
             return Ok(teacher);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UserUpdateDTO dto)
+        public async Task<IActionResult> UpdateTeacher(int id, UserUpdateDTO dto)
         {
             var result = await _adminServices.UpdateAsync(id, dto);
             if (!result) return NotFound();
@@ -51,7 +51,7 @@ namespace ExamNest.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteTeacher(int id)
         {
             var result = await _adminServices.DeleteAsync(id);
             if (!result) return NotFound();

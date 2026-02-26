@@ -41,46 +41,15 @@
   },
   {
     "ContainingType": "ExamNest.Controllers.AdminController",
-    "Method": "GetAll",
-    "RelativePath": "api/Admin",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamNest.Controllers.AdminController",
-    "Method": "GetById",
-    "RelativePath": "api/Admin/{id}",
-    "HttpMethod": "GET",
+    "Method": "CreateTeacher",
+    "RelativePath": "api/Admin/CreateTeacher/AddTeacher",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamNest.Controllers.AdminController",
-    "Method": "Update",
-    "RelativePath": "api/Admin/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
       {
         "Name": "dto",
-        "Type": "ExamNest.Models.DTOs.User.UserUpdateDTO",
+        "Type": "ExamNest.Models.DTOs.User.UserCreateDTO",
         "IsRequired": true
       }
     ],
@@ -88,8 +57,8 @@
   },
   {
     "ContainingType": "ExamNest.Controllers.AdminController",
-    "Method": "Delete",
-    "RelativePath": "api/Admin/{id}",
+    "Method": "DeleteTeacher",
+    "RelativePath": "api/Admin/DeleteTeacher/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -104,15 +73,46 @@
   },
   {
     "ContainingType": "ExamNest.Controllers.AdminController",
-    "Method": "Create",
-    "RelativePath": "api/Admin/AddTeacher",
-    "HttpMethod": "POST",
+    "Method": "GetAllTeacher",
+    "RelativePath": "api/Admin/GetAllTeacher",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetTeacherById",
+    "RelativePath": "api/Admin/GetTeacherById/{id}",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "UpdateTeacher",
+    "RelativePath": "api/Admin/UpdateTeacher/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
         "Name": "dto",
-        "Type": "ExamNest.Models.DTOs.User.UserCreateDTO",
+        "Type": "ExamNest.Models.DTOs.User.UserUpdateDTO",
         "IsRequired": true
       }
     ],
