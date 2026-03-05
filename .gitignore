@@ -1,0 +1,21 @@
+# Build folders
+bin/
+obj/
+
+# Node modules
+node_modules/
+
+# Angular build
+dist/
+.angular/
+
+# Logs
+*.log
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Environment
+.env
