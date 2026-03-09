@@ -1,0 +1,41 @@
+<div class="exam-wrapper">
+
+  <div class="top-header">
+    <h2>My Created Exams</h2>
+    <button class="create-btn">+ Create Exam</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Exam Title</th>
+          <th>Course</th>
+          <th>Total Marks</th>
+          <th>Duration</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let exam of exams; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{exam.title}}</td>
+          <td>{{exam.course}}</td>
+          <td>{{exam.totalMarks}}</td>
+          <td>{{exam.duration}}</td>
+          <td>{{exam.date}}</td>
+          <td class="actions">
+            <button class="edit-btn" (click)="editExam(exam)">Edit</button>
+            <button class="delete-btn" (click)="deleteExam(exam.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>

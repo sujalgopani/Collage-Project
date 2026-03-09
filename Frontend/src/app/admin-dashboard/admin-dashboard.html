@@ -1,0 +1,70 @@
+<!-- Sidebar -->
+<div class="sidebar">
+  <img class="text-center" width="180" src="/logo.svg" />
+  <hr />
+
+  <a routerLink="/admin-dashboard/Admin-Dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+
+  <!-- Manage Menu -->
+  <a class="menu-toggle" (click)="toggleMainMenu()">
+    <i class="bi bi-gear me-2"></i>Manage
+    <i class="bi bi-chevron-down float-end"></i>
+  </a>
+
+  @if (isMainOpen) {
+    <!-- Submenu -->
+    <div class="submenu">
+      <a class="submenu-toggle" (click)="toggleTeacher()">
+        <i class="bi bi-person-badge me-2"></i>Teacher
+      </a>
+      @if (isTeacherOpen) {
+        <div class="submenu-inner">
+          <a routerLink="/admin-dashboard/main-teacher"><i class="bi bi-pencil-square me-2"></i>Manage Teacher</a>
+        </div>
+      }
+
+      <a class="submenu-toggle" (click)="toggleStudent()">
+        <i class="bi bi-person me-2"></i>Student
+      </a>
+      @if (isStudentOpen) {
+        <div class="submenu-inner">
+          <a routerLink="/admin-dashboard/main-student"><i class="bi bi-pencil-square me-2"></i>Manage Student</a>
+        </div>
+      }
+    </div>
+  }
+
+  <a (click)="OpenLogout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Main Section -->
+  <div class="mt-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+
+<div class="modal fade" #logoutmodel tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <p>Are you sure you want to Logout?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"data-bs-dismiss="modal" >
+          Cancel
+        </button>
+        <button class="btn btn-danger" (click)="ConformLogout()">Yes, Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+

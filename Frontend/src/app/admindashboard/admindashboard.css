@@ -1,0 +1,46 @@
+/* dashboard.component.css */
+:root {
+  --sidebar-width: 250px;
+  --dark-blue: #1a237e;
+  --light-grey: #f8f9fa;
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  width: var(--sidebar-width);
+  background: #1e293b; /* Dark Navy */
+}
+
+.bg-dark-blue { background-color: #1e293b; }
+.bg-light-grey { background-color: #f1f5f9; }
+
+.list-group-item {
+  background: transparent !important;
+  color: #94a3b8 !important;
+  border: none !important;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.list-group-item:hover, .active-link {
+  color: white !important;
+  background: rgba(255,255,255,0.1) !important;
+}
+
+.stat-card {
+  transition: transform 0.2s;
+  border-radius: 12px;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.table thead th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #64748b;
+  border-top: none;
+}

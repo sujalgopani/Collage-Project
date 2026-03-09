@@ -1,0 +1,73 @@
+<div class="profile-wrapper">
+
+  <div class="profile-card">
+
+    <!-- Header -->
+    <div class="profile-header">
+
+      <img [src]="profileForm.value.photo" alt="Profile Photo">
+
+      <div>
+        <h2>{{profileForm.value.name}}</h2>
+        <p>{{profileForm.value.email}}</p>
+      </div>
+
+      <button (click)="toggleEdit()">
+        {{ isEditMode ? 'Cancel' : 'Edit Profile' }}
+      </button>
+
+    </div>
+
+    <!-- Editable Section -->
+    <form *ngIf="isEditMode" [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="edit-form">
+
+      <div class="form-row">
+        <input formControlName="name" placeholder="Full Name">
+        <input formControlName="email" placeholder="Email">
+      </div>
+
+      <div class="form-row">
+        <input formControlName="phone" placeholder="Phone">
+        <input formControlName="experience" placeholder="Experience">
+      </div>
+
+      <div class="form-row">
+        <input formControlName="skills" placeholder="Skills">
+      </div>
+
+      <textarea formControlName="bio" rows="3" placeholder="Bio"></textarea>
+
+      <input formControlName="photo" placeholder="Photo URL">
+
+      <button type="submit" class="save-btn">Save Changes</button>
+
+    </form>
+
+    <!-- View Mode -->
+    <div *ngIf="!isEditMode" class="profile-info">
+
+      <div class="info-row">
+        <label>Phone</label>
+        <span>{{profileForm.value.phone}}</span>
+      </div>
+
+      <div class="info-row">
+        <label>Experience</label>
+        <span>{{profileForm.value.experience}}</span>
+      </div>
+
+      <div class="info-row">
+        <label>Skills</label>
+        <span>{{profileForm.value.skills}}</span>
+      </div>
+
+      <div class="info-row">
+        <label>Bio</label>
+        <span>{{profileForm.value.bio}}</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

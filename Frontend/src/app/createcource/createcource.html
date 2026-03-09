@@ -1,0 +1,76 @@
+<div class="course-wrapper">
+  <div class="course-card">
+    <div class="header">
+      <h2>Create New Course</h2>
+      <p>Fill the details to publish your course</p>
+    </div>
+
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+
+      <!-- Basic Info -->
+      <div class="section">
+        <h4>Basic Information</h4>
+
+        <div class="form-group">
+          <label>Course Title</label>
+          <input type="text" formControlName="title" placeholder="Enter course title" />
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea rows="4" formControlName="description"
+            placeholder="Write short description about course"></textarea>
+        </div>
+      </div>
+
+
+      <!-- Course Details -->
+      <div class="section">
+        <h4>Course Details</h4>
+
+        <div class="form-row">
+
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="date" formControlName="startDate" />
+          </div>
+
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="date" formControlName="endDate" />
+          </div>
+
+          <div class="form-group">
+            <label>Fees (₹)</label>
+            <input type="number" formControlName="fees" placeholder="Enter course fees" />
+          </div>
+
+        </div>
+
+
+        <!-- Thumbnail -->
+        <div class="form-group">
+          <label>Thumbnail Image</label>
+          <input type="file" (change)="onThumbnailChange($event)" accept="image/*" />
+        </div>
+
+
+        <!-- Course Files -->
+        <div class="form-group">
+          <label>Upload Videos / Files</label>
+          <input type="file" #fileInput multiple (change)="onFileChange($event)" />
+        </div>
+
+      </div>
+
+
+      <!-- Submit -->
+      <div class="submit-section">
+        <button type="submit" [disabled]="courseForm.invalid || isUploading">
+          {{isUploading ? 'Uploading Course...' : 'Publish Course'}}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
