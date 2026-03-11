@@ -1,4 +1,6 @@
-﻿namespace ExamNest.Models
+﻿using System.Text.Json.Serialization;
+
+namespace ExamNest.Models
 {
     public class CourseMedia
     {
@@ -9,6 +11,9 @@
         public string FileType { get; set; } = ""; // video / image
 
         public int CourseId { get; set; }
-        public Course? Course { get; set; }
+
+		[JsonIgnore]
+		public Course? Course { get; set; }
+
     }
 }

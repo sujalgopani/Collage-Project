@@ -1,8 +1,16 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export const addtokenheaderInterceptor: HttpInterceptorFn = (req, next) => {
 
-  const token = localStorage.getItem('token');
+  const platformId = inject(PLATFORM_ID);
+
+  let token: string | null = null;
+
+  if (isPlatformBrowser(platformId)) {
+    token = localStorage.getItem('token');
+  }
 
   if (token) {
     req = req.clone({
@@ -12,5 +20,5 @@ export const addtokenheaderInterceptor: HttpInterceptorFn = (req, next) => {
     });
   }
 
-  return next(req); // ✅ NEVER use next.handle()
+  return next(req);
 };

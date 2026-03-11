@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Studentservice } from '../app/Service/StudentService/studentservice';
 import { CommonModule } from '@angular/common';
 import { PaymentService } from '../app/Service/Payment/payment-service';
@@ -11,36 +11,41 @@ declare var Razorpay: any;
   templateUrl: './publishedcourses.html',
   styleUrl: './publishedcourses.css',
 })
-
 export class Publishedcourses implements OnInit {
   constructor(
     private service: Studentservice,
     private paymentservice: PaymentService,
+    private cd: ChangeDetectorRef,
   ) {}
 
   courses: any[] = [];
+  Isloading = false;
 
   ngOnInit(): void {
     this.loadcourse();
   }
 
   loadcourse() {
+    this.Isloading = true;
+
     this.service.GetPublishedCoursesWithsubscribecheck().subscribe({
       next: (res: any) => {
-        this.courses = res;
+        this.Isloading = false;
+        this.courses = res.filter((c: any) => c.ispublished);
+        this.cd.detectChanges();
       },
       error: (err) => {
+        this.Isloading = false;
         console.log(err);
+        this.cd.detectChanges();
       },
     });
   }
 
   subscribe(course: any) {
-
     const request = {
       amount: course.fees,
       courseId: course.courseId,
-      
     };
 
     this.paymentservice.createOrder(request).subscribe({

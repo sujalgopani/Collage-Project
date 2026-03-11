@@ -1,8 +1,4 @@
-wwwroot\CourseThumbnail\e9d48502-e551-4691-acc0-c4098cc4902c.jpg
-wwwroot\CourseVideos\6c5cbae1-4b99-4cf5-9f33-01f6a829ffc3.mp4
-wwwroot\CourseThumbnail\9f663e5a-5f76-4671-a7e9-08ad8af33fb6.jpg
-wwwroot\CourseVideos\223fd49f-923d-435a-bf9c-544d9390e879.mp4
-wwwroot\CourseThumbnail\81ef7c21-b06a-499d-b288-f26f531f4abc.png
-wwwroot\CourseVideos\04848412-58e0-48fc-b2a7-309786042b94.mp4
-wwwroot\CourseThumbnail\16c345d2-5d30-43c9-a714-a7fdfeb75c6f.png
-wwwroot\CourseVideos\8c52d162-bee3-4e73-ad17-0cc66e7d35f3.mp4
+wwwroot\CourseThumbnail\9fce3d93-1e09-4e41-84d8-f5a31c778556.jpg
+wwwroot\CourseVideos\65e968f1-377a-4fe1-be5a-62332f64ef47.mp4
+wwwroot\CourseThumbnail\f942ff87-465e-4476-8df2-011d4235fb25.jpg
+wwwroot\CourseVideos\791a75ce-c426-435c-ab44-c9d4106062dd.mp4

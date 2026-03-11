@@ -1,4 +1,5 @@
 ﻿using ExamNest.Data;
+using ExamNest.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExamNest.Services
@@ -22,11 +23,17 @@ namespace ExamNest.Services
                     c.StartDate,
                     c.EndDate,
                     IsSubscribed = _context.Subscriptions
-                        .Any(s => s.StudentId == studentId && s.CourseId == c.CourseId)
+                        .Any(s => s.StudentId == studentId && s.CourseId == c.CourseId),
+                    Ispublished = c.IsPublished
                 })
                 .ToListAsync();
             return courses.Cast<object>().ToList();
         }
+
+        public async Task<Course?> GetCourseById(int courseId)
+        {
+			return await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == courseId);
+		}
 
     }
 }

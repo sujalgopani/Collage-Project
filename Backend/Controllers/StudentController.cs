@@ -1,4 +1,5 @@
 using ExamNest.Data;
+using ExamNest.Models;
 using ExamNest.Models.DTOs.Student;
 using ExamNest.Models.Payment;
 using ExamNest.Services;
@@ -97,7 +98,18 @@ namespace ExamNest.Controllers
             });
         }
 
-        private async Task<Subscription?> GetActiveSubscriptionForCurrentStudent(int courseId)
+		[HttpGet("GetCourseById")]
+		public async Task<IActionResult> GetCourseById(int courseId)
+		{
+			var data = await _studentservice.GetCourseById(courseId);
+			if (data == null)
+			{
+				return NotFound(new { message = "Course not found" });
+			}
+			return Ok(data);
+		}
+
+		private async Task<Subscription?> GetActiveSubscriptionForCurrentStudent(int courseId)
         {
             if (!TryGetStudentId(out var studentId))
                 return null;

@@ -1,60 +1,90 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Studentservice } from '../Service/StudentService/studentservice';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-videostreaming',
-  imports: [],
+  imports:[CommonModule],
   templateUrl: './videostreaming.html',
-  styleUrl: './videostreaming.css',
+  styleUrls: ['./videostreaming.css'],
 })
 export class Videostreaming {
-
-   courseId!: number ;
-
-  videos:any[] = [];
-
-  selectedVideo:any;
+  courseId!: number;
+  videos: any[] = [];
+  selectedVideo: any;
+  accessGranted: boolean | null = null;
+  course: any = null;
+  message: string = ''; // to show friendly error
 
   constructor(
-    private route:ActivatedRoute,
-    private service:Studentservice
-  ){}
-  
-   ngOnInit(): void {
+    private route: ActivatedRoute,
+    private service: Studentservice,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
-    this.route.queryParams.subscribe(params=>{
-
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
       this.courseId = params['id'];
-
-      console.log(this.courseId);
+      this.GetCheckAccess(this.courseId);
     });
   }
 
-    loadVideos(){
+  GetCheckAccess(courseId: number) {
+    this.accessGranted = null; // loading
+    this.course = null;
+    this.message = '';
 
-    this.service.getCourseVideos(this.courseId).subscribe({
+    this.service.GetCheckAccess(courseId).subscribe({
+      next: (res) => {
+        this.accessGranted = true;
 
-      next:(res:any)=>{
+        // fetch course details
+        this.service.GetCourseById(courseId).subscribe({
+          next: (courseRes) => {
+            this.course = courseRes;
 
-        this.videos = res;
+            // fetch videos
+            this.service.GetCourseVideoById(courseId).subscribe({
+              next: (videoRes: any[]) => {
+                this.videos = videoRes;
+                if (this.videos.length) {
+                  this.selectedVideo = this.videos[0]; // auto-select first
+                }
+                this.cdr.detectChanges();
+              },
+              error: (err) => {
+                if (err.status === 400) {
+                  // course not started yet
+                  const startDate = this.course?.startDate
+                    ? new Date(this.course.startDate)
+                    : null;
+                  const startDateStr = startDate
+                    ? startDate.toLocaleDateString()
+                    : 'unknown';
+                  this.message = `Course has not started yet. Starting date: ${startDateStr}`;
+                } else {
+                  this.message = 'Error fetching videos.';
+                     console.error('Video fetch error:', err); // optional
 
-        if(this.videos.length > 0){
-          this.selectedVideo = this.videos[0];
-        }
+                }
+                this.cdr.detectChanges();
+              },
+            });
 
+            this.cdr.detectChanges();
+          },
+          error: (err) => {
+            //console.log(err);
+            this.cdr.detectChanges();
+          },
+        });
       },
-
-      error:(err)=>{
-        console.log(err);
-      }
-
-    })
-
+      error: (err) => {
+      //  console.log(err);
+        this.accessGranted = false;
+        this.cdr.detectChanges();
+      },
+    });
   }
-
-  playVideo(video:any){
-    this.selectedVideo = video;
-  }
-
 }

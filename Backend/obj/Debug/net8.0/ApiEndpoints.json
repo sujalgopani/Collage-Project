@@ -279,12 +279,60 @@
   },
   {
     "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "CheckCourseAccess",
+    "RelativePath": "api/Student/course/{courseId}/access",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetCourseVideos",
+    "RelativePath": "api/Student/course/{courseId}/videos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
     "Method": "GetCourses",
     "RelativePath": "api/Student/Get-Subscribed-course",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetCourseById",
+    "RelativePath": "api/Student/GetCourseById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

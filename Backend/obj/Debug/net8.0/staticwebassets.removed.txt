@@ -1,0 +1,4 @@
+E:\examplatform\Backend\wwwroot\CourseThumbnail\9fce3d93-1e09-4e41-84d8-f5a31c778556.jpg
+E:\examplatform\Backend\wwwroot\CourseVideos\65e968f1-377a-4fe1-be5a-62332f64ef47.mp4
+E:\examplatform\Backend\wwwroot\CourseThumbnail\f942ff87-465e-4476-8df2-011d4235fb25.jpg
+E:\examplatform\Backend\wwwroot\CourseVideos\791a75ce-c426-435c-ab44-c9d4106062dd.mp4
