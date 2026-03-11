@@ -89,6 +89,16 @@
   },
   {
     "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetAllCourses",
+    "RelativePath": "api/Admin/GetAllCourses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
     "Method": "GetAllStudent",
     "RelativePath": "api/Admin/GetAllStudent",
     "HttpMethod": "GET",
@@ -117,6 +127,22 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "PublishCourse",
+    "RelativePath": "api/Admin/PublishCourse",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
         "Type": "System.Int32",
         "IsRequired": true
       }

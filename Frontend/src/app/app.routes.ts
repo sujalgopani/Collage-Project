@@ -18,6 +18,7 @@ import { Studentmaindash } from '../studentmaindash/studentmaindash';
 import { Publishedcourses } from '../publishedcourses/publishedcourses';
 import { Learningcourse } from './learningcourse/learningcourse';
 import { Videostreaming } from './videostreaming/videostreaming';
+import { Admincoursemanage } from './admincoursemanage/admincoursemanage';
 
 export const routes: Routes = [
 
@@ -35,7 +36,8 @@ export const routes: Routes = [
       {path:'',component:Admindashboard},
       {path:'Admin-Dashboard',component:Admindashboard},
       {path:'main-teacher',component:Teachermain},
-      {path:'main-student',component:Studentmain}
+      {path:'main-student',component:Studentmain},
+      {path:'course-manage',component:Admincoursemanage}
     ]
   },
   // teacher side

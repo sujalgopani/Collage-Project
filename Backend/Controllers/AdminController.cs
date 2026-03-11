@@ -84,6 +84,46 @@ namespace ExamNest.Controllers
             return Ok("Deleted Successfully");
         }
 
+        // course side
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCourses()
+        {
+            var allcourse = await _adminServices.GetAllCourses();
+			var result = allcourse.Select(c => new {
+				c.CourseId,
+				c.Title,
+				c.Description,
+				c.Fees,
+				c.StartDate,
+				c.EndDate,
+				c.IsPublished,
+                c.CreatedAt,
+                TeacherName = c.Teacher != null ? c.Teacher.Username : "Unknown",
+
+			}).ToList();
+
+			if (result == null)
+            {
+                return Conflict("Course Is Not Found !!!");
+            }
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PublishCourse([FromBody] int courseId)
+        {
+            var course = await _adminServices.PublishCourse(courseId);
+            if(course == null)
+            {
+                return NotFound("Course Is Not Found !!");
+            }
+            return Ok(new
+            {
+                message = "Course Was Published"
+            });
+        }
+
 
     }
 }

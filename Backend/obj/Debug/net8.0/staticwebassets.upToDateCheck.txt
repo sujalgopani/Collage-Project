@@ -1,4 +1,2 @@
-wwwroot\CourseThumbnail\9fce3d93-1e09-4e41-84d8-f5a31c778556.jpg
-wwwroot\CourseVideos\65e968f1-377a-4fe1-be5a-62332f64ef47.mp4
-wwwroot\CourseThumbnail\f942ff87-465e-4476-8df2-011d4235fb25.jpg
-wwwroot\CourseVideos\791a75ce-c426-435c-ab44-c9d4106062dd.mp4
+wwwroot\CourseThumbnail\e7595c76-e243-4037-812a-a0e6c71acc46.jpg
+wwwroot\CourseVideos\f640db61-b751-405b-a253-cef4db87dc74.mp4

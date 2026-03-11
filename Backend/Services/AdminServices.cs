@@ -1,6 +1,8 @@
-﻿using ExamNest.Data;
+﻿using System.Runtime.InteropServices;
+using ExamNest.Data;
 using ExamNest.Models;
 using ExamNest.Models.DTOs.User;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExamNest.Services
@@ -129,15 +131,32 @@ namespace ExamNest.Services
             return true;
         }
 
+		// course
+
+		public async Task<List<Course>> GetAllCourses()
+		{
+            return await _context.Courses.Include(c => c.Teacher).ToListAsync();
+		}
+
+
+        public async Task<Course?> PublishCourse(int courseid)
+        {
+            var data = await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == courseid);
+            if(data == null)
+            {
+                return null;
+            }
+
+            data.IsPublished = true;
+            _context.Courses.Update(data);
+            await _context.SaveChangesAsync();
+            return data;
+
+        }
 
 
 
 
 
-
-
-
-
-
-    }
+	}
 }
