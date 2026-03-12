@@ -1,0 +1,68 @@
+<!-- Sidebar -->
+<div class="sidebar">
+  <img class="text-center" width="180" src="/logo.svg" />
+  <hr />
+<a routerLink="/teacher-dashboard">
+  <i class="bi bi-speedometer2 me-2"></i> Dashboard
+</a>
+
+<a routerLink="/teacher-dashboard/create-couse">
+  <i class="bi bi-journal-bookmark-fill me-2"></i> Course
+</a>
+<a routerLink="/teacher-dashboard/your-course"
+   class="nav-item">
+  <i class="bi bi-journal-bookmark-fill me-2"></i>
+  <span>Your Courses</span>
+</a>
+<a routerLink="/teacher-dashboard/exam-list"
+   class="nav-item">
+  <i class="bi bi-journal-bookmark-fill me-2"></i>
+  <span>Taken Exam</span>
+</a>
+
+<a routerLink="/teacher-dashboard/exam">
+  <i class="bi bi-file-earmark-text-fill me-2"></i> Exam
+</a>
+
+<a routerLink="/teacher-dashboard/my-subscriber">
+  <i class="bi bi-credit-card-fill me-2"></i> My Subscriber
+</a>
+<a routerLink="/teacher-dashboard/profile">
+  <i class="bi bi-person-circle me-2"></i> Profile
+</a>
+
+  <a (click)="OpenLogout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Main Section -->
+  <div class="mt-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+
+<div class="modal fade" #logoutmodel tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <p>Are you sure you want to Logout?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"data-bs-dismiss="modal" >
+          Cancel
+        </button>
+        <button class="btn btn-danger" (click)="ConformLogout()">Yes, Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+T

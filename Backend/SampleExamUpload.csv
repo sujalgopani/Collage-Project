@@ -1,0 +1,6 @@
+﻿Question,OptionA,OptionB,OptionC,OptionD,CorrectAnswer,Marks
+What is 2 + 2?,3,4,5,6,B,1
+Capital of India?,Mumbai,Delhi,Kolkata,Chennai,B,2
+Which keyword defines a class in C#?,func,class,def,struct,B,1
+HTTP status for Unauthorized?,200,201,401,500,C,1
+Which database is relational?,MongoDB,Redis,MySQL,Cassandra,C,2

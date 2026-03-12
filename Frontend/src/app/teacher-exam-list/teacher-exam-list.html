@@ -1,0 +1,132 @@
+<div class="exam-wrapper">
+  @if (Isloadcourse) {
+    <h3>Loading.....</h3>
+  } @else {
+    <div class="top-header">
+      <h2>Created Exams</h2>
+      <button class="create-btn" data-bs-toggle="modal" data-bs-target="#examcretemodel">
+        + Create Exam
+      </button>
+    </div>
+
+    <div class="container">
+      <table class="table table-striped table-bordered table-hover bg-white">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">tittle</th>
+            <th scope="col">teacherName</th>
+            <th scope="col">description</th>
+            <th scope="col">createdAt</th>
+            <th scope="col">durationMinit</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of exams; track $index) {
+            <tr>
+              <td>{{$index +1}}</td>
+              <td>{{item.tittle}}</td>
+              <td>{{item.teacherName}}</td>
+              <td>{{item.description}}</td>
+              <td>{{item.createdAt}}</td>
+              <td>{{item.durationMinit}}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!--  model for add exam -->
+  <div class="modal fade" id="examcretemodel" #examcreatemodel tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Exam</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="examForm" (ngSubmit)="CreareExam()">
+            <div class="row">
+              <!-- Course -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Course</label>
+
+                <select class="form-control" formControlName="CourseId">
+                  <option value="">Select Course</option>
+                  @for (c of courses; track c.courseId) {
+                    <option [value]="c.courseId">{{ c.title }}</option>
+                  }
+                </select>
+
+                <!-- @if (examForm.get('CourseId')?.touched && examForm.get('CourseId')?.invalid) {
+                <small class="text-danger">Course is required</small>
+              } -->
+              </div>
+
+              <!-- Title -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Title</label>
+
+                <input type="text" class="form-control" formControlName="Title" />
+
+                <!-- @if (examForm.get('Title')?.touched && examForm.get('Title')?.invalid) {
+                <small class="text-danger">Title is required</small>
+              } -->
+              </div>
+
+              <!-- Duration -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Duration (Minutes)</label>
+                <input type="number" class="form-control" formControlName="DurationMinutes" />
+              </div>
+
+              <!-- StartAt -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Start Date</label>
+                <input type="datetime-local" class="form-control" formControlName="StartAt" />
+              </div>
+
+              <!-- EndAt -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">End Date</label>
+                <input type="datetime-local" class="form-control" formControlName="EndAt" />
+              </div>
+
+              <!-- Random Question -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Random Question Count</label>
+                <input type="number" class="form-control" formControlName="RandomQuestionCount" />
+              </div>
+
+              <!-- Description -->
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Description</label>
+
+                <textarea rows="3" class="form-control" formControlName="Description"></textarea>
+              </div>
+
+              <!-- Excel Upload -->
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Upload Excel File</label>
+
+                <input
+                  type="file"
+                  class="form-control"
+                  accept=".xlsx,.xls"
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Save Exam</button>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

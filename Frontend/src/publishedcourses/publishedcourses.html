@@ -1,0 +1,31 @@
+@if (Isloading) {
+  <h3>Loading.....</h3>
+} @else {
+  <div class="course-container">
+    <div *ngFor="let course of courses" class="course-card">
+      <img class="thumbnail" [src]="'https://localhost:44385' + course.thumbailUrl" />
+
+      <div class="card-body">
+        <h3>{{ course.title }}</h3>
+
+        <p class="price">₹ {{ course.fees }}</p>
+
+        <div class="dates">
+          <span>Start: {{ course.startDate | date }}</span>
+          <span>End: {{ course.endDate | date }}</span>
+        </div>
+
+        <!-- [disabled]="course.isSubscribed" -->
+
+        <button
+          class="subscribe-btn"
+          [class.notouched]="course.isSubscribed"
+          [disabled]="course.isSubscribed"
+          (click)="subscribe(course)"
+        >
+          {{ course.isSubscribed ? 'Subscribed ✔' : 'Subscribe Now' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

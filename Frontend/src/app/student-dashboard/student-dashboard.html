@@ -1,0 +1,48 @@
+<!-- Sidebar -->
+<div class="sidebar">
+  <img class="text-center" width="180" src="/logo.svg" />
+  <hr />
+<a routerLink="/student-dashboard">
+  <i class="bi bi-speedometer2 me-2"></i> Dashboard
+</a>
+<a routerLink="/student-dashboard/published-courses">
+  <i class="bi bi-speedometer2 me-2"></i> Explorw Courses
+</a>
+<a routerLink="/student-dashboard/learn-courses">
+  <i class="bi bi-speedometer2 me-2"></i> Start Learning
+</a>
+  <a (click)="OpenLogout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Main Section -->
+  <div class="mt-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+
+<div class="modal fade" #logoutmodel tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <p>Are you sure you want to Logout?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"data-bs-dismiss="modal" >
+          Cancel
+        </button>
+        <button class="btn btn-danger" (click)="ConformLogout()">Yes, Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+T

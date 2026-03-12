@@ -1,0 +1,50 @@
+<div class="subscriber-wrapper">
+
+  <div class="top-header">
+    <h2>Course Subscribers</h2>
+  </div>
+
+  <div class="table-container">
+    <table>
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Student Name</th>
+          <th>Email</th>
+          <th>Course</th>
+          <th>Enroll Date</th>
+          <th>Progress</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let sub of subscribers; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{sub.name}}</td>
+          <td>{{sub.email}}</td>
+          <td>{{sub.course}}</td>
+          <td>{{sub.enrollDate}}</td>
+          <td>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="sub.progress"></div>
+            </div>
+            {{sub.progress}}%
+          </td>
+          <td>
+            <span class="status"
+              [ngClass]="{
+                'active': sub.status === 'Active',
+                'completed': sub.status === 'Completed'
+              }">
+              {{sub.status}}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>

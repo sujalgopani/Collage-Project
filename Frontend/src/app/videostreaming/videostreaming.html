@@ -1,0 +1,33 @@
+<p *ngIf="accessGranted === null">Loading...</p>
+<p *ngIf="accessGranted === false">Access Denied!</p>
+
+@if (accessGranted === true && course) {
+  <div>
+    <h2>{{ course.title }}</h2>
+    <p><strong>Description:</strong> {{ course.description }}</p>
+    <p><strong>Fees:</strong> ₹ {{ course.fees }}</p>
+    <p><strong>Start Date:</strong> {{ course.startDate | date }}</p>
+    <p><strong>End Date:</strong> {{ course.endDate | date }}</p>
+
+    @if (message) {
+      <p class="text-warning">{{ message }}</p>
+    }
+
+    @if (videos.length && !message) {
+      <div>
+        <h3>Course Videos</h3>
+        <video
+          width="600"
+          height="400"
+          controls
+          [src]="'https://localhost:44385' + selectedVideo.filePath"
+        ></video>
+        <ul>
+          <li *ngFor="let video of videos" (click)="selectedVideo = video">
+            {{ video.fileName || 'Video ' + video.courseMediaId }}
+          </li>
+        </ul>
+      </div>
+    }
+  </div>
+}

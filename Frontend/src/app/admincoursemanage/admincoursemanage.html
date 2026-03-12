@@ -1,0 +1,78 @@
+@if (Isloading) {
+  <div class="loader">
+    <div class="box box-1">
+      <div class="side-left"></div>
+      <div class="side-right"></div>
+      <div class="side-top"></div>
+    </div>
+    <div class="box box-2">
+      <div class="side-left"></div>
+      <div class="side-right"></div>
+      <div class="side-top"></div>
+    </div>
+    <div class="box box-3">
+      <div class="side-left"></div>
+      <div class="side-right"></div>
+      <div class="side-top"></div>
+    </div>
+    <div class="box box-4">
+      <div class="side-left"></div>
+      <div class="side-right"></div>
+      <div class="side-top"></div>
+    </div>
+  </div>
+}
+
+<div class="table-container main" [class.blur]="Isloading">
+  <!-- From Uiverse.io by csozidev -->
+  <div class="header">
+    <h2>Student Management</h2>
+
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-md-10">
+        <input type="text" class="form-control" placeholder="Search user..." />
+      </div>
+
+      <div class="col-12 col-md-2">
+        <button class="btn btn-success">Search</button>
+      </div>
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>title</th>
+          <th>description</th>
+          <th>startDate</th>
+          <th>endDate</th>
+          <th>fees</th>
+          <th>isPublished</th>
+          <th>teacherName</th>
+          <th>createdAt</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (courses.length > 0) {
+          @for (item of courses; track item.courseId; let index = $index) {
+            <tr>
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.title }}</td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.startDate | date}}</td>
+              <td>{{ item.endDate | date }}</td>
+              <td>₹{{ item.fees }}</td>
+              <td>{{ item.isPublished }}</td>
+              <td>{{ item.teacherName }}</td>
+              <td>{{ item.createdAt | date }}</td>
+              <td>
+                <button class="btn btn-warning" [class.published]="item.isPublished" (click)="PublishCourse(item.courseId)" >{{item.isPublished ? "Published" : "Publish Now !"}}</button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

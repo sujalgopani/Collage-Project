@@ -1,0 +1,52 @@
+<div class="container">
+  <h2>My Courses</h2>
+
+  <div *ngIf="isLoading">Loading courses...</div>
+
+  <div *ngIf="!isLoading && courses.length === 0">No courses found.</div>
+
+  <div *ngFor="let course of courses" class="course-card">
+    <div class="course-header">
+      <h3>{{ course.title }}</h3>
+      <span class="status" [class.published]="course.isPublished">
+        {{ course.isPublished ? 'Published' : 'Draft' }}
+      </span>
+    </div>
+
+    <p>{{ course.description }}</p>
+
+    <div class="course-info">
+      <span>Duration: {{ course.duration }}</span>
+      <span>Fees: ₹{{ course.fees }}</span>
+    </div>
+
+    <div class="videos-section">
+      <h4>Thumbnail</h4>
+
+      <div *ngIf="!course.thumbailUrl">No Thumbnail uploaded.</div>
+
+      <img
+        *ngIf="course.thumbailUrl"
+        [src]="'https://localhost:44385' + course.thumbailUrl"
+        width="200"
+      />
+    </div>
+
+    <div>
+      <p>Date : {{course.startDate | date}} To {{course.endDate | date}}</p>
+    </div>
+
+    <!-- Videos Section -->
+    <div class="videos-section">
+      <h4>Videos</h4>
+
+      <div *ngIf="course.videos.length === 0">No videos uploaded.</div>
+
+      <div *ngFor="let video of course.videos" class="video-item">
+        <video width="300" controls>
+          <source [src]="'https://localhost:44385' + video.filePath" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+</div>
