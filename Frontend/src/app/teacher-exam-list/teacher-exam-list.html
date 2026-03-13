@@ -24,12 +24,12 @@
         <tbody>
           @for (item of exams; track $index) {
             <tr>
-              <td>{{$index +1}}</td>
-              <td>{{item.tittle}}</td>
-              <td>{{item.teacherName}}</td>
-              <td>{{item.description}}</td>
-              <td>{{item.createdAt}}</td>
-              <td>{{item.durationMinit}}</td>
+              <td>{{ $index + 1 }}</td>
+              <td>{{ item.tittle }}</td>
+              <td>{{ item.teacherName }}</td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.createdAt }}</td>
+              <td>{{ item.durationMinit }}</td>
             </tr>
           }
         </tbody>
@@ -39,94 +39,131 @@
 
   <!--  model for add exam -->
   <div class="modal fade" id="examcretemodel" #examcreatemodel tabindex="-1">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Create Exam</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content shadow-lg border-0">
 
-        <div class="modal-body">
-          <form [formGroup]="examForm" (ngSubmit)="CreareExam()">
-            <div class="row">
-              <!-- Course -->
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Course</label>
-
-                <select class="form-control" formControlName="CourseId">
-                  <option value="">Select Course</option>
-                  @for (c of courses; track c.courseId) {
-                    <option [value]="c.courseId">{{ c.title }}</option>
-                  }
-                </select>
-
-                <!-- @if (examForm.get('CourseId')?.touched && examForm.get('CourseId')?.invalid) {
-                <small class="text-danger">Course is required</small>
-              } -->
-              </div>
-
-              <!-- Title -->
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Title</label>
-
-                <input type="text" class="form-control" formControlName="Title" />
-
-                <!-- @if (examForm.get('Title')?.touched && examForm.get('Title')?.invalid) {
-                <small class="text-danger">Title is required</small>
-              } -->
-              </div>
-
-              <!-- Duration -->
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Duration (Minutes)</label>
-                <input type="number" class="form-control" formControlName="DurationMinutes" />
-              </div>
-
-              <!-- StartAt -->
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Start Date</label>
-                <input type="datetime-local" class="form-control" formControlName="StartAt" />
-              </div>
-
-              <!-- EndAt -->
-              <div class="col-md-4 mb-3">
-                <label class="form-label">End Date</label>
-                <input type="datetime-local" class="form-control" formControlName="EndAt" />
-              </div>
-
-              <!-- Random Question -->
-              <div class="col-md-4 mb-3">
-                <label class="form-label">Random Question Count</label>
-                <input type="number" class="form-control" formControlName="RandomQuestionCount" />
-              </div>
-
-              <!-- Description -->
-              <div class="col-md-12 mb-3">
-                <label class="form-label">Description</label>
-
-                <textarea rows="3" class="form-control" formControlName="Description"></textarea>
-              </div>
-
-              <!-- Excel Upload -->
-              <div class="col-md-12 mb-3">
-                <label class="form-label">Upload Excel File</label>
-
-                <input
-                  type="file"
-                  class="form-control"
-                  accept=".xlsx,.xls"
-                  (change)="onFileSelected($event)"
-                />
-              </div>
-            </div>
-            <button class="btn btn-primary" type="submit">Save Exam</button>
-          </form>
-        </div>
-
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+      <!-- Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title fw-semibold">
+          <i class="bi bi-journal-plus me-2"></i> Create Exam
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
+
+      <div class="modal-body p-4">
+
+        <form [formGroup]="examForm" (ngSubmit)="CreareExam()">
+
+          <!-- Exam Basic Info -->
+          <h6 class="border-bottom pb-2 mb-3 text-primary fw-bold">
+            Exam Information
+          </h6>
+
+          <div class="row g-3">
+
+            <!-- Course -->
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Course</label>
+              <select class="form-select" formControlName="CourseId">
+                <option value="">Select Course</option>
+                @for (c of courses; track c.courseId) {
+                <option [value]="c.courseId">{{ c.title }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Title -->
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Title</label>
+              <input type="text" class="form-control" formControlName="Title" />
+            </div>
+
+            <!-- Duration -->
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Duration (Minutes)</label>
+              <input type="number" class="form-control" formControlName="DurationMinutes" />
+            </div>
+
+            <!-- Start -->
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Start Date</label>
+              <input type="datetime-local" class="form-control" formControlName="StartAt" />
+            </div>
+
+            <!-- End -->
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">End Date</label>
+              <input type="datetime-local" class="form-control" formControlName="EndAt" />
+            </div>
+
+            <!-- Random Question -->
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Random Question Count</label>
+              <input type="number" class="form-control" formControlName="RandomQuestionCount" />
+            </div>
+
+            <!-- Description -->
+            <div class="col-md-12">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea rows="3" class="form-control" formControlName="Description"></textarea>
+            </div>
+
+          </div>
+
+          <!-- Excel Section -->
+          <div class="mt-4 p-3 rounded border bg-light">
+
+            <h6 class="fw-bold text-primary mb-3">
+              Upload Questions via Excel
+            </h6>
+
+            <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
+
+              <span class="text-muted small">
+                Download the sample Excel template before uploading questions.
+              </span>
+
+              <a href="/SampleExamUpload.xlsx"
+                 class="btn btn-outline-primary btn-sm"
+                 download>
+                <i class="bi bi-download me-1"></i>
+                Sample Excel
+              </a>
+
+            </div>
+
+            <div>
+              <label class="form-label fw-semibold">Upload Excel File</label>
+
+              <input
+                type="file"
+                class="form-control"
+                accept=".xlsx,.xls"
+                (change)="onFileSelected($event)"
+              />
+            </div>
+
+          </div>
+
+          <!-- Submit -->
+          <div class="mt-4 text-end">
+            <button class="btn btn-primary px-4" type="submit">
+              <i class="bi bi-save me-1"></i> Save Exam
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+
     </div>
   </div>
+</div>
 </div>

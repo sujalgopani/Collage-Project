@@ -1,0 +1,68 @@
+.result-container{
+  width: 800px;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  border: 1px solid #ddd;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header{
+  text-align: center;
+}
+
+.header h1{
+  color: #2c6ed5;
+  margin-bottom: 5px;
+}
+
+.tagline{
+  font-size: 14px;
+}
+
+.address{
+  font-size: 13px;
+  color: gray;
+}
+
+.info-table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table td{
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.marks-table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.marks-table th,
+.marks-table td{
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.marks-table th{
+  background:#f2f2f2;
+}
+
+.total-section{
+  margin-top:20px;
+  font-size:16px;
+}
+
+.message{
+  margin-top:25px;
+  font-size:14px;
+  text-align:center;
+}
+
+.signature{
+  margin-top:40px;
+  text-align:right;
+}

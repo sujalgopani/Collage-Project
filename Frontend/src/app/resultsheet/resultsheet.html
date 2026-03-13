@@ -1,0 +1,97 @@
+<div class="result-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>ExamNest</h1>
+    <p class="tagline">A Smart Online Examination Platform for Learning and Assessment</p>
+    <p class="address">ExamNest Education Platform • Digital Learning & Assessment System</p>
+  </div>
+
+  <hr />
+
+  <!-- Exam Basic Details -->
+  <table class="info-table">
+    <tr>
+      <td><b>Exam ID</b></td>
+      <td>{{ exam.examId }}</td>
+    </tr>
+    <tr>
+      <td><b>Attempt ID</b></td>
+      <td>{{ exam.attemptId }}</td>
+    </tr>
+    <tr>
+      <td><b>Exam Name</b></td>
+      <td>{{ exam.examName }}</td>
+    </tr>
+    <tr>
+      <td><b>Student Name</b></td>
+      <td>{{ exam.studentName }}</td>
+    </tr>
+    <tr>
+      <td><b>Course Name</b></td>
+      <td>{{ exam.courseName }}</td>
+    </tr>
+    <tr>
+      <td><b>Conducted By</b></td>
+      <td>{{ exam.conductedBy }}</td>
+    </tr>
+    <tr>
+      <td><b>Username</b></td>
+      <td>{{ exam.username }}</td>
+    </tr>
+  </table>
+
+  <br />
+
+  <!-- Subject Result Table -->
+  <table class="marks-table">
+    <thead>
+      <tr>
+        <th>Subject Name</th>
+        <th>Passing Mark</th>
+        <th>Obtained Mark</th>
+        <th>Percentage</th>
+        <th>Grade</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- Example row -->
+      <tr *ngFor="let subject of subjects">
+        <td>{{ subject.subjectName }}</td>
+        <td>{{ subject.passingMarks }}</td>
+        <td>{{ subject.obtainedMarks }}</td>
+        <td>{{ subject.percentage }}%</td>
+        <td>{{ subject.grade }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Total Result Section -->
+  <div class="total-section">
+    <p><b>Total Marks :</b> {{ totalMarks }}</p>
+    <p><b>Percentage :</b> {{ percentage }}%</p>
+    <p><b>Result Grade :</b> {{ resultGrade }}</p>
+  </div>
+
+  <hr />
+
+  <!-- Message -->
+  <div class="message">
+    <p>
+      Congratulations on completing your examination successfully. We hope this course helped you
+      improve your knowledge and skills.
+    </p>
+
+    <p>
+      Thank you for choosing <b>ExamNest</b> as your learning platform. We wish you success in your
+      future learning journey.
+    </p>
+  </div>
+
+  <!-- Signature -->
+  <div class="signature">
+    <img src="/CEOsign.png" alt="CEO Sign" width="150" />
+    <p>________________________</p>
+    <p><b>ExamNest Founder</b></p>
+  </div>
+</div>

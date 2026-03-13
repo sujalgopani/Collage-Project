@@ -452,6 +452,16 @@
   },
   {
     "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetAttemptedExam",
+    "RelativePath": "api/Student/my-attempted-exams",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
     "Method": "GetMyExams",
     "RelativePath": "api/Student/my-exams",
     "HttpMethod": "GET",

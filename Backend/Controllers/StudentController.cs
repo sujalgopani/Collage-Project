@@ -145,11 +145,15 @@ namespace ExamNest.Controllers
                     e.EndAt,
                     e.DurationMinutes,
                     e.RandomQuestionCount,
-                    TotalQuestions = e.Questions != null ? e.Questions.Count : 0
+                    examthumbail = e.Course!.ThumbailUrl,
+                    TotalQuestions = e.Questions != null ? e.Questions.Count : 0,
+                    AttemptStatus = _context.ExamAttempts
+                    .Where(a => a.StudentId == studentId && a.ExamId == e.ExamId).Select(a => a.Status)
+                    .FirstOrDefault()
                 })
                 .ToListAsync();
 
-            return Ok(exams);
+			return Ok(exams);
         }
 
         [HttpPost("exam/{examId}/start")]
@@ -416,11 +420,15 @@ namespace ExamNest.Controllers
 
             var attempt = await _context.ExamAttempts
                 .Include(a => a.Exam)
+                .ThenInclude(a=>a!.Course)
+                .Include(a=>a.Exam)
+                .ThenInclude(a=>a!.Teacher)
                 .FirstOrDefaultAsync(a => a.ExamAttemptId == attemptId
                     && a.ExamId == examId
                     && a.StudentId == studentId);
+			var username = User.FindFirstValue(ClaimTypes.Name);
 
-            if (attempt == null)
+			if (attempt == null)
                 return NotFound("Result not found.");
 
             if (attempt.SubmittedAt == null)
@@ -431,17 +439,61 @@ namespace ExamNest.Controllers
                 attempt.ExamAttemptId,
                 attempt.ExamId,
                 examTitle = attempt.Exam != null ? attempt.Exam.Title : string.Empty,
-                attempt.Status,
+                courcename = attempt.Exam?.Course?.Title ?? "",
+                teachername = attempt.Exam?.Teacher?.FirstName + attempt.Exam?.Teacher?.LastName,
+				username,
+				attempt.Status,
                 attempt.TotalScore,
                 attempt.MaxScore,
                 attempt.ViolationCount,
                 attempt.IsFlagged,
                 attempt.StartedAt,
                 attempt.SubmittedAt
-            });
+			});
         }
 
-        private object BuildExamPayload(Exam exam, ExamAttempt attempt)
+		[HttpGet("my-attempted-exams")]
+		public async Task<IActionResult> GetAttemptedExam()
+		{
+			if (!TryGetStudentId(out var studentId))
+				return Unauthorized("Invalid student token.");
+
+			var exams = await _context.ExamAttempts
+				.Where(a => a.StudentId == studentId)
+				.Include(a => a.Exam)
+				.ThenInclude(e => e!.Course)
+				.Include(a => a.Exam)
+				.ThenInclude(e => e!.Questions)
+				.OrderByDescending(a => a.StartedAt)
+				.Select(a => new
+				{
+					a.ExamAttemptId,
+					a.ExamId,
+					a.Status,
+					a.StartedAt,
+					a.SubmittedAt,
+
+					CourseId = a.Exam!.CourseId,
+					CourseTitle = a.Exam.Course != null ? a.Exam.Course.Title : "",
+					Title = a.Exam.Title,
+					Description = a.Exam.Description,
+					StartAt = a.Exam.StartAt,
+					EndAt = a.Exam.EndAt,
+					DurationMinutes = a.Exam.DurationMinutes,
+					RandomQuestionCount = a.Exam.RandomQuestionCount,
+					examthumbail = a.Exam.Course!.ThumbailUrl,
+					TotalQuestions = a.Exam.Questions != null ? a.Exam.Questions.Count : 0
+				})
+				.ToListAsync();
+
+			return Ok(exams);
+		}
+
+
+
+		//=================================================================================================
+
+		private object BuildExamPayload(Exam exam, ExamAttempt attempt)
         {
             var orderIds = ParseQuestionOrder(attempt.QuestionOrderCsv);
             var optionOrderMap = ParseOptionOrderMap(attempt.OptionOrderJson);

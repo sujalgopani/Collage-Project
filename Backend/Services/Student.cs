@@ -34,6 +34,6 @@ namespace ExamNest.Services
         {
 			return await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == courseId);
 		}
-
+        
     }
 }

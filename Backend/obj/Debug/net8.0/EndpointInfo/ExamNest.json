@@ -779,6 +779,18 @@
         }
       }
     },
+    "/api/Student/my-attempted-exams": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Teacher/CreateCourse/create": {
       "post": {
         "tags": [
