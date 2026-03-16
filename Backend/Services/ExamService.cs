@@ -20,6 +20,7 @@ namespace ExamNest.Services
 				.Where(r => r.TeacherId == teacherId)
 				.Include(r => r.Teacher)
 				.Include(r => r.Course)
+				.Include(r=>r.ExamAttempts)
 				.Select(r => new ExamlistDTO
 				{
 					ExamId = r.ExamId,
@@ -28,11 +29,33 @@ namespace ExamNest.Services
 					TeacherName = r.Teacher!.Username,
 					Description = r.Description,
 					DurationMinit = r.DurationMinutes,
-					CreatedAt = r.CreatedAt
+					CreatedAt = r.CreatedAt,
+					Enddate = r.EndAt,
+					Startdate = r.StartAt,
+					Isflagged = r.ExamAttempts!.Any(a => a.IsFlagged)
 				})
 				.ToListAsync();
 
 			return data;
+		}
+
+		public async Task<bool> PublishExamResult(int examId)
+		{
+			var attempts = await _context.ExamAttempts
+							.Where(x => x.ExamId == examId)
+							.ToListAsync();
+
+			if (attempts.Count == 0)
+				return false;
+
+			foreach (var item in attempts)
+			{
+				item.IsFlagged = true;
+			}
+
+			await _context.SaveChangesAsync();
+
+			return true;
 		}
 
 

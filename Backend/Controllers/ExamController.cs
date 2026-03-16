@@ -38,5 +38,17 @@ namespace ExamNest.Controllers
 			return Ok(exams);
 		}
 
+		[HttpPut("publish-result/{examId}")]
+		public async Task<IActionResult> PublishResult(int examId) {
+
+			var result = await _examservice.PublishExamResult(examId);
+			if (!result)
+			{
+				return NotFound("Exam Attemp Is not Found !");
+			}
+
+			return Ok("Result Publish SuccessFully !");
+		}
+
 	}
 }

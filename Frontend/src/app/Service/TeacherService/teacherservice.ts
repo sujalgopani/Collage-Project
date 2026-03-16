@@ -50,6 +50,22 @@ export class Teacherservice {
     return this.http.get("https://localhost:44385/api/Exam/GetTeacherWiseCourse");
   }
 
-  
+  PublishResult(examId: number){
+    return this.http.put(`https://localhost:44385/api/Exam/PublishResult/publish-result/${examId}`,{},{ responseType: 'text' });
+  }
 
+
+  // dashboard side
+  Gettotalcourses(){
+    return this.http.get('https://localhost:44385/api/Teacher/GetTotalCourses/GetTotalCourses');
+  }
+  GetTotalStudent(){
+    return this.http.get('https://localhost:44385/api/Teacher/GetTotalStudent/GetTotalStudent');
+  }
+  GetTotalExam(){
+    return this.http.get('https://localhost:44385/api/Teacher/GetTotalExam/GetTotalExam');
+  }
+  GetTotalEarnings(){
+    return this.http.get('https://localhost:44385/api/Teacher/GetTotalEarnings/GetTotalEarnings');
+  }
 }

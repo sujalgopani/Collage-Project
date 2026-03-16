@@ -9,5 +9,9 @@
         public string? Description { get; set; }
         public int DurationMinit { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime Enddate { get; set; }
+		public DateTime Startdate { get; set; }
+        public bool ?Isflagged { get; set; }
+
     }
 }

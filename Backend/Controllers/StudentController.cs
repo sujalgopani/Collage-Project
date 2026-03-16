@@ -16,7 +16,7 @@ namespace ExamNest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "StudentOnly")]
+    [Authorize(Roles = "Student")]
     public class StudentController : ControllerBase
     {
         private static readonly HashSet<string> SevereViolationEvents = new(StringComparer.OrdinalIgnoreCase)
@@ -472,6 +472,7 @@ namespace ExamNest.Controllers
 					a.Status,
 					a.StartedAt,
 					a.SubmittedAt,
+                    a.IsFlagged,
 
 					CourseId = a.Exam!.CourseId,
 					CourseTitle = a.Exam.Course != null ? a.Exam.Course.Title : "",

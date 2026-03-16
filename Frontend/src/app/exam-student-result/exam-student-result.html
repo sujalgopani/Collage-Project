@@ -1,7 +1,6 @@
 @if (Isloading) {
   <h3>Loading......</h3>
-}@else {
-
+} @else {
   <div class="container mt-4">
     <h3 class="mb-4 text-primary">Exam Results</h3>
 
@@ -10,9 +9,9 @@
         <div class="col-md-3 mb-3">
           <div class="card shadow-sm h-100">
             <img
-            [src]="'https://localhost:44385' + exam.examthumbail"
-            class="card-img-top"
-            style="height: 160px; object-fit: cover"
+              [src]="'https://localhost:44385' + exam.examthumbail"
+              class="card-img-top"
+              style="height: 160px; object-fit: cover"
             />
 
             <div class="card-body">
@@ -35,15 +34,21 @@
 
             <div class="card-footer bg-white border-0">
               @if (exam.status === 'Submitted') {
-              <button class="btn btn-success w-100" (click)="GetResult(exam.examId,exam.examAttemptId)">Get Result</button>
-            } @else {
-              <button class="btn btn-secondary w-100" disabled>Result Not Available</button>
-            }
+                <button
+                  class="btn w-100"
+                  [ngClass]="exam.isFlagged ? 'btn-success' : 'btn-secondary'"
+                  [disabled]="!exam.isFlagged"
+                  (click)="GetResult(exam.examId, exam.examAttemptId)"
+                >
+                  {{ exam.isFlagged ? 'Get Result' : 'Result Not Published' }}
+                </button>
+              } @else {
+                <button class="btn btn-secondary w-100" disabled>Result Not Available</button>
+              }
+            </div>
           </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   </div>
-</div>
-
 }

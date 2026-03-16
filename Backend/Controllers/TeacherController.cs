@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic.FileIO;
+using Org.BouncyCastle.Bcpg;
 
 namespace ExamNest.Controllers
 {
@@ -259,7 +260,84 @@ namespace ExamNest.Controllers
             });
         }
 
-        private static string GetCell(string[] row, int oneBasedIndex)
+
+		// DASHBOARD SIDE 
+
+		[HttpGet("GetTotalCourses")]
+		public async Task<IActionResult> GetTotalCourses()
+		{
+			int teacherId = GetTeacherId();
+
+			var totalcourse = await _context.Courses
+				.Where(r => r.TeacherId == teacherId)
+				.CountAsync();
+
+			return Ok(new
+			{
+				totalCourses = totalcourse
+			});
+		}
+
+		[HttpGet("GetTotalStudent")]
+		public async Task<IActionResult> GetTotalStudent()
+		{
+			int teacherId = GetTeacherId();
+
+			var totalStudents = await _context.Subscriptions
+				.Where(s => s.Course!.TeacherId == teacherId)
+				.Select(s => s.StudentId)
+				.Distinct()
+				.CountAsync();
+
+			return Ok(new
+			{
+				totalStudents = totalStudents
+			});
+		}
+
+
+
+		[HttpGet("GetTotalExam")]
+		public async Task<IActionResult> GetTotalExam()
+		{
+			int teacherId = GetTeacherId();
+
+			var totalexam = await _context.Exams
+				.Where(r => r.TeacherId == teacherId)
+				.CountAsync();
+
+			return Ok(new
+			{
+				totalexam = totalexam
+			});
+		}
+
+
+		[HttpGet("GetTotalEarnings")]
+		public async Task<IActionResult> GetTotalEarnings()
+		{
+			int teacherId = GetTeacherId();
+
+			var totalEarning = await _context.Orders
+				.Where(o => o.Course!.TeacherId == teacherId && o.Status == "Paid")
+				.SumAsync(o => (decimal?)o.Amount) ?? 0;
+
+			return Ok(new
+			{
+				totalEarning = totalEarning
+			});
+		}
+
+
+		private int GetTeacherId()
+		{
+			var teacherId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+							?? User.FindFirst("sub")?.Value;
+
+			return int.Parse(teacherId!);
+		}
+
+		private static string GetCell(string[] row, int oneBasedIndex)
         {
             var idx = oneBasedIndex - 1;
             if (idx < 0 || idx >= row.Length)
@@ -413,7 +491,6 @@ namespace ExamNest.Controllers
 
             return raw;
         }
-
 
     }
 }

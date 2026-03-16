@@ -45,4 +45,5 @@ export class Studentservice {
   GetExamResult(examId :number,attemptId :number){
     return this.http.get(`https://localhost:44385/api/Student/exam/${examId}/result/${attemptId}`)
   }
+  
 }

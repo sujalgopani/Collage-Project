@@ -1,76 +1,89 @@
-<div class="result-container">
+<div class="result-container" id="resultSheet" *ngIf="resultdata">
+  <button class="btn btn-primary" (click)="backbtn()">Back</button>
+  <button class="btn btn-success ms-2">Download Result</button>
   <!-- Header -->
   <div class="header">
     <h1>ExamNest</h1>
-    <p class="tagline">A Smart Online Examination Platform for Learning and Assessment</p>
-    <p class="address">ExamNest Education Platform • Digital Learning & Assessment System</p>
+    <p class="tagline">Smart Online Examination Platform</p>
+    <p class="address">Digital Learning & Assessment System</p>
   </div>
 
   <hr />
 
-  <!-- Exam Basic Details -->
+  <!-- Exam Details -->
   <table class="info-table">
     <tr>
       <td><b>Exam ID</b></td>
-      <td>{{ exam.examId }}</td>
-    </tr>
-    <tr>
+      <td>{{ resultdata.examId }}</td>
+
       <td><b>Attempt ID</b></td>
-      <td>{{ exam.attemptId }}</td>
+      <td>{{ resultdata.examAttemptId }}</td>
     </tr>
+
     <tr>
       <td><b>Exam Name</b></td>
-      <td>{{ exam.examName }}</td>
+      <td>{{ resultdata.examTitle }}</td>
+
+      <td><b>Student</b></td>
+      <td>{{ resultdata.username }}</td>
     </tr>
+
     <tr>
-      <td><b>Student Name</b></td>
-      <td>{{ exam.studentName }}</td>
+      <td><b>Course</b></td>
+      <td>{{ resultdata.courcename }}</td>
+
+      <td><b>Teacher</b></td>
+      <td>{{ resultdata.teachername }}</td>
     </tr>
+
     <tr>
-      <td><b>Course Name</b></td>
-      <td>{{ exam.courseName }}</td>
-    </tr>
-    <tr>
-      <td><b>Conducted By</b></td>
-      <td>{{ exam.conductedBy }}</td>
-    </tr>
-    <tr>
-      <td><b>Username</b></td>
-      <td>{{ exam.username }}</td>
+      <td><b>Status</b></td>
+      <td>{{ resultdata.status }}</td>
+
+      <td><b>Violation</b></td>
+      <td>{{ resultdata.violationCount }}</td>
     </tr>
   </table>
 
   <br />
 
-  <!-- Subject Result Table -->
+  <!-- Marks Table -->
   <table class="marks-table">
     <thead>
       <tr>
-        <th>Subject Name</th>
-        <th>Passing Mark</th>
-        <th>Obtained Mark</th>
+        <th>Subject</th>
+        <th>Total Marks</th>
+        <th>Obtained Marks</th>
         <th>Percentage</th>
         <th>Grade</th>
       </tr>
     </thead>
 
     <tbody>
-      <!-- Example row -->
-      <tr *ngFor="let subject of subjects">
-        <td>{{ subject.subjectName }}</td>
-        <td>{{ subject.passingMarks }}</td>
-        <td>{{ subject.obtainedMarks }}</td>
-        <td>{{ subject.percentage }}%</td>
-        <td>{{ subject.grade }}</td>
+      <tr>
+        <td>{{ resultdata.courcename }}</td>
+        <td>{{ resultdata.maxScore }}</td>
+        <td>{{ resultdata.totalScore }}</td>
+        <td>{{ percentage | number: '1.0-2' }}%</td>
+        <td>{{ grade }}</td>
       </tr>
     </tbody>
   </table>
 
-  <!-- Total Result Section -->
+  <br />
+
+  <!-- Result Summary -->
   <div class="total-section">
-    <p><b>Total Marks :</b> {{ totalMarks }}</p>
-    <p><b>Percentage :</b> {{ percentage }}%</p>
-    <p><b>Result Grade :</b> {{ resultGrade }}</p>
+    <h3>Final Result</h3>
+
+    <p><b>Total Marks :</b> {{ resultdata.totalScore }} / {{ resultdata.maxScore }}</p>
+
+    <p><b>Percentage :</b> {{ percentage | number: '1.0-2' }}%</p>
+
+    <p>
+      <b>Grade :</b>
+      <span class="grade"> {{ grade }}</span>
+    </p>
   </div>
 
   <hr />
@@ -78,20 +91,18 @@
   <!-- Message -->
   <div class="message">
     <p>
-      Congratulations on completing your examination successfully. We hope this course helped you
-      improve your knowledge and skills.
+      Congratulations on completing your examination successfully. We hope this course improved your
+      knowledge and skills.
     </p>
 
-    <p>
-      Thank you for choosing <b>ExamNest</b> as your learning platform. We wish you success in your
-      future learning journey.
-    </p>
+    <p>Thank you for choosing <b>ExamNest</b>.</p>
   </div>
 
   <!-- Signature -->
   <div class="signature">
-    <img src="/CEOsign.png" alt="CEO Sign" width="150" />
+    <img src="/CEOsign.png" width="120" />
     <p>________________________</p>
     <p><b>ExamNest Founder</b></p>
   </div>
 </div>
+<router-outlet></router-outlet>

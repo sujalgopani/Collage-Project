@@ -1,4 +1,3 @@
-import { Routes } from '@angular/router';
 import { Login } from './login/login';
 import { Register } from './register/register';
 import { Emailverify } from './emailverify/emailverify';
@@ -23,6 +22,7 @@ import { Studentexam } from './studentexam/studentexam';
 import { StudentExamAttempt } from './student-exam-attempt/student-exam-attempt';
 import { ExamStudentResult } from './exam-student-result/exam-student-result';
 import { Resultsheet } from './resultsheet/resultsheet';
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   // public paths
@@ -68,7 +68,7 @@ export const routes: Routes = [
       { path: 'student-exam', component: Studentexam },
       {path: 'student-exam-attempt',component: StudentExamAttempt},
       {path: 'student-exam-result',component: ExamStudentResult},
-      {path: 'student-resultsheet',component: Resultsheet}
+      {path: 'student-result/:examId/:attemptId',component: Resultsheet}
     ],
   },
 ];

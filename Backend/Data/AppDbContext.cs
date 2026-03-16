@@ -198,8 +198,15 @@ namespace ExamNest.Data
                 .HasForeignKey(v => v.ExamAttemptId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Decimal Precision
-            modelBuilder.Entity<Order>()
+            // exam => examattemp
+			modelBuilder.Entity<ExamAttempt>()
+		        .HasOne(a => a.Exam)
+		        .WithMany(e => e.ExamAttempts)
+		        .HasForeignKey(a => a.ExamId)
+		        .OnDelete(DeleteBehavior.Cascade);
+
+			// Decimal Precision
+			modelBuilder.Entity<Order>()
                 .Property(o => o.Amount)
                 .HasPrecision(18, 2);
 

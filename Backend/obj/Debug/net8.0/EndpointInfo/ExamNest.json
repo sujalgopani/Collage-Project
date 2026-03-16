@@ -474,6 +474,29 @@
         }
       }
     },
+    "/api/Exam/PublishResult/publish-result/{examId}": {
+      "put": {
+        "tags": [
+          "Exam"
+        ],
+        "parameters": [
+          {
+            "name": "examId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Payment/create-order": {
       "post": {
         "tags": [
@@ -950,6 +973,54 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Teacher/GetTotalCourses/GetTotalCourses": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Teacher/GetTotalStudent/GetTotalStudent": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Teacher/GetTotalExam/GetTotalExam": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Teacher/GetTotalEarnings/GetTotalEarnings": {
+      "get": {
+        "tags": [
+          "Teacher"
+        ],
         "responses": {
           "200": {
             "description": "OK"

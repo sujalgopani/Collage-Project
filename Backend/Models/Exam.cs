@@ -17,6 +17,7 @@ namespace ExamNest.Models
 
         public Course? Course { get; set; }
         public User? Teacher { get; set; }
-        public ICollection<ExamQuestion>? Questions { get; set; }
+		public ICollection<ExamAttempt>? ExamAttempts { get; set; }
+		public ICollection<ExamQuestion>? Questions { get; set; }
     }
 }

@@ -66,3 +66,8 @@
   margin-top:40px;
   text-align:right;
 }
+
+
+.isFlagged{
+  opacity: 0.5;
+}

@@ -111,5 +111,32 @@ export class TeacherExamList implements OnInit {
     modal.hide();
   }
 
+  getExamStatus(exam: any) {
+    const now = new Date();
 
+    const start = new Date(exam.startdate);
+    const end = new Date(exam.enddate);
+
+    if (now < start) {
+      return 'notStarted';
+    }
+
+    if (now >= start && now <= end) {
+      return 'ongoing';
+    }
+
+    return 'finished';
+  }
+  
+
+  publishresult(examid : number){
+    this.service.PublishResult(examid).subscribe({
+      next:(res)=>{
+        console.log(res);
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    })
+  }
 }

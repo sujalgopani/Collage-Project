@@ -27,13 +27,13 @@
 
 .create-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(37,99,235,0.3);
+  box-shadow: 0 8px 15px rgba(37, 99, 235, 0.3);
 }
 
 .table-container {
   background: white;
   border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   overflow-x: auto;
 }
 
@@ -46,7 +46,8 @@ thead {
   background: #0179f2;
 }
 
-th, td {
+th,
+td {
   padding: 15px;
   text-align: left;
   font-size: 14px;
@@ -96,6 +97,26 @@ tbody tr:hover {
   background: #dc2626;
 }
 
+.status-btn {
+  min-width: 140px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.status-btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
 /* Responsive */
 @media (max-width: 768px) {
   .top-header {
@@ -107,7 +128,8 @@ tbody tr:hover {
     width: 100%;
   }
 
-  th, td {
+  th,
+  td {
     font-size: 12px;
     padding: 10px;
   }

@@ -5,10 +5,11 @@ import { Studentservice } from '../Service/StudentService/studentservice';
 import { rmSync } from 'fs';
 import { ImplicitReceiver } from '@angular/compiler';
 import { Console, log } from 'console';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-exam-student-result',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './exam-student-result.html',
   styleUrl: './exam-student-result.css',
 })
@@ -42,10 +43,12 @@ export class ExamStudentResult implements OnInit {
     });
   }
 
+
   GetResult(examId :number,attemptId :number){
     this.service.GetExamResult(examId,attemptId).subscribe({
       next:(res)=>{
-        console.log(res);
+        // console.log(res);
+          this.router.navigate(['/student-dashboard/student-result', examId, attemptId]);
       },
       error:(err)=>{
         console.log(err);

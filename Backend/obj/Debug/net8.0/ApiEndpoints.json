@@ -282,6 +282,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ExamNest.Controllers.ExamController",
+    "Method": "PublishResult",
+    "RelativePath": "api/Exam/PublishResult/publish-result/{examId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "examId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExamNest.Controllers.PaymentController",
     "Method": "CreateOrder",
     "RelativePath": "api/Payment/create-order",
@@ -530,6 +546,46 @@
     "ContainingType": "ExamNest.Controllers.TeacherController",
     "Method": "GetMyCourses",
     "RelativePath": "api/Teacher/GetMyCourses/mycourses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTotalCourses",
+    "RelativePath": "api/Teacher/GetTotalCourses/GetTotalCourses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTotalEarnings",
+    "RelativePath": "api/Teacher/GetTotalEarnings/GetTotalEarnings",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTotalExam",
+    "RelativePath": "api/Teacher/GetTotalExam/GetTotalExam",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTotalStudent",
+    "RelativePath": "api/Teacher/GetTotalStudent/GetTotalStudent",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

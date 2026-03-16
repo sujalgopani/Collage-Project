@@ -17,8 +17,10 @@
             <th scope="col">tittle</th>
             <th scope="col">teacherName</th>
             <th scope="col">description</th>
-            <th scope="col">createdAt</th>
+            <th scope="col">start</th>
+            <th scope="col">End</th>
             <th scope="col">durationMinit</th>
+            <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -28,8 +30,27 @@
               <td>{{ item.tittle }}</td>
               <td>{{ item.teacherName }}</td>
               <td>{{ item.description }}</td>
-              <td>{{ item.createdAt }}</td>
+              <td>{{ item.startdate | date: 'dd/MM/yyyy hh:mm a' }}</td>
+              <td>{{ item.enddate | date: 'dd/MM/yyyy hh:mm a' }}</td>
               <td>{{ item.durationMinit }}</td>
+              <td class="text-center">
+                @if (getExamStatus(item) === 'notStarted') {
+                  <button class="btn btn-outline-secondary btn-sm status-btn" disabled>
+                    ⏳ Not Started
+                  </button>
+                } @else if (getExamStatus(item) === 'ongoing') {
+                  <button class="btn btn-success btn-sm status-btn">🟢 Ongoing</button>
+                } @else if (getExamStatus(item) === 'finished') {
+                  <button
+                    class="btn btn-primary btn-sm status-btn"
+                    [ngClass]="{ 'btn-success': item.isflagged }"
+                    (click)="publishresult(item.examId)"
+                    [disabled]="item.isflagged"
+                  >
+                    {{ item.isflagged ? '✔ Result Published' : '📢 Publish Result' }}
+                  </button>
+                }
+              </td>
             </tr>
           }
         </tbody>
@@ -39,131 +60,111 @@
 
   <!--  model for add exam -->
   <div class="modal fade" id="examcretemodel" #examcreatemodel tabindex="-1">
-  <div class="modal-dialog modal-xl modal-dialog-scrollable">
-    <div class="modal-content shadow-lg border-0">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content shadow-lg border-0">
+        <!-- Header -->
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-semibold">
+            <i class="bi bi-journal-plus me-2"></i> Create Exam
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
 
-      <!-- Header -->
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title fw-semibold">
-          <i class="bi bi-journal-plus me-2"></i> Create Exam
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        <div class="modal-body p-4">
+          <form [formGroup]="examForm" (ngSubmit)="CreareExam()">
+            <!-- Exam Basic Info -->
+            <h6 class="border-bottom pb-2 mb-3 text-primary fw-bold">Exam Information</h6>
+
+            <div class="row g-3">
+              <!-- Course -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Course</label>
+                <select class="form-select" formControlName="CourseId">
+                  <option value="">Select Course</option>
+                  @for (c of courses; track c.courseId) {
+                    <option [value]="c.courseId">{{ c.title }}</option>
+                  }
+                </select>
+              </div>
+
+              <!-- Title -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Title</label>
+                <input type="text" class="form-control" formControlName="Title" />
+              </div>
+
+              <!-- Duration -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Duration (Minutes)</label>
+                <input type="number" class="form-control" formControlName="DurationMinutes" />
+              </div>
+
+              <!-- Start -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Start Date</label>
+                <input type="datetime-local" class="form-control" formControlName="StartAt" />
+              </div>
+
+              <!-- End -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">End Date</label>
+                <input type="datetime-local" class="form-control" formControlName="EndAt" />
+              </div>
+
+              <!-- Random Question -->
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Random Question Count</label>
+                <input type="number" class="form-control" formControlName="RandomQuestionCount" />
+              </div>
+
+              <!-- Description -->
+              <div class="col-md-12">
+                <label class="form-label fw-semibold">Description</label>
+                <textarea rows="3" class="form-control" formControlName="Description"></textarea>
+              </div>
+            </div>
+
+            <!-- Excel Section -->
+            <div class="mt-4 p-3 rounded border bg-light">
+              <h6 class="fw-bold text-primary mb-3">Upload Questions via Excel</h6>
+
+              <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
+                <span class="text-muted small">
+                  Download the sample Excel template before uploading questions.
+                </span>
+
+                <a href="/SampleExamUpload.xlsx" class="btn btn-outline-primary btn-sm" download>
+                  <i class="bi bi-download me-1"></i>
+                  Sample Excel
+                </a>
+              </div>
+
+              <div>
+                <label class="form-label fw-semibold">Upload Excel File</label>
+
+                <input
+                  type="file"
+                  class="form-control"
+                  accept=".xlsx,.xls"
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="mt-4 text-end">
+              <button class="btn btn-primary px-4" type="submit">
+                <i class="bi bi-save me-1"></i> Save Exam
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
-
-      <div class="modal-body p-4">
-
-        <form [formGroup]="examForm" (ngSubmit)="CreareExam()">
-
-          <!-- Exam Basic Info -->
-          <h6 class="border-bottom pb-2 mb-3 text-primary fw-bold">
-            Exam Information
-          </h6>
-
-          <div class="row g-3">
-
-            <!-- Course -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">Course</label>
-              <select class="form-select" formControlName="CourseId">
-                <option value="">Select Course</option>
-                @for (c of courses; track c.courseId) {
-                <option [value]="c.courseId">{{ c.title }}</option>
-                }
-              </select>
-            </div>
-
-            <!-- Title -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">Title</label>
-              <input type="text" class="form-control" formControlName="Title" />
-            </div>
-
-            <!-- Duration -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">Duration (Minutes)</label>
-              <input type="number" class="form-control" formControlName="DurationMinutes" />
-            </div>
-
-            <!-- Start -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">Start Date</label>
-              <input type="datetime-local" class="form-control" formControlName="StartAt" />
-            </div>
-
-            <!-- End -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">End Date</label>
-              <input type="datetime-local" class="form-control" formControlName="EndAt" />
-            </div>
-
-            <!-- Random Question -->
-            <div class="col-md-4">
-              <label class="form-label fw-semibold">Random Question Count</label>
-              <input type="number" class="form-control" formControlName="RandomQuestionCount" />
-            </div>
-
-            <!-- Description -->
-            <div class="col-md-12">
-              <label class="form-label fw-semibold">Description</label>
-              <textarea rows="3" class="form-control" formControlName="Description"></textarea>
-            </div>
-
-          </div>
-
-          <!-- Excel Section -->
-          <div class="mt-4 p-3 rounded border bg-light">
-
-            <h6 class="fw-bold text-primary mb-3">
-              Upload Questions via Excel
-            </h6>
-
-            <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
-
-              <span class="text-muted small">
-                Download the sample Excel template before uploading questions.
-              </span>
-
-              <a href="/SampleExamUpload.xlsx"
-                 class="btn btn-outline-primary btn-sm"
-                 download>
-                <i class="bi bi-download me-1"></i>
-                Sample Excel
-              </a>
-
-            </div>
-
-            <div>
-              <label class="form-label fw-semibold">Upload Excel File</label>
-
-              <input
-                type="file"
-                class="form-control"
-                accept=".xlsx,.xls"
-                (change)="onFileSelected($event)"
-              />
-            </div>
-
-          </div>
-
-          <!-- Submit -->
-          <div class="mt-4 text-end">
-            <button class="btn btn-primary px-4" type="submit">
-              <i class="bi bi-save me-1"></i> Save Exam
-            </button>
-          </div>
-
-        </form>
-
-      </div>
-
-      <!-- Footer -->
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-
     </div>
   </div>
-</div>
 </div>
