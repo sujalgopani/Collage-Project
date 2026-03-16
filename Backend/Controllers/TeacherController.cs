@@ -18,6 +18,22 @@ namespace ExamNest.Controllers
     [ApiController]
     public class TeacherController : ControllerBase
     {
+        private const long MaxThumbnailSizeBytes = 5 * 1024 * 1024;
+        private const long MaxVideoSizeBytes = 500 * 1024 * 1024;
+        private const long MaxCourseUploadRequestSizeBytes = 2L * 1024 * 1024 * 1024;
+
+        private static readonly HashSet<string> AllowedThumbnailExtensions =
+            new(StringComparer.OrdinalIgnoreCase) { ".jpg", ".jpeg", ".png", ".webp" };
+
+        private static readonly HashSet<string> AllowedVideoExtensions =
+            new(StringComparer.OrdinalIgnoreCase) { ".mp4", ".mov", ".avi", ".mkv", ".webm" };
+
+        private static readonly HashSet<string> AllowedThumbnailContentTypes =
+            new(StringComparer.OrdinalIgnoreCase) { "image/jpeg", "image/png", "image/webp" };
+
+        private static readonly HashSet<string> AllowedVideoContentTypes =
+            new(StringComparer.OrdinalIgnoreCase) { "video/mp4", "video/quicktime", "video/x-msvideo", "video/x-matroska", "video/webm" };
+
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
 
@@ -29,32 +45,84 @@ namespace ExamNest.Controllers
 
         [HttpPost("create")]
         [Consumes("multipart/form-data")]
-        [RequestSizeLimit(long.MaxValue)]
-        [DisableRequestSizeLimit]
+        [RequestSizeLimit(MaxCourseUploadRequestSizeBytes)]
         [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> CreateCourse([FromForm] CourseCreateDTO dto)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            if (string.IsNullOrWhiteSpace(dto.Title) || string.IsNullOrWhiteSpace(dto.Description))
+                return BadRequest("Title and description are required.");
+
+            if (dto.StartDate >= dto.EndDate)
+                return BadRequest("Start date must be before end date.");
+
+            if (dto.Fees < 0)
+                return BadRequest("Fees cannot be negative.");
+
+            var teacherIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(teacherIdClaim, out var userId))
+                return Unauthorized("Invalid teacher token.");
+            var rootPath = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
+            var thumbnailFolder = Path.Combine(rootPath, "CourseThumbnail");
+            var videoFolder = Path.Combine(rootPath, "CourseVideos");
+
+            var savedFiles = new List<string>();
 
             string thumbnailUrl = "";
 
             if (dto.ThumbailUrl != null)
             {
-                var rootPath = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
-                var folder = Path.Combine(rootPath, "CourseThumbnail");
+                var thumbnailExtension = Path.GetExtension(dto.ThumbailUrl.FileName);
+                if (!AllowedThumbnailExtensions.Contains(thumbnailExtension))
+                    return BadRequest("Thumbnail must be jpg, jpeg, png, or webp.");
 
-                if (!Directory.Exists(folder))
-                    Directory.CreateDirectory(folder);
+                if (!string.IsNullOrWhiteSpace(dto.ThumbailUrl.ContentType) &&
+                    !AllowedThumbnailContentTypes.Contains(dto.ThumbailUrl.ContentType))
+                {
+                    return BadRequest("Thumbnail content type is invalid.");
+                }
 
-                var fileName = Guid.NewGuid() + Path.GetExtension(dto.ThumbailUrl!.FileName);
-                var filePath = Path.Combine(folder, fileName);
+                if (dto.ThumbailUrl.Length <= 0 || dto.ThumbailUrl.Length > MaxThumbnailSizeBytes)
+                    return BadRequest("Thumbnail size must be greater than 0 and at most 5 MB.");
+
+                if (!Directory.Exists(thumbnailFolder))
+                    Directory.CreateDirectory(thumbnailFolder);
+
+                var fileName = Guid.NewGuid() + thumbnailExtension;
+                var filePath = Path.Combine(thumbnailFolder, fileName);
 
                 await using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await dto.ThumbailUrl.CopyToAsync(stream);
                 }
 
+                savedFiles.Add(filePath);
+
                 thumbnailUrl += "/CourseThumbnail/" + fileName;
+            }
+
+            if (dto.Files?.Count > 0)
+            {
+                if (!Directory.Exists(videoFolder))
+                    Directory.CreateDirectory(videoFolder);
+
+                foreach (var file in dto.Files)
+                {
+                    if (file == null || file.Length <= 0)
+                        return BadRequest("Video files cannot be empty.");
+
+                    if (file.Length > MaxVideoSizeBytes)
+                        return BadRequest($"Video '{file.FileName}' exceeds the 500 MB size limit.");
+
+                    var extension = Path.GetExtension(file.FileName);
+                    if (!AllowedVideoExtensions.Contains(extension))
+                        return BadRequest($"Video '{file.FileName}' has an unsupported format.");
+
+                    if (!string.IsNullOrWhiteSpace(file.ContentType) &&
+                        !AllowedVideoContentTypes.Contains(file.ContentType))
+                    {
+                        return BadRequest($"Video '{file.FileName}' has an invalid content type.");
+                    }
+                }
             }
 
             var course = new Course
@@ -69,35 +137,44 @@ namespace ExamNest.Controllers
                 CreatedAt = DateTime.Now
             };
 
-            _context.Courses.Add(course);
-            await _context.SaveChangesAsync();
-
-            if (dto.Files != null && dto.Files.Count > 0)
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                var rootPath = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
-                var videoFolder = Path.Combine(rootPath, "CourseVideos");
+                _context.Courses.Add(course);
 
-                if (!Directory.Exists(videoFolder))
-                    Directory.CreateDirectory(videoFolder);
-
-                foreach (var file in dto.Files)
+                if (dto.Files?.Count > 0)
                 {
-                    var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
-                    var filePath = Path.Combine(videoFolder, fileName);
-
-                    await using (var stream = new FileStream(filePath, FileMode.Create))
+                    foreach (var file in dto.Files)
                     {
-                        await file.CopyToAsync(stream);
+                        var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                        var filePath = Path.Combine(videoFolder, fileName);
+
+                        await using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream, RequestAborted);
+                        }
+
+                        savedFiles.Add(filePath);
+                        _context.CourseMedias.Add(new CourseMedia
+                        {
+                            Course = course,
+                            FilePath = "/CourseVideos/" + fileName
+                        });
                     }
-
-                    _context.CourseMedias.Add(new CourseMedia
-                    {
-                        CourseId = course.CourseId,
-                        FilePath = "/CourseVideos/" + fileName
-                    });
                 }
 
                 await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                foreach (var filePath in savedFiles.Where(System.IO.File.Exists))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+
+                throw;
             }
 
             return Ok(new { message = "Course Created Successfully" });
@@ -107,9 +184,12 @@ namespace ExamNest.Controllers
         [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> GetMyCourses()
         {
-            var teacherId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var teacherIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(teacherIdClaim, out var teacherId))
+                return Unauthorized("Invalid teacher token.");
 
             var courses = await _context.Courses
+                .AsNoTracking()
                 .Where(c => c.TeacherId == teacherId)
                 .Include(c => c.CourseMedias)
                 .Select(c => new
@@ -264,6 +344,7 @@ namespace ExamNest.Controllers
 		// DASHBOARD SIDE 
 
 		[HttpGet("GetTotalCourses")]
+		[Authorize(Roles = "Teacher")]
 		public async Task<IActionResult> GetTotalCourses()
 		{
 			int teacherId = GetTeacherId();
@@ -279,6 +360,7 @@ namespace ExamNest.Controllers
 		}
 
 		[HttpGet("GetTotalStudent")]
+		[Authorize(Roles = "Teacher")]
 		public async Task<IActionResult> GetTotalStudent()
 		{
 			int teacherId = GetTeacherId();
@@ -298,6 +380,7 @@ namespace ExamNest.Controllers
 
 
 		[HttpGet("GetTotalExam")]
+		[Authorize(Roles = "Teacher")]
 		public async Task<IActionResult> GetTotalExam()
 		{
 			int teacherId = GetTeacherId();
@@ -314,6 +397,7 @@ namespace ExamNest.Controllers
 
 
 		[HttpGet("GetTotalEarnings")]
+		[Authorize(Roles = "Teacher")]
 		public async Task<IActionResult> GetTotalEarnings()
 		{
 			int teacherId = GetTeacherId();
