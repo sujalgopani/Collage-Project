@@ -6,6 +6,7 @@ using ExamNest.Data;
 using ExamNest.Models;
 using ExamNest.Models.DTOs;
 using ExamNest.Models.DTOs.Exam;
+using ExamNest.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,11 +37,13 @@ namespace ExamNest.Controllers
 
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IEmailSender _emailSender;
 
-        public TeacherController(AppDbContext context, IWebHostEnvironment env)
+        public TeacherController(AppDbContext context, IWebHostEnvironment env, IEmailSender emailSender)
         {
             _context = context;
             _env = env;
+            _emailSender = emailSender;
         }
 
         [HttpPost("create")]
@@ -331,6 +334,8 @@ namespace ExamNest.Controllers
             await _context.SaveChangesAsync();
             await tx.CommitAsync();
 
+            await NotifySubscribedStudentsForNewExamAsync(ownedCourse, exam);
+
             return Ok(new
             {
                 message = "Exam created successfully from Excel.",
@@ -338,6 +343,51 @@ namespace ExamNest.Controllers
                 totalQuestions = questions.Count,
                 questionsPerStudent = finalQuestionCount
             });
+        }
+
+
+        private async Task NotifySubscribedStudentsForNewExamAsync(Course course, Exam exam)
+        {
+            var students = await _context.Subscriptions
+                .Where(s => s.CourseId == course.CourseId && s.Status == "Active")
+                .Select(s => s.Student)
+                .Where(u => u != null && !string.IsNullOrWhiteSpace(u.Email))
+                .Distinct()
+                .ToListAsync();
+
+            if (students.Count == 0)
+                return;
+
+            foreach (var student in students)
+            {
+                if (student == null)
+                    continue;
+
+                try
+                {
+                    var studentName = string.IsNullOrWhiteSpace(student.FirstName)
+                        ? student.Username
+                        : student.FirstName;
+
+                    var body = EmailTemplateBuilder.BuildNewExamNotificationEmail(
+                        studentName,
+                        course.Title,
+                        exam.Title,
+                        exam.StartAt,
+                        exam.EndAt,
+                        exam.DurationMinutes);
+
+                    await _emailSender.SendEmailAsync(
+                        student.Email,
+                        $"New Exam: {exam.Title}",
+                        body,
+                        isBodyHtml: true);
+                }
+                catch
+                {
+                    // Continue sending notifications to other students even if one email fails.
+                }
+            }
         }
 
 

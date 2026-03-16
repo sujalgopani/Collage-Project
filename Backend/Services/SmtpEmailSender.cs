@@ -12,7 +12,7 @@ namespace ExamNest.Services
             _configuration = configuration;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        public async Task SendEmailAsync(string toEmail, string subject, string body, bool isBodyHtml = false)
         {
             var host = _configuration["Email:SmtpHost"];
             var port = int.TryParse(_configuration["Email:SmtpPort"], out var smtpPort) ? smtpPort : 587;
@@ -34,7 +34,7 @@ namespace ExamNest.Services
                 From = new MailAddress(fromEmail, fromName),
                 Subject = subject,
                 Body = body,
-                IsBodyHtml = false
+                IsBodyHtml = isBodyHtml
             };
 
             message.To.Add(toEmail);
