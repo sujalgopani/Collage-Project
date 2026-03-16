@@ -309,8 +309,8 @@ namespace ExamNest.Services
         private async Task SendOtpEmailAsync(string email, string otp)
         {
             var subject = "ExamNest Email Verification OTP";
-            var body = $"Your OTP is {otp}. It expires in {OtpExpiryMinutes} minutes.";
-            await _emailSender.SendEmailAsync(email, subject, body);
+            var body = EmailTemplateBuilder.BuildOtpEmail(otp, OtpExpiryMinutes);
+            await _emailSender.SendEmailAsync(email, subject, body, isBodyHtml: true);
         }
 
         private async Task SendVerifiedCredentialsEmailAsync(string normalizedEmail, string username)
@@ -318,11 +318,12 @@ namespace ExamNest.Services
             PendingLoginPasswords.TryRemove(normalizedEmail, out var plainPassword);
 
             var subject = "ExamNest Login Credentials";
-            var body = string.IsNullOrWhiteSpace(plainPassword)
-                ? $"Your email is verified.\nUsername: {username}\nPassword: (Use the password you set during registration)"
-                : $"Your email is verified.\nUsername: {username}\nPassword: {plainPassword}";
+            var passwordDisplay = string.IsNullOrWhiteSpace(plainPassword)
+                ? "Use the password you set during registration"
+                : plainPassword;
 
-            await _emailSender.SendEmailAsync(normalizedEmail, subject, body);
+            var body = EmailTemplateBuilder.BuildVerifiedCredentialsEmail(username, passwordDisplay);
+            await _emailSender.SendEmailAsync(normalizedEmail, subject, body, isBodyHtml: true);
         }
 
         private async Task<string> GenerateUniqueUsernameAsync(string baseUsername)
