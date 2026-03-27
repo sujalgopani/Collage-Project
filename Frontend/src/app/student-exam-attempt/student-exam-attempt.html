@@ -1,0 +1,43 @@
+<!-- TIMER -->
+<div class="bg-danger text-white text-center p-2 sticky-top shadow">
+  ⏳ Time Remaining: <strong>{{ formattedTime }}</strong>
+</div>
+
+<div class="container mt-4">
+  <h3 class="text-primary">{{ examData?.title }}</h3>
+  <p class="text-muted">{{ examData?.description }}</p>
+
+  <!-- QUESTIONS -->
+  @for (q of examData?.questions; track q.examQuestionId) {
+    <div class="card mb-3 shadow">
+      <div class="card-body">
+        <h5>Q{{ q.questionNo }}. {{ q.question }}</h5>
+
+        <div class="mt-3">
+          @for (opt of q.options; track opt.optionId) {
+            <div class="form-check mb-2">
+              <input
+                type="radio"
+                class="form-check-input"
+                [name]="'q' + q.examQuestionId"
+                (change)="selectAnswer(q.examQuestionId, opt.optionId)"
+                [checked]="selectedAnswers[q.examQuestionId] === opt.optionId"
+              />
+
+              <label class="form-check-label">
+                {{ opt.text }}
+              </label>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- SUBMIT -->
+  <div class="text-center mb-5">
+    <button class="btn btn-success btn-lg" (click)="SubmitExam()" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Submitting...' : 'Submit Exam' }}
+    </button>
+  </div>
+</div>

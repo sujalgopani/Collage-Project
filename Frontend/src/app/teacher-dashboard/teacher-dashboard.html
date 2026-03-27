@@ -1,0 +1,105 @@
+<!-- Sidebar -->
+<div class="sidebar" [class.show]="isSidebarOpen" [class.collapsed]="!isSidebarOpen">
+  <div class="sidebar-logo">
+    <img src="/logo.svg" alt="ExamNest" width="160" />
+  </div>
+
+  <a routerLink="/teacher-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <i class="bi bi-grid-fill"></i> Dashboard
+  </a>
+
+  <div class="sidebar-category">Management</div>
+  <a routerLink="/teacher-dashboard/create-couse" routerLinkActive="active">
+    <i class="bi bi-plus-square-fill"></i> Create Course
+  </a>
+  <a routerLink="/teacher-dashboard/your-course" routerLinkActive="active">
+    <i class="bi bi-journal-text"></i> Your Courses
+  </a>
+  <a routerLink="/teacher-dashboard/studentcoursewise" routerLinkActive="active">
+    <i class="bi bi-people-fill"></i> Course Students
+  </a>
+  <a routerLink="/teacher-dashboard/live-classes" routerLinkActive="active">
+    <i class="bi bi-folder2-open"></i> Live Materials
+  </a>
+
+  <div class="sidebar-category">Exams</div>
+  <a routerLink="/teacher-dashboard/exam-list" routerLinkActive="active">
+    <i class="bi bi-file-earmark-lock-fill"></i> Taken Exam
+  </a>
+  <a routerLink="/teacher-dashboard/studentexamwise" routerLinkActive="active">
+    <i class="bi bi-clipboard-data-fill"></i> Exam Students
+  </a>
+
+  <div class="sidebar-category">Account</div>
+  <a routerLink="/teacher-dashboard/teachersuggestion" routerLinkActive="active">
+    <i class="bi bi-chat-dots-fill"></i> Suggestions
+  </a>
+  <a routerLink="/teacher-dashboard/teacherprofile" routerLinkActive="active">
+    <i class="bi bi-person-gear"></i> Profile Settings
+  </a>
+
+  <div class="mt-4 pt-3 border-top">
+    <a (click)="OpenLogout()" class="text-danger">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" [class.expanded]="!isSidebarOpen">
+  
+  <div class="dashboard-top-bar">
+    <div class="top-bar-left d-flex align-items-center">
+      <button class="sidebar-toggle-btn" (click)="toggleSidebar()">
+        <i class="bi bi-layout-sidebar-inset"></i>
+      </button>
+    </div>
+
+    <div class="top-bar-right">
+      <div class="user-profile-mini" routerLink="/teacher-dashboard/teacherprofile" title="View Profile">
+        <div class="user-avatar-mini d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%; background: #e2e8f0; color: #64748b;">
+          @if (profile?.profileImageUrl) {
+            <img
+              [src]="'https://localhost:44385' + profile.profileImageUrl"
+              alt="Profile"
+              style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;"
+            />
+          } @else {
+            <span class="fw-bold">{{ profile?.firstName?.charAt(0) || 'T' }}</span>
+          }
+        </div>
+        <span class="user-name-mini">{{ profile?.firstName || profile?.username || 'Teacher' }}</span>
+      </div>
+      <button class="btn-logout-mini" (click)="OpenLogout()" title="Logout">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Section -->
+  <div class="mt-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<div class="modal fade" #logoutmodel tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <p>Are you sure you want to Logout?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" (click)="ConformLogout()">Yes, Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-chatbot-widget></app-chatbot-widget>

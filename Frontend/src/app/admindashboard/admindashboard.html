@@ -1,0 +1,207 @@
+<div class="premium-page-container">
+  <!-- Welcome Banner -->
+  <div class="welcome-banner mb-4 banner-admin">
+    <div class="banner-content">
+      @if (username) {
+        <h1 class="banner-title">System Overview, {{ username }} 👑</h1>
+      }
+      <p class="banner-subtitle">
+        Monitor the entire ExamNest ecosystem, track platform performance, and manage site-wide
+        operations.
+      </p>
+      <div class="d-flex gap-3 mt-3">
+        <button class="btn btn-light btn-banner-cta" routerLink="/admin-dashboard/main-student">
+          <i class="bi bi-people-fill me-2 text-primary"></i> Manage Users
+        </button>
+        <button
+          class="btn btn-outline-light btn-banner-cta"
+          routerLink="/admin-dashboard/role-manage"
+        >
+          <i class="bi bi-shield-lock-fill me-2"></i> Roles
+        </button>
+      </div>
+    </div>
+    <div class="banner-decoration">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path
+          fill="#FFFFFF"
+          fill-opacity="0.1"
+          d="M44.7,-76.4C58.3,-69.2,70.1,-59.1,79.6,-46.5C89.1,-33.9,96.3,-18.8,96.5,-3.6C96.7,11.6,89.9,26.9,80.4,40.4C70.9,53.9,58.7,65.6,44.5,73.1C30.3,80.6,14.1,83.9,-1.9,87.2C-17.9,90.5,-35.8,93.8,-51.1,87.1C-66.4,80.4,-79.1,63.7,-86.3,46.1C-93.5,28.5,-95.2,10,-91.7,-7.1C-88.2,-24.2,-79.5,-39.9,-67.2,-48.9C-54.9,-57.9,-39,-60.2,-25.8,-67.6C-12.6,-75,-2.1,-87.5,10.3,-89.2C22.7,-90.9,31.1,-83.6,44.7,-76.4Z"
+          transform="translate(100 100)"
+        />
+      </svg>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="text-center my-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-muted">Analyzing platform data...</p>
+    </div>
+  } @else {
+    <!-- Stats Grid (Student Style) -->
+    <div class="stats-grid mt-4">
+      <!-- We dynamically map icons & colors based on index or title, but since stats is dynamic let's use a neat structural format -->
+      @for (stat of stats; track stat.title; let i = $index) {
+        <div class="stat-card">
+          <div
+            class="stat-icon"
+            [ngClass]="{
+              'icon-blue': i % 4 === 0,
+              'icon-green': i % 4 === 1,
+              'icon-yellow': i % 4 === 2,
+              'icon-cyan': i % 4 === 3,
+            }"
+          >
+            <!-- Dynamic Icon (mapped cyclically) -->
+            <i
+              class="bi"
+              [ngClass]="{
+                'bi-people': i % 4 === 0,
+                'bi-journal-check': i % 4 === 1,
+                'bi-currency-rupee': i % 4 === 2,
+                'bi-graph-up': i % 4 === 3,
+              }"
+            ></i>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label d-flex align-items-center gap-2">
+              {{ stat.title }}
+              <!-- Trend Mini Indicator -->
+              <span
+                class="trend-indicator-mini"
+                [ngClass]="stat.isUp ? 'text-success' : 'text-danger'"
+              >
+                <i [class]="stat.isUp ? 'bi bi-arrow-up-short' : 'bi bi-arrow-down-short'"></i>
+                {{ stat.percent }}%
+              </span>
+            </span>
+            <h3 class="stat-value">{{ stat.value }}</h3>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Content Grid Row (Student Style) -->
+    <div class="content-grid-row">
+      <!-- Exam Performance Chart (Left) -->
+      <div class="grid-col-left">
+        <div class="glass-card chart-card h-100">
+          <div class="card-header-custom">
+            <div>
+              <h5 class="m-0 fw-bold">📊 Exam Performance</h5>
+              <span class="text-muted small">Average scores across recent batches</span>
+            </div>
+          </div>
+          <div class="card-body-custom chart-body">
+            <canvas id="examChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue Chart (Right) -->
+      <div class="grid-col-right">
+        <div class="glass-card chart-card h-100">
+          <div class="card-header-custom">
+            <div>
+              <h5 class="m-0 fw-bold">💰 Revenue Streams</h5>
+              <span class="text-muted small">Earnings by category</span>
+            </div>
+          </div>
+
+          <div class="card-body-custom chart-body">
+            <canvas id="courseChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Batches (Student Style Table) -->
+    <div class="glass-card mt-4 table-card">
+      <div class="card-header-custom d-flex justify-content-between align-items-center">
+        <h5 class="m-0 fw-bold">
+          <i class="bi bi-ui-checks-grid text-primary me-2"></i> Active Examination Batches
+        </h5>
+        <span class="badge bg-soft-primary text-primary"
+          >{{ examsdetail.length }} Total Active</span
+        >
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle custom-table">
+          <thead class="table-light text-muted">
+            <tr>
+              <th>EXAM TITLE</th>
+              <th>TEACHER</th>
+              <th>COURSE</th>
+              <th>AVG SCORE</th>
+              <th class="text-center">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (isloadexamdetail) {
+              <tr>
+                <td colspan="5" class="text-center py-5">
+                  <div class="spinner-border text-primary"></div>
+                </td>
+              </tr>
+            } @else {
+              @for (exam of examsdetail; track exam.examId) {
+                <tr>
+                  <td class="fw-bold text-dark">{{ exam.examTitle }}</td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="avatar-student-style">{{ exam.teacherName?.charAt(0) }}</div>
+                      <span class="fw-semibold">{{ exam.teacherName }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge bg-light text-dark border">{{ exam.courseName }}</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="fw-bold">{{ exam.avgPercentage }}%</span>
+                      <div class="progress" style="height: 6px; width: 60px">
+                        <div
+                          class="progress-bar"
+                          role="progressbar"
+                          [style.width.%]="exam.avgPercentage"
+                          [ngClass]="
+                            exam.avgPercentage >= 75
+                              ? 'bg-success'
+                              : exam.avgPercentage >= 50
+                                ? 'bg-warning'
+                                : 'bg-danger'
+                          "
+                        ></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="badge rounded-pill"
+                      [ngClass]="
+                        exam.isPublished
+                          ? 'bg-soft-success text-success'
+                          : 'bg-soft-secondary text-secondary'
+                      "
+                    >
+                      {{ exam.isPublished ? 'Active' : 'Draft' }}
+                    </span>
+                  </td>
+                </tr>
+              }
+              @if (examsdetail.length === 0) {
+                <tr>
+                  <td colspan="5" class="text-center py-5 text-muted">
+                    No active batches to monitor.
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>

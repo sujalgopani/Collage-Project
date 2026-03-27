@@ -1,0 +1,116 @@
+<!-- Sidebar -->
+<div class="sidebar" [class.show]="isSidebarOpen" [class.collapsed]="!isSidebarOpen">
+  <div class="sidebar-logo">
+    <img src="/logo.svg" alt="ExamNest" width="160" />
+  </div>
+
+  <a routerLink="/student-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <i class="bi bi-grid-fill"></i> Dashboard
+  </a>
+
+  <div class="sidebar-category">Courses</div>
+  <a routerLink="/student-dashboard/published-courses" routerLinkActive="active">
+    <i class="bi bi-plus-circle-fill"></i> Explore Courses
+  </a>
+  <a routerLink="/student-dashboard/learn-courses" routerLinkActive="active">
+    <i class="bi bi-list-ul"></i> My Learning
+  </a>
+  <a routerLink="/student-dashboard/live-classes" routerLinkActive="active">
+    <i class="bi bi-broadcast-pin"></i> Live Classes
+  </a>
+
+  <div class="sidebar-category">Exams</div>
+  <a routerLink="/student-dashboard/student-exam" routerLinkActive="active">
+    <i class="bi bi-pencil-square"></i> Exams
+  </a>
+  <a routerLink="/student-dashboard/student-exam-result" routerLinkActive="active">
+    <i class="bi bi-list-check"></i> Exam Results
+  </a>
+
+  <div class="sidebar-category">Account</div>
+  <a routerLink="/student-dashboard/studentsuggestion" routerLinkActive="active">
+    <i class="bi bi-chat-heart-fill"></i> Feedback & Suggestions
+  </a>
+  <a routerLink="/student-dashboard/studentprofile" routerLinkActive="active">
+    <i class="bi bi-person-gear"></i> Profile Settings
+  </a>
+
+  <div class="mt-4 pt-3 border-top">
+    <a (click)="OpenLogout()" class="text-danger">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" [class.expanded]="!isSidebarOpen">
+  
+  <div class="dashboard-top-bar">
+    <div class="top-bar-left d-flex align-items-center">
+      <button class="sidebar-toggle-btn" (click)="toggleSidebar()" title="Toggle Sidebar">
+        <i class="bi bi-layout-sidebar-inset"></i>
+      </button>
+    </div>
+
+    <div class="top-bar-right">
+      <!-- Notifications -->
+      <!-- <button class="btn-top-bar-icon" title="Notifications">
+        <i class="bi bi-bell"></i>
+        <span class="notification-badge">3+</span>
+      </button> -->
+
+      <div class="user-profile-mini" routerLink="/student-dashboard/studentprofile" title="View Profile">
+        <div class="user-avatar-container">
+          @if (profile?.profileImageUrl) {
+            <img
+              [src]="'https://localhost:44385' + profile.profileImageUrl"
+              alt="Profile"
+              style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;"
+            />
+          } @else {
+            <span class="avatar-initial">{{ profile?.firstName?.charAt(0) || 'S' }}</span>
+          }
+        </div>
+        <div class="user-info-text">
+          <span class="user-name-mini">{{ profile?.firstName || profile?.username || 'Student' }}</span>
+          <small class="user-id-mini">ID: {{ profile?.userId || '-' }}</small>
+        </div>
+      </div>
+      
+      <button class="btn-logout-mini" (click)="OpenLogout()" title="Logout">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Section -->
+  <div class="mt-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+
+<div class="modal fade" #logoutmodel tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <p>Are you sure you want to Logout?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"data-bs-dismiss="modal" >
+          Cancel
+        </button>
+        <button class="btn btn-danger" (click)="ConformLogout()">Yes, Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-chatbot-widget></app-chatbot-widget>
+

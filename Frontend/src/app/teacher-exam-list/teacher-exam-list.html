@@ -1,0 +1,388 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2 class="premium-header-title">Exam Management</h2>
+        <p class="premium-header-subtitle">
+          Schedule, manage, and publish results for your course assessments.
+        </p>
+      </div>
+      <button
+        class="premium-btn create-exam-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#examcretemodel"
+      >
+        <span class="btn-content">
+          <i class="bi bi-plus-circle-fill"></i>
+          <span>Create Exam</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  @if (Isloadcourse) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-3 text-muted">Loading exams...</p>
+    </div>
+  } @else {
+    <div class="premium-card">
+      <div class="premium-table-container">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Exam Title</th>
+              <th>Description</th>
+              <th>Schedule</th>
+              <th>Duration</th>
+              <th class="text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of exams; track $index) {
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>
+                  <strong>{{ item.tittle }}</strong>
+                </td>
+                <td>
+                  <span class="text-truncate d-inline-block" style="max-width: 200px">{{
+                    item.description
+                  }}</span>
+                </td>
+                <td>
+                  <div class="small fw-semibold text-primary">
+                    <i class="bi bi-play-fill"></i> {{ item.startdate | date: 'MMM d, h:mm a' }}
+                  </div>
+                  <div class="small text-muted">
+                    <i class="bi bi-stop-fill"></i> {{ item.enddate | date: 'MMM d, h:mm a' }}
+                  </div>
+                </td>
+                <td>{{ item.durationMinit }} min</td>
+                <td class="text-center">
+                  @if (getExamStatus(item) === 'notStarted') {
+                    <span class="badge-pill badge-soft-warning">Upcoming</span>
+                  } @else if (getExamStatus(item) === 'ongoing') {
+                    <span class="badge-pill badge-active-pulse">Ongoing</span>
+                  } @else if (getExamStatus(item) === 'finished') {
+                    <button
+                      class="premium-btn publish-result-btn w-100 d-flex align-items-center justify-content-center gap-2"
+                      [ngClass]="{
+                        'published-state': item.isflagged,
+                        'publish-state': !item.isflagged,
+                      }"
+                      (click)="publishresult(item.examId)"
+                      [disabled]="item.isflagged || isPublishing(item.examId)"
+                    >
+                      <!-- Spinner -->
+                      <i
+                        *ngIf="isPublishing(item.examId)"
+                        class="spinner-border spinner-border-sm"
+                      ></i>
+
+                      <!-- Icon -->
+                      <i
+                        *ngIf="!isPublishing(item.examId)"
+                        class="bi"
+                        [class.bi-check-circle-fill]="item.isflagged"
+                        [class.bi-megaphone-fill]="!item.isflagged"
+                      ></i>
+
+                      <!-- Text -->
+                      <span *ngIf="item.isflagged">Published</span>
+                      <span *ngIf="!item.isflagged && isPublishing(item.examId)"
+                        >Publishing...</span
+                      >
+                      <span *ngIf="!item.isflagged && !isPublishing(item.examId)"
+                        >Publish Result</span
+                      >
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+            @if (exams.length === 0) {
+              <tr>
+                <td colspan="6" class="text-center py-5 text-muted">
+                  <i class="bi bi-journal-x h1 d-block mb-3"></i>
+                  No exams scheduled yet.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- ============================================== -->
+<!-- MODERN EXAM CREATION MODAL -->
+<!-- ============================================== -->
+<div class="modal fade premium-modal" id="examcretemodel" #examcreatemodel tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header-premium">
+        <div>
+          <h5 class="modal-title">Create New Assessment</h5>
+          <p class="modal-subtitle">Configure exam settings and upload questions.</p>
+        </div>
+        <button class="btn-close-premium" data-bs-dismiss="modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="modal-body p-4">
+        <form [formGroup]="examForm" (ngSubmit)="CreareExam()">
+          <!-- Exam Config Section -->
+          <div class="form-section mb-5">
+            <h6 class="section-title"><i class="bi bi-gear-fill"></i> Assessment Configuration</h6>
+            <div class="row g-4">
+              <div class="col-md-4">
+                <label class="premium-label">Select Course</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-journal"></i>
+                  <select class="premium-select" formControlName="CourseId">
+                    <option value="">Choose Course...</option>
+                    @for (c of courses; track c.courseId) {
+                      <option [value]="c.courseId">{{ c.title }}</option>
+                    }
+                  </select>
+                </div>
+                @if (isInvalid('CourseId')) {
+                  <small class="text-danger d-block mt-1">Please select a course.</small>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label class="premium-label">Exam Title</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-type-h1"></i>
+                  <input
+                    type="text"
+                    class="premium-input"
+                    placeholder="Midterm Exam"
+                    formControlName="Title"
+                  />
+                </div>
+                @if (isInvalid('Title')) {
+                  <small class="text-danger d-block mt-1">
+                    @if (f['Title'].errors?.['required']) {
+                      Exam title is required.
+                    }
+                    @if (f['Title'].errors?.['minlength']) {
+                      Minimum 3 characters required.
+                    }
+                  </small>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label class="premium-label">Duration (Min)</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-clock"></i>
+                  <input
+                    type="number"
+                    class="premium-input"
+                    placeholder="60"
+                    formControlName="DurationMinutes"
+                  />
+                </div>
+                @if (isInvalid('DurationMinutes')) {
+                  <small class="text-danger d-block mt-1">
+                    @if (f['DurationMinutes'].errors?.['required']) {
+                      Duration is required.
+                    }
+                    @if (f['DurationMinutes'].errors?.['min']) {
+                      Duration must be at least 1 minute.
+                    }
+                  </small>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Scheduling Section -->
+          <div class="form-section mb-5">
+            <h6 class="section-title"><i class="bi bi-calendar-range"></i> Scheduling & Rules</h6>
+            <div class="row g-4">
+              <div class="col-md-4">
+                <label class="premium-label">Starts At</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-calendar-event"></i>
+                  <input
+                    type="datetime-local"
+                    class="premium-input"
+                    formControlName="StartAt"
+                    [min]="minDateTime"
+                  />
+                </div>
+                @if (isInvalid('StartAt')) {
+                  <small class="text-danger d-block mt-1">Start date and time are required.</small>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label class="premium-label">Ends At</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-calendar-check"></i>
+                  <input
+                    type="datetime-local"
+                    class="premium-input"
+                    formControlName="EndAt"
+                    [min]="minEndDate"
+                  />
+                </div>
+                @if (isInvalid('EndAt')) {
+                  <small class="text-danger d-block mt-1">End date and time are required.</small>
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label class="premium-label">Random Questions</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-shuffle"></i>
+                  <input
+                    type="number"
+                    class="premium-input"
+                    placeholder="No. of questions"
+                    formControlName="RandomQuestionCount"
+                  />
+                </div>
+                @if (isInvalid('RandomQuestionCount')) {
+                  <small class="text-danger d-block mt-1">
+                    @if (f['RandomQuestionCount'].errors?.['required']) {
+                      Question count is required.
+                    }
+                    @if (f['RandomQuestionCount'].errors?.['min']) {
+                      Question count must be at least 1.
+                    }
+                  </small>
+                }
+              </div>
+
+              @if (submitted && examForm.errors?.['startPast']) {
+                <div class="col-12">
+                  <div class="alert alert-soft-danger py-2 mb-0">
+                    <i class="bi bi-exclamation-triangle-fill"></i> Start date/time cannot be in the
+                    past.
+                  </div>
+                </div>
+              }
+              @if (submitted && examForm.errors?.['endPast']) {
+                <div class="col-12">
+                  <div class="alert alert-soft-danger py-2 mb-0">
+                    <i class="bi bi-exclamation-triangle-fill"></i> End date/time cannot be in the
+                    past.
+                  </div>
+                </div>
+              }
+              @if (submitted && examForm.errors?.['endBeforeStart']) {
+                <div class="col-12">
+                  <div class="alert alert-soft-danger py-2 mb-0">
+                    <i class="bi bi-exclamation-triangle-fill"></i> End date/time must be after
+                    start date/time.
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Description Section -->
+          <div class="form-section mb-5">
+            <h6 class="section-title"><i class="bi bi-justify-left"></i> Description</h6>
+            <div class="input-group-premium align-items-start pt-3">
+              <i class="bi bi-card-text"></i>
+              <textarea
+                class="premium-textarea"
+                rows="3"
+                placeholder="Instructions/Objectives for students..."
+                formControlName="Description"
+              ></textarea>
+            </div>
+            @if (isInvalid('Description')) {
+              <small class="text-danger d-block mt-1">
+                @if (f['Description'].errors?.['required']) {
+                  Description is required.
+                }
+                @if (f['Description'].errors?.['minlength']) {
+                  Minimum 10 characters required.
+                }
+              </small>
+            }
+          </div>
+
+          <!-- Excel Upload Section -->
+          <div class="upload-section-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h6 class="fw-bold text-primary mb-1">Batch Upload Questions</h6>
+                <p class="text-muted small mb-0">
+                  Use our Excel template for easy question importing.
+                </p>
+              </div>
+              <a href="/SampleExamUpload.xlsx" class="premium-btn btn-primary-soft btn-sm" download>
+                <i class="bi bi-download"></i> Get Template
+              </a>
+            </div>
+
+            <div class="file-upload-wrapper mt-3">
+              <input
+                type="file"
+                id="modal-excel-upload"
+                class="file-input-hidden"
+                accept=".xlsx,.xls"
+                (change)="onFileSelected($event)"
+              />
+              <label for="modal-excel-upload" class="file-upload-label py-4">
+                <i class="bi bi-file-earmark-spreadsheet-fill text-success"></i>
+                <span class="mt-2">{{
+                  selectedFile ? selectedFile.name : 'Select Excel File'
+                }}</span>
+              </label>
+            </div>
+            <small class="text-muted d-block mt-2">Max file size: 20 MB.</small>
+            <small class="text-danger d-block mt-1" *ngIf="excelFileError">{{
+              excelFileError
+            }}</small>
+            @if (submitted && !selectedFile) {
+              <small class="text-danger d-block mt-2"> Excel file is required. </small>
+            }
+          </div>
+
+          <div class="mt-5">
+            <button
+              class="premium-btn btn-submit-exam w-100 py-3"
+              type="submit"
+              [disabled]="isLoading || examForm.invalid || !selectedFile || !!excelFileError"
+            >
+              <span class="btn-content">
+                <!-- Spinner -->
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+
+                <!-- Icon -->
+                <i *ngIf="!isLoading" class="bi bi-check2-circle"></i>
+
+                <!-- Text -->
+                <span>
+                  {{ isLoading ? 'Scheduling Exam...' : 'Confirm & Schedule Exam' }}
+                </span>
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer border-0 p-4 pt-0">
+        <button
+          class="premium-btn modal-cancel-btn d-flex align-items-center gap-2"
+          data-bs-dismiss="modal"
+        >
+          <i class="bi bi-x-circle"></i>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

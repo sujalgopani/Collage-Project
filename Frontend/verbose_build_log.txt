@@ -1,0 +1,121 @@
+﻿
+> frontend@0.0.0 build
+> ng build --verbose
+
+[33mΓ¥»[39m Building...
+node.exe : 
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : 
+NotSpecified: (:St    
+ring) [], RemoteExcept 
+   ion
+    + 
+FullyQualifiedErrorI   
+ d : NativeCommandError
+ 
+  polyfills.server.mjs 
+ 227.8kb
+
+Done in 774ms
+ΓùÅ [DEBUG] This call 
+to "require" will not 
+be bundled because the 
+argument is not a 
+string literal [unsuppo
+rted-require-call]
+
+    node_modules/expres
+s/lib/view.js:72:13:
+      72 Γöé     var 
+fn = 
+require(mod).__express;
+         Γò╡           
+   ~~~~~~~
+
+
+  main-IJ35ENMZ.js  
+781.3kb
+
+Done in 12123ms
+
+  main.server.mjs      
+1.2mb
+  chunk-N3SI5I4Q.mjs  
+11.8kb
+  chunk-T55IDOPT.mjs   
+976b 
+
+Done in 12851ms
+
+  server.mjs          
+793.2kb
+  chunk-RHDGF2TI.mjs   
+11.9kb
+  chunk-L2MVFUKD.mjs   
+ 1.3kb
+
+Done in 12950ms
+[32mΓ£ö[39m Building...
+[35mBrowser bundles[39m     
+[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mmain-IJ35ENMZ.js[39m    [2m | [22m[2mmain[22m            [2m | [22m[36m800.01 kB[39m[2m | [22m              [36m195.74 kB[39m
+[32mstyles-YJ3S65PM.css[39m [2m | [22m[2mstyles[22m          [2m | [22m  [36m1.10 kB[39m[2m | [22m              [36m471 bytes[39m
+
+[1m [22m                   [2m | [22m[1mInitial total[22m   [2m | [22m[1m[93m801.11 kB[39m[22m[2m | [22m              [1m196.21 kB[22m
+
+
+[35mServer bundles[39m      
+[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mmain.server.mjs[39m     [2m | [22m[2mmain.server[22m     [2m | [22m  [36m1.24 MB[39m[2m | [22m                       
+[32mserver.mjs[39m          [2m | [22m[2mserver[22m          [2m | [22m[36m812.28 kB[39m[2m | [22m                       
+[32mpolyfills.server.mjs[39m[2m | [22m[2mpolyfills.server[22m[2m | [22m[36m233.25 kB[39m[2m | [22m                       
+[32mchunk-L2MVFUKD.mjs[39m  [2m | [22m[2m-[22m               [2m | [22m  [36m1.32 kB[39m[2m | [22m                       
+[32mchunk-T55IDOPT.mjs[39m  [2m | [22m[2m-[22m               [2m | [22m[36m976 bytes[39m[2m | [22m                       
+
+[1mLazy chunk files[22m    [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mchunk-RHDGF2TI.mjs[39m  [2m | [22m[2mxhr2[22m            [2m | [22m [36m12.14 kB[39m[2m | [22m                       
+[32mchunk-N3SI5I4Q.mjs[39m  [2m | [22m[2mxhr2[22m            [2m | [22m [36m12.07 kB[39m[2m | [22m                       
+
+[35mPrerendered 33 static routes.[39m
+Application bundle generation failed. [17.758 seconds] - 2026-03-22T07:19:20.362Z
+
+[1m[33m[33mΓû▓ [43;
+33m[[43;30mWARNING[43
+;33m][0m [1mbundle 
+initial exceeded 
+maximum budget. Budget 
+500.00 kB was not met 
+by 301.11 kB with a 
+total of 801.11 kB.[0m
+
+[39m[22m
+[1m[31m[31mX [41;31
+m[[41;97mERROR[41;31m
+][0m [1mThe 'student-
+dashboard/student-resul
+t/:examId/:attemptId' 
+route uses 
+prerendering and 
+includes parameters, 
+but 
+'getPrerenderParams' 
+is missing. Please 
+define 
+'getPrerenderParams' 
+function for this 
+route in your server 
+routing configuration 
+or specify a different 
+'renderMode'.[0m
+
+[39m[22m

@@ -1,0 +1,172 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Live Class Materials</h2>
+    <p class="premium-header-subtitle">
+      Add downloadable material or reference links for each scheduled live class.
+    </p>
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-3 text-muted mb-0">Loading your live classes...</p>
+  </div>
+
+  <div *ngIf="!isLoading && liveClasses.length === 0" class="premium-card text-center py-5">
+    <i class="bi bi-calendar2-x display-6 text-muted"></i>
+    <h5 class="mt-3">No Live Classes Found</h5>
+    <p class="text-muted mb-0">
+      Once admin schedules sessions for your courses, they will appear here.
+    </p>
+  </div>
+
+  <div class="live-class-grid" *ngIf="!isLoading && liveClasses.length > 0">
+    <div class="premium-card live-class-item" *ngFor="let item of liveClasses">
+      <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <h5 class="mb-1">{{ item.title }}</h5>
+          <div class="text-muted small">{{ item.courseTitle }}</div>
+        </div>
+        <span
+          class="badge-pill"
+          [ngClass]="{
+            'badge-soft-danger': getStatus(item) === 'Cancelled',
+            'badge-soft-success': getStatus(item) === 'Live Now',
+            'badge-soft-primary': getStatus(item) === 'Upcoming',
+            'badge-soft-warning': getStatus(item) === 'Completed',
+          }"
+        >
+          {{ getStatus(item) }}
+        </span>
+      </div>
+
+      <div class="schedule-strip mb-3">
+        <div><i class="bi bi-calendar-event me-2"></i>{{ item.startAt | date: 'MMM d, y' }}</div>
+        <div>
+          <i class="bi bi-clock me-2"></i>{{ item.startAt | date: 'h:mm a' }} -
+          {{ item.endAt | date: 'h:mm a' }}
+        </div>
+      </div>
+
+      <p class="text-muted mb-3">{{ item.agenda || 'No agenda shared for this session.' }}</p>
+
+      <div
+        class="material-preview mb-3"
+        *ngIf="item.materialTitle || item.materialLink || item.materialFilePath"
+      >
+        <div class="fw-semibold">Current Material</div>
+        <div class="small text-muted">{{ item.materialTitle || 'Material shared' }}</div>
+        <div class="d-flex flex-wrap gap-2 mt-2">
+          <a
+            *ngIf="item.materialLink"
+            class="btn btn-sm btn-outline-primary"
+            [href]="item.materialLink"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="bi bi-link-45deg"></i> Open Link
+          </a>
+          <a
+            *ngIf="item.materialFilePath"
+            class="btn btn-sm btn-outline-success"
+            [href]="getMaterialFileUrl(item.materialFilePath)"
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="bi bi-download"></i> Download File
+          </a>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a
+          class="btn btn-sm d-inline-flex align-items-center gap-2 fw-semibold px-3"
+          [ngClass]="{
+            'btn-danger shadow-sm': getStatus(item) === 'Live Now',
+            'btn-outline-primary': getStatus(item) === 'Upcoming',
+            'btn-outline-secondary disabled': getStatus(item) === 'Completed',
+          }"
+          [href]="getStatus(item) === 'Live Now' ? item.meetingLink : null"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="bi bi-camera-video-fill"></i>
+
+          {{
+            getStatus(item) === 'Live Now'
+              ? 'Join Now'
+              : getStatus(item) === 'Upcoming'
+                ? 'Not Started'
+                : 'Class Ended'
+          }}
+        </a>
+
+        <button class="btn btn-sm btn-primary" (click)="toggleEdit(item)">
+          <i class="bi bi-upload"></i> {{ item.isEditing ? 'Cancel' : 'Update Material' }}
+        </button>
+      </div>
+
+      <div class="material-form mt-4" *ngIf="item.isEditing">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Material Title</label>
+            <input
+              class="form-control"
+              maxlength="200"
+              [(ngModel)]="materialDrafts[item.liveClassScheduleId].materialTitle"
+              placeholder="Session Notes"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Material Link (Optional)</label>
+            <input
+              class="form-control"
+              type="text"
+              [(ngModel)]="materialDrafts[item.liveClassScheduleId].materialLink"
+              placeholder="https://drive.google.com/..."
+            />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Material Description</label>
+            <textarea
+              class="form-control"
+              rows="2"
+              maxlength="1000"
+              [(ngModel)]="materialDrafts[item.liveClassScheduleId].materialDescription"
+              placeholder="Add key points or instructions for students"
+            ></textarea>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label fw-semibold">Upload Downloadable File (Required)</label>
+            <input
+              class="form-control"
+              type="file"
+              accept=".pdf,.doc,.docx"
+              (change)="onFileSelected($event, item.liveClassScheduleId)"
+            />
+            <small class="text-muted d-block mt-1"
+              >Allowed: PDF, DOC, DOCX (max 20 MB)</small
+            >
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <button
+            class="premium-btn btn-primary-animate"
+            (click)="uploadMaterial(item)"
+            [disabled]="uploadingId === item.liveClassScheduleId"
+          >
+            <i class="bi bi-check2-circle"></i>
+            {{ uploadingId === item.liveClassScheduleId ? 'Uploading...' : 'Save Material' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

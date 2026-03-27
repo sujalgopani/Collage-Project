@@ -1,0 +1,184 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Daily Live Class Scheduler</h2>
+    <p class="premium-header-subtitle">
+      Plan daily live sessions for active courses and keep students ready with join links.
+    </p>
+  </div>
+
+  <div class="premium-card mb-4">
+    <h5 class="section-title mb-3">
+      <i class="bi bi-calendar-plus me-2"></i>Schedule New Live Class
+    </h5>
+
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <label class="form-label fw-semibold">Course</label>
+        <select class="form-select" [(ngModel)]="form.courseId" [disabled]="isLoadingCourses">
+          <option [ngValue]="0">Select Course</option>
+          <option *ngFor="let c of courses" [ngValue]="c.courseId">
+            {{ c.title }} ({{ c.teacherName }})
+          </option>
+        </select>
+      </div>
+
+      <div class="col-lg-4">
+        <label class="form-label fw-semibold">Live Class Title</label>
+        <input
+          class="form-control"
+          type="text"
+          maxlength="150"
+          placeholder="Daily Revision Session"
+          [(ngModel)]="form.title"
+        />
+      </div>
+
+      <div class="col-lg-4">
+        <label class="form-label fw-semibold">Meeting Link</label>
+        <input
+          class="form-control"
+          type="url"
+          placeholder="https://meet.google.com/..."
+          [(ngModel)]="form.meetingLink"
+        />
+      </div>
+
+      <div class="col-lg-4">
+        <label class="form-label fw-semibold">Class Date</label>
+        <input class="form-control" type="date" disabled [(ngModel)]="form.classDate" />
+      </div>
+
+      <div class="col-lg-4">
+        <label class="form-label fw-semibold">Start Time</label>
+        <input class="form-control" type="time" [(ngModel)]="form.startTime" />
+      </div>
+
+      <div class="col-lg-4">
+        <label class="form-label fw-semibold">End Time</label>
+        <input class="form-control" type="time" [(ngModel)]="form.endTime" />
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-semibold">Agenda (Optional)</label>
+        <textarea
+          class="form-control"
+          rows="3"
+          maxlength="1000"
+          placeholder="What will be covered in this live class?"
+          [(ngModel)]="form.agenda"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-3 mt-4">
+      <button
+        class="premium-btn btn-primary-animate"
+        (click)="createLiveClass()"
+        [disabled]="isSaving"
+      >
+        <i class="bi bi-plus-circle-fill"></i>
+        {{ isSaving ? 'Scheduling...' : 'Schedule Live Class' }}
+      </button>
+
+      <span class="text-success fw-semibold" *ngIf="successMessage">{{ successMessage }}</span>
+      <span class="text-danger fw-semibold" *ngIf="errorMessage">{{ errorMessage }}</span>
+    </div>
+  </div>
+
+  <div class="premium-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="section-title mb-0"><i class="bi bi-broadcast me-2"></i>Scheduled Live Classes</h5>
+      <span class="badge-pill badge-soft-primary">{{ liveClasses.length }} sessions</span>
+    </div>
+
+    <div *ngIf="isLoadingClasses" class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-3 text-muted mb-0">Loading live schedule...</p>
+    </div>
+
+    <div class="premium-table-container" *ngIf="!isLoadingClasses">
+      <table class="premium-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Session</th>
+            <th>Schedule</th>
+            <th>Status</th>
+            <th>Material</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of liveClasses; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <div class="fw-semibold">{{ item.courseTitle }}</div>
+              <small class="text-muted">{{ item.teacherName }}</small>
+            </td>
+            <td>
+              <div class="fw-semibold">{{ item.title }}</div>
+              <small class="text-muted text-truncate d-inline-block item-agenda">{{
+                item.agenda || 'No agenda'
+              }}</small>
+            </td>
+            <td>
+              <div class="small fw-semibold">
+                <i class="bi bi-calendar-event me-1"></i>{{ item.startAt | date: 'MMM d, y' }}
+              </div>
+              <div class="small text-muted">
+                <i class="bi bi-clock me-1"></i>
+                {{ item.startAt | date: 'h:mm a' }} -
+                {{ item.endAt | date: 'h:mm a' }}
+              </div>
+            </td>
+            <td>
+              <span
+                class="badge-pill"
+                [ngClass]="{
+                  'badge-soft-danger': getStatus(item) === 'Cancelled',
+                  'badge-soft-success': getStatus(item) === 'Live Now',
+                  'badge-soft-primary': getStatus(item) === 'Upcoming',
+                  'badge-soft-warning': getStatus(item) === 'Completed',
+                }"
+              >
+                {{ getStatus(item) }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="small fw-semibold"
+                [ngClass]="
+                  item.materialTitle || item.materialLink || item.materialFilePath
+                    ? 'text-success'
+                    : 'text-muted'
+                "
+              >
+                {{
+                  item.materialTitle ||
+                    (item.materialLink || item.materialFilePath
+                      ? 'Available'
+                      : 'Pending from teacher')
+                }}
+              </span>
+            </td>
+            <td class="text-center">
+              <button
+                class="btn btn-sm btn-action btn-delete-red"
+                (click)="deleteLiveClass(item.liveClassScheduleId)"
+                [disabled]="deletingId === item.liveClassScheduleId"
+                title="Delete session"
+              >
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="liveClasses.length === 0">
+            <td colspan="7" class="text-center py-5 text-muted">No live classes scheduled yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

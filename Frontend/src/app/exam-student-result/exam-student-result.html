@@ -1,0 +1,65 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Exam Results</h2>
+    <p class="premium-header-subtitle">Review your performance and access detailed result sheets once published.</p>
+  </div>
+
+  @if (Isloading) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else {
+    <div class="result-grid">
+      @for (exam of examData; track exam.examId) {
+        <div class="premium-card result-item">
+          <!-- Thumbnail & Publication Badge -->
+          <div class="thumbnail-wrapper">
+            <img class="thumbnail" [src]="'https://localhost:44385' + exam.examthumbail" />
+            <div class="status-badge" [ngClass]="exam.isFlagged ? 'badge-published' : 'badge-pending'">
+              {{ exam.isFlagged ? 'Published' : 'Pending' }}
+            </div>
+          </div>
+
+          <div class="card-body-content">
+            <h4 class="exam-title">{{ exam.title }}</h4>
+            <div class="course-tag">
+              <i class="bi bi-journal-text"></i> {{ exam.courseTitle }}
+            </div>
+
+            <div class="result-info">
+              <div class="info-row">
+                <span><i class="bi bi-clock"></i> Duration</span>
+                <strong>{{ exam.durationMinutes }}m</strong>
+              </div>
+              <div class="info-row">
+                <span><i class="bi bi-question-circle"></i> Questions</span>
+                <strong>{{ exam.totalQuestions }}</strong>
+              </div>
+            </div>
+
+            <div class="action-footer mt-4">
+              @if (hasFinalizedAttempt(exam)) {
+                <button
+                  class="premium-btn w-100"
+                  [class.btn-primary-animate]="exam.isFlagged"
+                  [class.btn-secondary-soft]="!exam.isFlagged"
+                  [disabled]="!exam.isFlagged"
+                  (click)="GetResult(exam.examId, exam.examAttemptId, exam)"
+                >
+                  <i class="bi" [class.bi-file-earmark-bar-graph]="exam.isFlagged" [class.bi-hourglass-split]="!exam.isFlagged"></i>
+                  {{ exam.isFlagged ? 'View Result' : 'Not Published Yet' }}
+                </button>
+              } @else {
+                <button class="premium-btn w-100 btn-secondary-soft" disabled>
+                  <i class="bi bi-exclamation-circle"></i> Attempt Not Finalized
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

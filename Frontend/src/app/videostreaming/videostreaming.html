@@ -1,0 +1,136 @@
+<!-- LOADING STATE -->
+<div *ngIf="accessGranted === null" class="vs-loading">
+  <div class="spinner-border text-primary"></div>
+  <p>Loading your course...</p>
+</div>
+
+<!-- ACCESS DENIED -->
+<div *ngIf="accessGranted === false" class="vs-denied">
+  <div class="denied-icon"><i class="bi bi-shield-lock-fill"></i></div>
+  <h4>Access Denied</h4>
+  <p>You are not enrolled in this course. Please subscribe to gain access.</p>
+  <a routerLink="/student-dashboard/published-courses" class="vs-back-btn">
+    <i class="bi bi-compass"></i> Explore Courses
+  </a>
+</div>
+
+<!-- COURSE PLAYER -->
+@if (accessGranted === true && course) {
+  <div class="vs-player-page">
+
+    <!-- TOP BREADCRUMB -->
+    <div class="vs-breadcrumb">
+      <a routerLink="/student-dashboard/learn-courses" class="vs-breadcrumb-link">
+        <i class="bi bi-arrow-left"></i> My Learning
+      </a>
+      <span class="vs-breadcrumb-sep">/</span>
+      <span class="vs-breadcrumb-current">{{ course.title }}</span>
+    </div>
+
+    <!-- SPLIT LAYOUT -->
+    <div class="vs-split-layout">
+
+      <!-- LEFT: VIDEO PLAYER PANEL -->
+      <div class="vs-main-panel">
+
+        <!-- VIDEO PLAYER -->
+        <div class="vs-video-wrapper">
+          @if (message) {
+            <div class="vs-not-started">
+              <i class="bi bi-clock-history"></i>
+              <h5>Course Not Started Yet</h5>
+              <p>{{ message }}</p>
+            </div>
+          } @else if (selectedVideo) {
+            <video
+              class="vs-video-player"
+              controls
+              [src]="'https://localhost:44385/' + selectedVideo.filePath"
+              autoplay
+            ></video>
+          } @else {
+            <div class="vs-no-video">
+              <i class="bi bi-camera-video-off"></i>
+              <p>No videos available yet.</p>
+            </div>
+          }
+        </div>
+
+        <!-- COURSE INFO BELOW VIDEO -->
+        <div class="vs-course-info">
+          <div class="vs-course-info-main">
+            <h2 class="vs-course-title">{{ course.title }}</h2>
+            <p class="vs-course-desc">{{ course.description }}</p>
+          </div>
+          <div class="vs-course-meta-grid">
+            <div class="vs-meta-item">
+              <i class="bi bi-tag-fill"></i>
+              <div>
+                <span class="meta-lbl">Fees</span>
+                <span class="meta-val">₹{{ course.fees }}</span>
+              </div>
+            </div>
+            <div class="vs-meta-item">
+              <i class="bi bi-calendar-event-fill"></i>
+              <div>
+                <span class="meta-lbl">Start Date</span>
+                <span class="meta-val">{{ course.startDate | date:'MMM d, y' }}</span>
+              </div>
+            </div>
+            <div class="vs-meta-item">
+              <i class="bi bi-calendar-check-fill"></i>
+              <div>
+                <span class="meta-lbl">End Date</span>
+                <span class="meta-val">{{ course.endDate | date:'MMM d, y' }}</span>
+              </div>
+            </div>
+            <div class="vs-meta-item">
+              <i class="bi bi-play-btn-fill"></i>
+              <div>
+                <span class="meta-lbl">Total Videos</span>
+                <span class="meta-val">{{ videos.length }} Lessons</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: LESSON SIDEBAR -->
+      <div class="vs-sidebar">
+        <div class="vs-sidebar-header">
+          <h5><i class="bi bi-list-ul me-2"></i>Course Content</h5>
+          <span class="vs-lesson-count">{{ videos.length }} lessons</span>
+        </div>
+
+        <div *ngIf="!videos.length && !message" class="vs-sidebar-empty">
+          <i class="bi bi-camera-video"></i>
+          <p>No videos uploaded yet.</p>
+        </div>
+
+        <div class="vs-lesson-list">
+          <div
+            *ngFor="let video of videos; let i = index"
+            class="vs-lesson-item"
+            [class.active]="selectedVideo?.courseMediaId === video.courseMediaId"
+            (click)="selectedVideo = video"
+          >
+            <div class="vs-lesson-num">{{ i + 1 }}</div>
+            <div class="vs-lesson-info">
+              <span class="vs-lesson-title">
+                {{ video.fileName || ('Lesson ' + (i + 1)) }}
+              </span>
+              <span class="vs-lesson-badge" *ngIf="selectedVideo?.courseMediaId === video.courseMediaId">
+                <i class="bi bi-play-circle-fill"></i> Playing
+              </span>
+            </div>
+            <i class="bi bi-play-fill vs-lesson-play-icon"
+              *ngIf="selectedVideo?.courseMediaId !== video.courseMediaId"></i>
+            <i class="bi bi-pause-fill vs-lesson-play-icon active"
+              *ngIf="selectedVideo?.courseMediaId === video.courseMediaId"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}

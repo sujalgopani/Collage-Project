@@ -1,0 +1,45 @@
+.avatar-soft-primary {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 140px;
+}
+
+.progress-bar-premium {
+  flex-grow: 1;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  min-width: 35px;
+}
+
+.badge-soft-success { background: #f0fdf4; color: #22c55e; }
+.badge-soft-primary { background: #eff6ff; color: #3b82f6; }
+.badge-soft-secondary { background: #f8fafc; color: #64748b; }

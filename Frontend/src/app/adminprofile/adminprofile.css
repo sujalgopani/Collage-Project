@@ -1,0 +1,217 @@
+.profile-avatar-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 30px;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 800;
+  box-shadow: 0 10px 25px -5px rgba(52, 152, 219, 0.2);
+  overflow: hidden;
+}
+
+.profile-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-image-upload {
+  text-align: left;
+}
+
+.premium-input-border {
+  width: 100%;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  outline: none;
+}
+
+.premium-input-border:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+}
+
+.input-group-premium-border {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0 16px;
+  transition: var(--transition);
+}
+
+.input-group-premium-border i { color: var(--text-muted); }
+
+.premium-input-form {
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 12px;
+  outline: none;
+}
+
+.identity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.identity-item {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.identity-item:hover { border-color: var(--primary-light); background: white; }
+
+.identity-item .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.identity-item .value {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.premium-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.icon-box {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Base Button */
+.profile-edit-btn {
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: all 0.25s ease;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Default (Modify Profile) */
+.edit-idle {
+  background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+  color: #2563eb;
+}
+
+.edit-idle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+/* Active (Cancel Edit) */
+.edit-active {
+  background: linear-gradient(135deg, #ffe4e6, #fecaca);
+  color: #dc2626;
+}
+
+.edit-active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.25);
+}
+
+/* Icon animation */
+.profile-edit-btn i {
+  transition: transform 0.3s ease;
+}
+
+.profile-edit-btn:hover i {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+/* Click effect */
+.profile-edit-btn:active {
+  transform: scale(0.96);
+}
+
+/* Text smooth */
+.btn-text {
+  transition: all 0.2s ease;
+}
+
+/* Base Save Button */
+.save-profile-btn {
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+}
+
+/* Hover Effect */
+.save-profile-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.35);
+}
+
+/* Click Effect */
+.save-profile-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Disabled State */
+.save-profile-btn:disabled {
+  background: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Spinner alignment */
+.save-profile-btn .spinner-border {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Optional shine effect */
+.save-profile-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: all 0.5s;
+}
+
+.save-profile-btn:hover::after {
+  left: 125%;
+}

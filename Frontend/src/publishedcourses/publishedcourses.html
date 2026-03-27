@@ -1,0 +1,55 @@
+﻿<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Explore Courses</h2>
+    <p class="premium-header-subtitle">Find the perfect course to advance your skills and career.</p>
+  </div>
+
+  @if (Isloading) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else {
+    <div class="course-grid">
+      <div *ngFor="let course of courses" class="premium-card course-item">
+        <div class="thumbnail-wrapper">
+          <img class="thumbnail" [src]="'https://localhost:44385' + course.thumbailUrl" />
+          <div class="course-badge">&#8377; {{ course.fees }}</div>
+        </div>
+
+        <div class="card-body-content">
+          <h4 class="course-title">{{ course.title }}</h4>
+
+          <div class="course-meta">
+            <div class="meta-item">
+              <i class="bi bi-calendar-event"></i>
+              <span>{{ course.startDate | date:'MMM d' }} - {{ course.endDate | date:'MMM d, y' }}</span>
+            </div>
+          </div>
+
+          <button
+            class="premium-btn w-100 mt-3"
+            [class.btn-subscribed]="course.isSubscribed"
+            [disabled]="course.isSubscribed || processingCourseIds.has(course.courseId)"
+            (click)="subscribe(course)"
+          >
+            <i
+              class="bi"
+              [class.bi-check-circle-fill]="course.isSubscribed"
+              [class.bi-hourglass-split]="!course.isSubscribed && processingCourseIds.has(course.courseId)"
+              [class.bi-plus-circle]="!course.isSubscribed && !processingCourseIds.has(course.courseId)"
+            ></i>
+            {{
+              course.isSubscribed
+                ? 'Subscribed'
+                : processingCourseIds.has(course.courseId)
+                  ? 'Processing...'
+                  : 'Subscribe Now'
+            }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

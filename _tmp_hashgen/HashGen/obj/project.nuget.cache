@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Hqk75aAM7b0=",
+  "success": true,
+  "projectFilePath": "D:\\project\\latets-project\\Collage-Project\\_tmp_hashgen\\HashGen\\HashGen.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dell\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

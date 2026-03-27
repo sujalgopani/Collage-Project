@@ -1,0 +1,103 @@
+<div class="learn-page-container">
+
+  <!-- PAGE HEADER -->
+  <div class="learn-page-header">
+    <div class="learn-header-text">
+      <h2 class="learn-header-title">My Learning</h2>
+      <p class="learn-header-subtitle">Track your progress and continue your enrolled courses.</p>
+    </div>
+    <div class="learn-header-badge">
+      <i class="bi bi-journals"></i>
+      <span>{{ courses.length }} Enrolled</span>
+    </div>
+  </div>
+
+  <!-- LOADING STATE -->
+  @if (Isloading) {
+    <div class="learn-spinner-wrap">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-3 text-muted">Loading your courses...</p>
+    </div>
+  }
+
+  <!-- EMPTY STATE -->
+  @else if (!courses.length) {
+    <div class="learn-empty-state">
+      <div class="empty-icon-wrap">
+        <i class="bi bi-book"></i>
+      </div>
+      <h4>No Courses Yet</h4>
+      <p>You haven't enrolled in any courses. Explore our catalog and start learning today!</p>
+      <a routerLink="/student-dashboard/published-courses" class="learn-cta-btn">
+        <i class="bi bi-compass"></i> Explore Courses
+      </a>
+    </div>
+  }
+
+  <!-- COURSE LIST -->
+  @else {
+    <div class="learn-courses-list">
+      <div *ngFor="let course of courses; let i = index" class="learn-course-row">
+
+        <!-- THUMBNAIL -->
+        <div class="learn-thumb-wrap">
+          <img *ngIf="course.thumbailUrl && course.isSubscribed"
+            [src]="'https://localhost:44385' + course.thumbailUrl"
+            class="learn-thumb"
+            alt="{{ course.title }}" />
+          <div *ngIf="!course.thumbailUrl || !course.isSubscribed" class="learn-thumb-placeholder">
+            <i class="bi bi-image"></i>
+          </div>
+          <div class="learn-index-badge">#{{ i + 1 }}</div>
+        </div>
+
+        <!-- COURSE CONTENT -->
+        @if (course.isSubscribed) {
+          <div class="learn-course-content">
+            <div class="learn-course-top">
+              <div>
+                <span class="learn-status-chip">
+                  <i class="bi bi-circle-fill"></i> In Progress
+                </span>
+                <h4 class="learn-course-title">{{ course.title }}</h4>
+              </div>
+            </div>
+
+            <div class="learn-meta-row">
+              <div class="learn-meta-chip">
+                <i class="bi bi-calendar-event"></i>
+                <span>{{ course.startDate | date:'MMM d, y' }} – {{ course.endDate | date:'MMM d, y' }}</span>
+              </div>
+              <div class="learn-meta-chip">
+                <i class="bi bi-tag"></i>
+                <span>₹{{ course.fees }}</span>
+              </div>
+            </div>
+
+            <!-- PROGRESS BAR -->
+            <div class="learn-progress-wrap">
+              <div class="learn-progress-label">
+                <span>Progress</span>
+                <span class="progress-percent">{{ course.progress || 40 }}%</span>
+              </div>
+              <div class="learn-progress-bar">
+                <div class="learn-progress-fill" [style.width.%]="course.progress || 40"></div>
+              </div>
+            </div>
+
+            <!-- ACTION -->
+            <a class="learn-start-btn"
+              routerLink="/student-dashboard/video-serve"
+              [queryParams]="{ id: course.courseId }">
+              <i class="bi bi-play-circle-fill"></i>
+              Continue Learning
+              <i class="bi bi-arrow-right ms-auto"></i>
+            </a>
+          </div>
+        }
+
+      </div>
+    </div>
+  }
+
+</div>

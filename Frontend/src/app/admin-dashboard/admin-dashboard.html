@@ -1,0 +1,203 @@
+<!-- Sidebar -->
+<div class="sidebar" [class.show]="isSidebarOpen" [class.collapsed]="!isSidebarOpen">
+  <div class="sidebar-logo">
+    <img src="/logo.svg" alt="ExamNest" width="160" />
+  </div>
+
+  <a routerLink="/admin-dashboard/Admin-Dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <i class="bi bi-grid-fill"></i> Dashboard
+  </a>
+
+  <div class="sidebar-category">Management</div>
+  <a (click)="toggleMainMenu()" class="menu-toggle">
+    <i class="bi bi-gear-fill"></i> Manage System
+    <i class="bi bi-chevron-down ms-auto small"></i>
+  </a>
+
+  @if (isMainOpen) {
+    <div class="submenu ms-3">
+      <a (click)="toggleTeacher()" class="submenu-toggle">
+        <i class="bi bi-person-badge"></i> Teachers
+      </a>
+      @if (isTeacherOpen) {
+        <div class="submenu-inner ms-3 small">
+          <a routerLink="/admin-dashboard/main-teacher" routerLinkActive="active">Manage Teacher</a>
+          <a routerLink="/admin-dashboard/course-manage" routerLinkActive="active">Manage Course</a>
+        </div>
+      }
+
+      <a (click)="toggleStudent()" class="submenu-toggle">
+        <i class="bi bi-person"></i> Students
+      </a>
+      @if (isStudentOpen) {
+        <div class="submenu-inner ms-3 small">
+          <a routerLink="/admin-dashboard/main-student" routerLinkActive="active">Manage Student</a>
+        </div>
+      }
+    </div>
+  }
+
+  <a routerLink="/admin-dashboard/role-manage" routerLinkActive="active">
+    <i class="bi bi-shield-lock-fill"></i> Roles
+  </a>
+  <a routerLink="/admin-dashboard/payment-manage" routerLinkActive="active">
+    <i class="bi bi-credit-card-fill"></i> Payments
+  </a>
+  <a routerLink="/admin-dashboard/exams-manage" routerLinkActive="active">
+    <i class="bi bi-journal-check"></i> Exams
+  </a>
+  <a routerLink="/admin-dashboard/live-classes" routerLinkActive="active">
+    <i class="bi bi-camera-video-fill"></i> Live Classes
+  </a>
+
+  <div class="sidebar-category">Account</div>
+  <a routerLink="/admin-dashboard/adminprofile" routerLinkActive="active">
+    <i class="bi bi-person-gear"></i> Profile Settings
+  </a>
+
+  <div class="mt-4 pt-3 border-top">
+    <a (click)="OpenLogout()" class="text-danger">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" [class.expanded]="!isSidebarOpen">
+  
+  <div class="dashboard-top-bar">
+    <div class="top-bar-left d-flex align-items-center">
+      <button class="sidebar-toggle-btn" (click)="toggleSidebar()">
+        <i class="bi bi-layout-sidebar-inset"></i>
+      </button>
+
+      <!-- Premium Search Bar -->
+      <div class="global-search-wrap ms-4 d-none d-md-block" #globalSearchWrapper>
+        <div class="search-shell search-shell-compact">
+          <input
+            type="text"
+            class="search-shell-input"
+            placeholder="Search for courses, teachers..."
+            [(ngModel)]="globalSearchTerm"
+            (keyup.enter)="onGlobalSearch()"
+            (focus)="onGlobalSearchFocus()"
+          >
+          <button type="button" class="search-shell-btn" aria-label="Search" (click)="onGlobalSearch()" [disabled]="isGlobalSearching">
+            @if (isGlobalSearching) {
+              <span class="spinner-border spinner-border-sm text-white"></span>
+            } @else {
+              <i class="bi bi-search"></i>
+            }
+          </button>
+        </div>
+
+        @if (isGlobalSearchOpen) {
+          <div class="global-search-dropdown">
+            @if (globalSearchError) {
+              <div class="global-search-message text-danger">{{ globalSearchError }}</div>
+            } @else if (!isGlobalSearching && !hasGlobalResults()) {
+              <div class="global-search-message">No matching records found.</div>
+            } @else if (hasGlobalResults()) {
+              @if (globalSearchResults.courses.length > 0) {
+                <div class="global-search-group">
+                  <div class="global-search-heading">Courses</div>
+                  @for (item of globalSearchResults.courses; track item.courseId) {
+                    <button type="button" class="global-search-item" (click)="openGlobalSearchResult('course', item)">
+                      <span class="global-search-item-title">{{ item.title }}</span>
+                      <span class="global-search-item-meta">#{{ item.courseId }} · {{ item.teacherName }}</span>
+                    </button>
+                  }
+                </div>
+              }
+
+              @if (globalSearchResults.teachers.length > 0) {
+                <div class="global-search-group">
+                  <div class="global-search-heading">Teachers</div>
+                  @for (item of globalSearchResults.teachers; track item.userId) {
+                    <button type="button" class="global-search-item" (click)="openGlobalSearchResult('teacher', item)">
+                      <span class="global-search-item-title">{{ item.fullName }}</span>
+                      <span class="global-search-item-meta">Role #{{ item.roleId || 2 }} | {{ item.email }}</span>
+                    </button>
+                  }
+                </div>
+              }
+
+              @if (globalSearchResults.students.length > 0) {
+                <div class="global-search-group">
+                  <div class="global-search-heading">Students</div>
+                  @for (item of globalSearchResults.students; track item.userId) {
+                    <button type="button" class="global-search-item" (click)="openGlobalSearchResult('student', item)">
+                      <span class="global-search-item-title">{{ item.fullName }}</span>
+                      <span class="global-search-item-meta">Role #{{ item.roleId || 3 }} | {{ item.email }}</span>
+                    </button>
+                  }
+                </div>
+              }
+
+              @if (globalSearchResults.exams.length > 0) {
+                <div class="global-search-group">
+                  <div class="global-search-heading">Exams</div>
+                  @for (item of globalSearchResults.exams; track item.examId) {
+                    <button type="button" class="global-search-item" (click)="openGlobalSearchResult('exam', item)">
+                      <span class="global-search-item-title">{{ item.title }}</span>
+                      <span class="global-search-item-meta">#{{ item.examId }} · {{ item.courseName }}</span>
+                    </button>
+                  }
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="top-bar-right">
+      <div class="user-profile-mini" routerLink="/admin-dashboard/adminprofile" title="View Profile">
+        <div class="user-avatar-mini d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; border-radius: 50%; background: #e2e8f0; color: #64748b;">
+          @if (profile?.profileImageUrl) {
+            <img
+              [src]="'https://localhost:44385' + profile.profileImageUrl"
+              alt="Profile"
+              style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;"
+            />
+          } @else {
+            <span class="fw-bold">{{ profile?.firstName?.charAt(0) || 'A' }}</span>
+          }
+        </div>
+        <span class="user-name-mini">{{ profile?.firstName || profile?.username || 'Admin' }}</span>
+      </div>
+      <button class="btn-logout-mini" (click)="OpenLogout()" title="Logout">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Section -->
+  <div class="mt-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<div class="modal fade" #logoutmodel tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <p>Are you sure you want to Logout?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-danger" (click)="ConformLogout()">Yes, Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

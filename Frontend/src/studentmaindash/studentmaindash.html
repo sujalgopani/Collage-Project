@@ -1,0 +1,116 @@
+<div class="dashboard-body">
+  <!-- Welcome Banner -->
+  <div class="welcome-banner">
+    <div class="banner-content">
+      <h1 class="banner-title">Welcome back, {{ username || 'Student' }}! 👋</h1>
+      <p class="banner-subtitle">Continue your learning journey. View your pending assignments and new recommendations today.</p>
+      <button class="btn btn-light btn-banner-cta" routerLink="/student-dashboard/learn-courses">
+        Continue Learning <i class="bi bi-arrow-right ms-2"></i>
+      </button>
+    </div>
+    <div class="banner-decoration">
+      <!-- Decorative SVG or Shape -->
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#FFFFFF" fill-opacity="0.1" d="M44.7,-76.4C58.3,-69.2,70.1,-59.1,79.6,-46.5C89.1,-33.9,96.3,-18.8,96.5,-3.6C96.7,11.6,89.9,26.9,80.4,40.4C70.9,53.9,58.7,65.6,44.5,73.1C30.3,80.6,14.1,83.9,-1.9,87.2C-17.9,90.5,-35.8,93.8,-51.1,87.1C-66.4,80.4,-79.1,63.7,-86.3,46.1C-93.5,28.5,-95.2,10,-91.7,-7.1C-88.2,-24.2,-79.5,-39.9,-67.2,-48.9C-54.9,-57.9,-39,-60.2,-25.8,-67.6C-12.6,-75,-2.1,-87.5,10.3,-89.2C22.7,-90.9,31.1,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon icon-blue">
+        <i class="bi bi-journal-bookmark"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Enrolled</span>
+        <h3 class="stat-value">{{ totalCourses }}</h3>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-green">
+        <i class="bi bi-check-circle"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Completed</span>
+        <h3 class="stat-value">{{ activeCourses }}</h3>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-yellow">
+        <i class="bi bi-calendar-event"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Exams</span>
+        <h3 class="stat-value">{{ totalExams }}</h3>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-cyan">
+        <i class="bi bi-graph-up"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Avg. Score</span>
+        <h3 class="stat-value">{{ avgScore }}%</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content-grid-row">
+    <!-- Weekly Progress -->
+    <div class="grid-col-left">
+      <div class="glass-card chart-card">
+        <div class="card-header-custom">
+          <h5 class="m-0">Weekly Progress</h5>
+        </div>
+        <div class="card-body-custom">
+          <canvas id="studentChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Suggestions -->
+    <div class="grid-col-right">
+      <div class="glass-card announcements-card h-100">
+        <div class="card-header-custom d-flex justify-content-between align-items-center">
+          <h5 class="m-0 fw-bold">Course Suggestions</h5>
+          <span class="badge bg-soft-primary text-primary">New</span>
+        </div>
+        <div class="card-body-custom pt-2">
+
+          @if (isLoadingCourses) {
+            <div class="text-center py-4">
+              <div class="spinner-border spinner-border-sm text-primary"></div>
+              <p class="small text-muted mt-2">Loading suggestions...</p>
+            </div>
+          } @else {
+            @for (course of courses; track course.courseId; let i = $index) {
+              @if (i < 3) {
+                <div class="announcement-item d-flex align-items-start gap-3 mt-3 border-bottom pb-3 last-border-0">
+                  <div class="avatar-student-style flex-shrink-0" style="width: 40px; height: 40px; border-radius: 12px; font-size: 1.2rem;">
+                    <i class="bi bi-play-circle-fill"></i>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="announcement-title text-dark mb-1">{{ course.courseTitle }}</h6>
+                    <small class="text-muted d-block line-clamp-1">{{ course.description || 'Enhance your professional skills.' }}</small>
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                      <span class="badge bg-light text-dark border"><i class="bi bi-tag me-1"></i>{{ course.categoryName || 'Learning' }}</span>
+                      <a routerLink="/student-dashboard/learn-courses" class="small fw-bold text-primary text-decoration-none">Enroll <i class="bi bi-chevron-right"></i></a>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+            @if (courses.length === 0) {
+              <div class="text-center py-4 text-muted">
+                <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                <small>No new suggestions yet.</small>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

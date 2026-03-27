@@ -1,0 +1,98 @@
+<div class="premium-page-container" *ngIf="resultdata">
+  <div class="report-actions mb-4 d-flex gap-3">
+    <button class="premium-btn btn-secondary-soft" (click)="backbtn()">
+      <i class="bi bi-arrow-left"></i> Back to Results
+    </button>
+    <button class="premium-btn btn-primary-animate" (click)="downloadResultPdf()" [disabled]="isDownloading">
+      <i class="bi bi-download"></i> {{ isDownloading ? 'Preparing PDF...' : 'Download PDF' }}
+    </button>
+  </div>
+
+  <div class="premium-card report-card" id="resultSheet">
+    <!-- Branded Header -->
+    <div class="report-header">
+      <div class="brand-info">
+        <h2 class="brand-name">ExamNest</h2>
+        <p class="brand-tagline">Excellence in Online Assessment</p>
+      </div>
+      <div class="report-badge">
+        <div class="badge-label">Final Result</div>
+        <div class="badge-value" [ngClass]="grade === 'F' ? 'text-danger' : 'text-success'">{{ grade }}</div>
+      </div>
+    </div>
+
+    <div class="report-body">
+      <!-- Info Grid -->
+      <div class="info-row-grid mb-5">
+        <div class="info-group">
+          <label>Student Name</label>
+          <div class="value">{{ resultdata.username }}</div>
+        </div>
+        <div class="info-group">
+          <label>Course Title</label>
+          <div class="value">{{ resultdata.courcename }}</div>
+        </div>
+        <div class="info-group">
+          <label>Examination</label>
+          <div class="value">{{ resultdata.examTitle }}</div>
+        </div>
+        <div class="info-group">
+          <label>Attempt ID</label>
+          <div class="value">#{{ resultdata.examAttemptId }}</div>
+        </div>
+      </div>
+
+      <!-- Performance Table -->
+      <div class="premium-table-container mb-5">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>Assessment Component</th>
+              <th>Max Score</th>
+              <th>Obtained</th>
+              <th>Performance</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>{{ resultdata.examTitle }}</strong></td>
+              <td>{{ resultdata.maxScore }} </td>
+              <td><strong>{{ resultdata.totalScore }}</strong></td>
+              <td>
+                <div class="progress-wrapper">
+                  <div class="progress-bar" [style.width.%]="percentage"></div>
+                  <span>{{ percentage | number: '1.0-1' }}%</span>
+                </div>
+              </td>
+              <td>
+                <span class="badge-pill" [ngClass]="grade === 'F' ? 'badge-soft-danger' : 'badge-soft-success'">
+                  {{ grade === 'F' ? 'Failed' : 'Passed' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Summary & Conclusion -->
+      <div class="report-footer">
+        <div class="summary-box">
+          <h5>Assessment Summary</h5>
+          <p>This report confirms the successful completion of the assessment. The candidate has demonstrated the required knowledge and proficiency in the subject matter.</p>
+          <div class="violation-note" *ngIf="resultdata.violationCount > 0">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            Proctoring Note: {{ resultdata.violationCount }} minor incidents flagged.
+          </div>
+        </div>
+
+        <div class="auth-section">
+          <img src="/CEOsign.png" class="signature-img" />
+          <div class="signature-line"></div>
+          <p class="auth-title">Authorized Registrar</p>
+          <p class="auth-date">{{ today | date:'longDate' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

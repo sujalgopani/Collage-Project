@@ -1,0 +1,85 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2 class="premium-header-title">Send Feedback</h2>
+        <p class="premium-header-subtitle">Your suggestions help us improve the learning experience.</p>
+      </div>
+      <a routerLink="/student-dashboard/mysuggestion" class="premium-btn btn-white-soft">
+        <i class="bi bi-list-columns-reverse"></i> View My Feedbacks
+      </a>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="premium-card feedback-form-card">
+        <form [formGroup]="suggestionForm" (ngSubmit)="submit()">
+          <div class="form-section-title mb-4">
+            <i class="bi bi-pencil-square"></i> New Suggestion Details
+          </div>
+
+          <div class="mb-4">
+            <label class="premium-label">Select Teacher</label>
+            <div class="input-group-premium">
+              <i class="bi bi-person-badge"></i>
+              <select class="premium-select" formControlName="teacherId">
+                <option [ngValue]="null">Choose a teacher...</option>
+                <option *ngFor="let t of teachers" [ngValue]="t.userId">
+                  {{ t.name }}
+                </option>
+              </select>
+            </div>
+            @if (loadError) {
+              <small class="text-danger d-block mt-1">{{ loadError }}</small>
+            } @else if (!teachers.length) {
+              <small class="text-muted d-block mt-1">No teachers available for feedback yet.</small>
+            }
+            @if (isSubmitted && f['teacherId'].invalid) {
+              <small class="text-danger d-block mt-1">Please select a teacher.</small>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label class="premium-label">Subject Title</label>
+            <div class="input-group-premium">
+              <i class="bi bi-type-h1"></i>
+              <input type="text" class="premium-input" placeholder="What is your feedback about?" formControlName="title" />
+            </div>
+            @if (isSubmitted && f['title'].invalid) {
+              <small class="text-danger d-block mt-1">
+                @if (f['title'].errors?.['required'] || f['title'].errors?.['whitespace']) { Title is required. }
+                @if (f['title'].errors?.['minlength']) { Minimum 5 characters required. }
+                @if (f['title'].errors?.['maxlength']) { Maximum 100 characters allowed. }
+              </small>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label class="premium-label">Your Message</label>
+            <div class="input-group-premium align-items-start pt-3">
+              <i class="bi bi-chat-dots" style="margin-top: 2px;"></i>
+              <textarea class="premium-textarea" rows="5" placeholder="Tell us more about your suggestion..." formControlName="message"></textarea>
+            </div>
+            @if (isSubmitted && f['message'].invalid) {
+              <small class="text-danger d-block mt-1">
+                @if (f['message'].errors?.['required'] || f['message'].errors?.['whitespace']) { Message is required. }
+                @if (f['message'].errors?.['minlength']) { Minimum 10 characters required. }
+                @if (f['message'].errors?.['maxlength']) { Maximum 1000 characters allowed. }
+              </small>
+            }
+          </div>
+
+          @if (submitError) {
+            <div class="alert alert-danger py-2 mb-3" role="alert">{{ submitError }}</div>
+          }
+
+          <button type="submit" class="premium-btn btn-primary-animate w-100 py-3 mt-2" [disabled]="isLoading">
+            <i class="bi" [class.bi-send-fill]="!isLoading" [class.spinner-border]="isLoading" [class.spinner-border-sm]="isLoading"></i>
+            {{ isLoading ? 'Submitting...' : 'Submit Feedback' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

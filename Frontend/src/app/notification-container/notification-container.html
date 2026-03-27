@@ -1,0 +1,18 @@
+<div class="app-notification-wrap" *ngIf="notifications$ | async as notifications">
+  <div
+    class="app-notification"
+    *ngFor="let item of notifications"
+    [class.notification-success]="item.type === 'success'"
+    [class.notification-error]="item.type === 'error'"
+    [class.notification-warning]="item.type === 'warning'"
+    [class.notification-info]="item.type === 'info'">
+    <div class="app-notification-message">{{ item.message }}</div>
+    <button
+      type="button"
+      class="app-notification-close"
+      aria-label="Dismiss notification"
+      (click)="dismiss(item.id)">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+</div>

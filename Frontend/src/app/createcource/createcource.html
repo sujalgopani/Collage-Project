@@ -1,0 +1,297 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Create New Course</h2>
+    <p class="premium-header-subtitle">
+      Fill in the details below to publish your knowledge to the world.
+    </p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="premium-card creation-card">
+        <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+          <div class="form-section mb-5">
+            <h5 class="section-title"><i class="bi bi-info-circle"></i> Basic Information</h5>
+            <div class="row g-4">
+              <div class="col-12">
+                <label class="premium-label">Course Title</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-journal-text"></i>
+                  <input
+                    type="text"
+                    class="premium-input"
+                    placeholder="e.g. Advanced Web Development 2026"
+                    formControlName="title"
+                  />
+                </div>
+                @if (courseForm.get('title')?.touched && courseForm.get('title')?.invalid) {
+                  <small class="text-danger-custom mt-1 d-block">
+                    <i class="bi bi-exclamation-circle"></i>
+                    @if (courseForm.get('title')?.errors?.['required']) {
+                      Title is required.
+                    }
+                    @if (courseForm.get('title')?.errors?.['minlength']) {
+                      Minimum 3 characters required.
+                    }
+                    @if (courseForm.get('title')?.errors?.['maxlength']) {
+                      Maximum 100 characters allowed.
+                    }
+                  </small>
+                }
+              </div>
+
+              <div class="col-12">
+                <label class="premium-label">Description</label>
+                <div class="input-group-premium align-items-start pt-3">
+                  <i class="bi bi-card-text"></i>
+                  <textarea
+                    class="premium-textarea"
+                    rows="4"
+                    placeholder="What will students learn in this course?"
+                    formControlName="description"
+                  ></textarea>
+                </div>
+                @if (
+                  courseForm.get('description')?.touched && courseForm.get('description')?.invalid
+                ) {
+                  <small class="text-danger-custom mt-1 d-block">
+                    <i class="bi bi-exclamation-circle"></i>
+                    @if (courseForm.get('description')?.errors?.['required']) {
+                      Description is required.
+                    }
+                    @if (courseForm.get('description')?.errors?.['minlength']) {
+                      Minimum 10 characters required.
+                    }
+                    @if (courseForm.get('description')?.errors?.['maxlength']) {
+                      Maximum 2000 characters allowed.
+                    }
+                  </small>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section mb-5">
+            <h5 class="section-title"><i class="bi bi-calendar-check"></i> Schedule & Fees</h5>
+            <div class="row g-4">
+              <div class="col-md-3">
+                <label class="premium-label">Start Date</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-calendar-plus"></i>
+                  <input type="date" class="premium-input"   [min]="todayDate" formControlName="startDate" />
+                </div>
+                @if (courseForm.get('startDate')?.touched && courseForm.get('startDate')?.invalid) {
+                  <small class="text-danger-custom mt-1 d-block">
+                    @if (courseForm.get('startDate')?.errors?.['required']) {
+                      Start date is required.
+                    }
+                    @if (courseForm.get('startDate')?.errors?.['pastDate']) {
+                      Start date must be today or future.
+                    }
+                  </small>
+                }
+              </div>
+              <div class="col-md-3">
+                <label class="premium-label">Start Time</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-clock"></i>
+                  <input type="time" class="premium-input" formControlName="startTime" />
+                </div>
+                @if (courseForm.get('startTime')?.touched && courseForm.get('startTime')?.invalid) {
+                  <small class="text-danger-custom mt-1 d-block">Start time is required.</small>
+                }
+              </div>
+              <div class="col-md-3">
+                <label class="premium-label">End Date</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-calendar-minus"></i>
+                  <input type="date" class="premium-input"   [min]="todayDate" formControlName="endDate" />
+                </div>
+                @if (courseForm.get('endDate')?.touched && courseForm.get('endDate')?.invalid) {
+                  <small class="text-danger-custom mt-1 d-block">
+                    @if (courseForm.get('endDate')?.errors?.['required']) {
+                      End date is required.
+                    }
+                    @if (courseForm.get('endDate')?.errors?.['pastDate']) {
+                      End date must be today or future.
+                    }
+                  </small>
+                }
+              </div>
+              <div class="col-md-3">
+                <label class="premium-label">End Time</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-clock-history"></i>
+                  <input type="time" class="premium-input" formControlName="endTime" />
+                </div>
+                @if (courseForm.get('endTime')?.touched && courseForm.get('endTime')?.invalid) {
+                  <small class="text-danger-custom mt-1 d-block">End time is required.</small>
+                }
+              </div>
+              <div class="col-md-4">
+                <label class="premium-label">Course Fees (INR)</label>
+                <div class="input-group-premium">
+                  <i class="bi bi-currency-rupee"></i>
+                  <input
+                    type="number"
+                    class="premium-input"
+                    placeholder="0.00"
+                    formControlName="fees"
+                  />
+                </div>
+                @if (courseForm.get('fees')?.touched && courseForm.get('fees')?.invalid) {
+                  <small class="text-danger-custom mt-1 d-block">
+                    @if (courseForm.get('fees')?.errors?.['required']) {
+                      Fees is required.
+                    }
+                    @if (courseForm.get('fees')?.errors?.['min']) {
+                      Fees cannot be negative.
+                    }
+                  </small>
+                }
+              </div>
+              @if (courseForm.touched && courseForm.errors?.['invalidDateRange']) {
+                <div class="col-12">
+                  <small class="text-danger-custom mt-1 d-block"
+                    >End date and time must be after start date and time.</small
+                  >
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="form-section mb-5">
+            <h5 class="section-title"><i class="bi bi-camera-video"></i> Course Media</h5>
+
+            <div class="row g-4">
+              <!-- ================= THUMBNAIL ================= -->
+              <div class="col-md-6">
+                <label class="premium-label">Course Thumbnail</label>
+
+                <div class="file-upload-wrapper">
+                  <input
+                    type="file"
+                    id="thumbnail-upload"
+                    class="file-input-hidden"
+                    accept="image/*"
+                    (change)="onThumbnailChange($event)"
+                  />
+
+                  <label for="thumbnail-upload" class="file-upload-label">
+                    <i class="bi bi-image"></i>
+                    <span>Choose Thumbnail</span>
+                  </label>
+                </div>
+
+                <small class="text-muted d-block mt-2">Max size: 20 MB (JPG, PNG, WebP)</small>
+
+                @if (thumbnailError) {
+                  <small class="text-danger-custom d-block mt-1">{{ thumbnailError }}</small>
+                }
+
+                <!-- ✅ THUMBNAIL PREVIEW -->
+                @if (thumbnailPreview) {
+                  <div class="mt-3 position-relative">
+                    <p class="small text-muted">Preview:</p>
+
+                    <img
+                      [src]="thumbnailPreview"
+                      class="img-fluid rounded shadow-sm"
+                      style="max-height: 200px"
+                    />
+
+                    <!-- ❌ DELETE -->
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2"
+                      (click)="removeThumbnail()"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                }
+              </div>
+
+              <!-- ================= VIDEOS ================= -->
+              <div class="col-md-6">
+                <label class="premium-label">Video Lessons</label>
+
+                <div class="file-upload-wrapper">
+                  <input
+                    type="file"
+                    id="video-upload"
+                    #fileInput
+                    class="file-input-hidden"
+                    accept=".mp4"
+                    multiple
+                    (change)="onFileChange($event)"
+                  />
+
+                  <label for="video-upload" class="file-upload-label">
+                    <i class="bi bi-cloud-upload"></i>
+                    <span>Upload Videos</span>
+                  </label>
+                </div>
+
+                <small class="text-muted d-block mt-2">Max: 20 MB per video</small>
+
+                @if (fileErrors.length > 0) {
+                  <div class="text-danger-custom mt-1">
+                    <div *ngFor="let err of fileErrors" class="small">{{ err }}</div>
+                  </div>
+                }
+
+                <!-- ✅ VIDEO PREVIEW -->
+                @if (videoPreviews.length > 0) {
+                  <div class="mt-3">
+                    <p class="small text-muted">Video Preview:</p>
+
+                    <div class="row g-3">
+                      @for (v of videoPreviews; track $index) {
+                        <div class="col-md-6">
+                          <div class="position-relative">
+                            <!-- 🎥 VIDEO -->
+                            <video controls class="w-100 rounded shadow-sm">
+                              <source [src]="v" type="video/mp4" />
+                            </video>
+
+                            <!-- ❌ DELETE BUTTON -->
+                            <button
+                              type="button"
+                              class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2"
+                              (click)="removeVideo($index)"
+                            >
+                              <i class="bi bi-trash"></i>
+                            </button>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="action-footer">
+            <button
+              type="submit"
+              class="premium-btn btn-primary-animate w-100 py-3"
+              [disabled]="
+                courseForm.invalid || thumbnailError || fileErrors.length > 0 || isUploading
+              "
+            >
+              <i
+                class="bi"
+                [class.bi-cloud-arrow-up-fill]="!isUploading"
+                [class.spinner-border-sm]="isUploading"
+                [class.spinner-border]="isUploading"
+              ></i>
+              {{ isUploading ? 'Submitting Course...' : 'Submit Course' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

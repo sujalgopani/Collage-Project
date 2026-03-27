@@ -1,0 +1,111 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">My Live Classes</h2>
+    <p class="premium-header-subtitle">
+      Join your scheduled classes and download teacher material from one place.
+    </p>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-3 text-muted mb-0">Loading live classes...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div *ngIf="!isLoading && liveClasses.length === 0" class="premium-card text-center py-5">
+    <i class="bi bi-calendar2-week display-6 text-muted"></i>
+    <h5 class="mt-3">No Live Sessions Yet</h5>
+    <p class="text-muted mb-0">
+      Your upcoming live classes will appear here as soon as they are scheduled.
+    </p>
+  </div>
+
+  <div class="student-live-grid" *ngIf="!isLoading && liveClasses.length > 0">
+    <div class="premium-card session-card" *ngFor="let item of liveClasses">
+      <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <h5 class="mb-1">{{ item.title }}</h5>
+          <div class="text-muted small">
+            <i class="bi bi-journal-text me-1"></i>{{ item.courseTitle }}
+          </div>
+          <div class="text-muted small mt-1">
+            <i class="bi bi-person-video3 me-1"></i>{{ item.teacherName }}
+          </div>
+        </div>
+        <span
+          class="badge-pill"
+          [ngClass]="{
+            'badge-soft-success': getStatus(item) === 'Live Now',
+            'badge-soft-primary': getStatus(item) === 'Upcoming',
+            'badge-soft-warning': getStatus(item) === 'Completed',
+          }"
+        >
+          {{ getStatus(item) }}
+        </span>
+      </div>
+
+      <div class="schedule-block mb-3">
+        <div><i class="bi bi-calendar-event me-2"></i>{{ item.startAt | date: 'MMM d, y' }}</div>
+        <div>
+          <i class="bi bi-clock me-2"></i>{{ item.startAt | date: 'h:mm a' }} -
+          {{ item.endAt | date: 'h:mm a' }}
+        </div>
+      </div>
+
+      <p class="text-muted mb-3">{{ item.agenda || 'Agenda will be shared before class.' }}</p>
+
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <a
+          class="btn btn-sm d-inline-flex align-items-center gap-2 fw-semibold px-3"
+          [ngClass]="{
+            'btn-danger shadow-sm': getStatus(item) === 'Live Now',
+            'btn-outline-primary': getStatus(item) === 'Upcoming',
+            'btn-outline-secondary disabled': getStatus(item) === 'Completed',
+          }"
+          [href]="getStatus(item) === 'Live Now' ? item.meetingLink : null"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="bi bi-camera-video-fill"></i>
+
+          {{
+            getStatus(item) === 'Live Now'
+              ? 'Join Now'
+              : getStatus(item) === 'Upcoming'
+                ? 'Not Started'
+                : 'Class Ended'
+          }}
+        </a>
+
+        <a
+          *ngIf="item.materialLink"
+          class="btn btn-outline-primary btn-sm"
+          [href]="item.materialLink"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="bi bi-link-45deg"></i> Open Material Link
+        </a>
+
+        <a
+          *ngIf="item.materialFilePath"
+          class="btn btn-outline-success btn-sm"
+          [href]="getMaterialFileUrl(item.materialFilePath)"
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+        >
+          <i class="bi bi-download"></i> Download Material
+        </a>
+      </div>
+
+      <div class="material-note" *ngIf="item.materialTitle || item.materialDescription">
+        <div class="fw-semibold">{{ item.materialTitle || 'Shared Material' }}</div>
+        <small class="text-muted">{{
+          item.materialDescription || 'No additional notes from teacher.'
+        }}</small>
+      </div>
+    </div>
+  </div>
+</div>

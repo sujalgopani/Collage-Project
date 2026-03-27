@@ -1,0 +1,136 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Student Suggestions</h2>
+    <p class="premium-header-subtitle">
+      Review student feedback and respond efficiently.
+    </p>
+  </div>
+
+  <div class="premium-card">
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-3 text-muted">Loading suggestions...</p>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="!isLoading && suggestions.length === 0" class="text-center py-5 text-muted">
+      <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+      No suggestions found.
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!isLoading && suggestions.length > 0" class="premium-table-container">
+      <table class="premium-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Student</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th style="width: 250px">Reply</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let s of suggestions">
+            <!-- Title -->
+            <td>
+              <strong class="text-main">{{ s.title }}</strong>
+            </td>
+
+            <!-- Message -->
+            <td>
+              <span class="text-muted text-truncate d-inline-block" style="max-width: 220px">
+                {{ s.message }}
+              </span>
+            </td>
+
+            <!-- Student -->
+            <td>
+              <span class="fw-semibold">{{ s.studentName }}</span>
+            </td>
+
+            <!-- Status -->
+            <td>
+              <span
+                class="badge-pill"
+                [ngClass]="{
+                  'badge-soft-warning': s.status === 'Pending',
+                  'badge-soft-success': s.status === 'Resolved'
+                }"
+              >
+                {{ s.status }}
+              </span>
+            </td>
+
+            <!-- Date -->
+            <td class="text-muted small">
+              {{ s.createdAt | date: 'MMM d, h:mm a' }}
+            </td>
+
+            <!-- Reply -->
+            <td>
+              <input
+                type="text"
+                class="premium-input-sm"
+                [(ngModel)]="s.reply"
+                maxlength="500"
+                placeholder="Write reply..."
+                [disabled]="s.isReplying"
+              />
+              <small class="text-danger d-block mt-1" *ngIf="s.replyError">
+                {{ s.replyError }}
+              </small>
+            </td>
+
+            <!-- Actions -->
+            <td class="text-center">
+              <div class="d-flex gap-2 justify-content-center flex-wrap">
+
+                <!-- Reply Button -->
+                <button
+                  class="premium-btn btn-reply"
+                  (click)="SendReply(s)"
+                  [disabled]="s.isReplying || s.isDeleting"
+                >
+                  <i
+                    *ngIf="!s.isReplying"
+                    class="bi bi-send-fill"
+                  ></i>
+                  <i
+                    *ngIf="s.isReplying"
+                    class="spinner-border spinner-border-sm"
+                  ></i>
+
+                  {{ s.isReplying ? 'Sending...' : 'Reply' }}
+                </button>
+
+                <!-- Delete Button -->
+                <button
+                  class="premium-btn btn-delete"
+                  (click)="deleteSuggestion(s.id)"
+                  [disabled]="s.isDeleting || s.isReplying"
+                >
+                  <i
+                    *ngIf="!s.isDeleting"
+                    class="bi bi-trash-fill"
+                  ></i>
+                  <i
+                    *ngIf="s.isDeleting"
+                    class="spinner-border spinner-border-sm"
+                  ></i>
+
+                  {{ s.isDeleting ? 'Deleting...' : 'Delete' }}
+                </button>
+
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

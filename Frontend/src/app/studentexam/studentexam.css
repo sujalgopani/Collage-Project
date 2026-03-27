@@ -1,0 +1,131 @@
+.exam-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.exam-item {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.thumbnail-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(4px);
+}
+
+.badge-not-started { background: rgba(255, 193, 7, 0.9); color: #000; }
+.badge-ended { background: rgba(220, 53, 69, 0.9); color: white; }
+.badge-completed { background: rgba(40, 167, 69, 0.9); color: white; }
+.badge-in-progress { background: rgba(13, 110, 253, 0.9); color: white; }
+.badge-active { background: rgba(52, 152, 219, 0.9); color: white; }
+
+.card-body-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.exam-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.course-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--primary-color);
+  background: var(--primary-light);
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.exam-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+  height: 45px;
+  overflow: hidden;
+}
+
+.exam-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.info-item i {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+.info-item span {
+  font-weight: 600;
+}
+
+.premium-btn {
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.btn-primary-animate {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-primary-animate:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.btn-warning-soft { background: #fffbeb; color: #d97706; cursor: default; }
+.btn-danger-soft { background: #fef2f2; color: #ef4444; cursor: default; }
+.btn-success-soft { background: #f0fdf4; color: #22c55e; cursor: default; }
+.btn-secondary-soft { background: #f1f5f9; color: #64748b; cursor: default; }

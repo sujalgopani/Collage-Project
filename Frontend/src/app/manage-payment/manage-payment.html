@@ -1,0 +1,319 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Financial Oversight</h2>
+    <p class="premium-header-subtitle">
+      Monitor platform revenue, audit individual transactions, and verify payment settlements.
+    </p>
+  </div>
+
+  @if (islist) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary"></div>
+      <p class="mt-3 text-muted">Retrieving transaction ledger...</p>
+    </div>
+  } @else {
+    <div class="premium-card">
+      <div class="premium-table-container">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Transaction ID</th>
+              <th>Settlement</th>
+              <th>Status</th>
+              <th>Associated Course</th>
+              <th>Student Identity</th>
+              <th class="text-center">Audit</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of payments; track item.paymentId; let i = $index) {
+              <tr>
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <code class="text-primary fw-bold">{{ item.razorpayPaymentId }}</code>
+                </td>
+                <td>
+                  <span class="fw-800 text-main">₹{{ item.amount }}</span>
+                </td>
+                <td>
+                  <span
+                    class="badge-pill"
+                    [ngClass]="
+                      item.status === 'captured' ? 'badge-soft-success' : 'badge-soft-warning'
+                    "
+                  >
+                    {{ item.status }}
+                  </span>
+                </td>
+                <td>
+                  <div class="small fw-semibold text-truncate" style="max-width: 180px">
+                    {{ item.courseTitle }}
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="avatar-soft-secondary-sm">
+                      {{ item.studentName?.charAt(0) || 'S' }}
+                    </div>
+                    <span class="small">{{ item.studentName }}</span>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <div class="d-flex justify-content-center gap-2">
+                    <button
+                      class="btn btn-sm btn-action btn-view"
+                      (click)="openDetailModal(item.paymentId)"
+                      title="View Details"
+                    >
+                      <i class="bi bi-receipt-cutoff"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-action btn-check"
+                      (click)="openCheckModal(item.razorpayPaymentId)"
+                      title="Live Audit"
+                    >
+                      <i class="bi bi-shield-check"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+            @if (payments.length === 0) {
+              <tr>
+                <td colspan="7" class="text-center py-5 text-muted">
+                  No transactions recorded in the system.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- ============================================== -->
+<!-- MODERN AUDIT MODALS -->
+<!-- ============================================== -->
+
+<!-- DETAIL MODAL -->
+<div class="modal fade premium-modal" #detailModal tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <!-- HEADER -->
+      <div class="modal-header-premium gradient-header p-4">
+        <div>
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-receipt-cutoff me-2"></i>
+            Transaction Receipt
+          </h5>
+          <p class="modal-subtitle mb-0">Detailed breakdown of platform revenue entry.</p>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body p-4">
+        <!-- LOADING -->
+        @if (isLoading) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary"></div>
+            <p class="mt-2 text-muted small">Loading transaction data...</p>
+          </div>
+        }
+
+        <!-- ERROR -->
+        @if (errorMessage) {
+          <div class="alert alert-soft-danger py-2 mb-4">
+            {{ errorMessage }}
+          </div>
+        }
+
+        <!-- DATA -->
+        @if (selectedPayment) {
+          <div class="row g-4">
+            <!-- PAYMENT -->
+            <div class="col-md-6">
+              <div class="audit-card">
+                <h6 class="audit-title">
+                  <i class="bi bi-credit-card-2-front me-2"></i> Payment Data
+                </h6>
+
+                <div class="audit-item">
+                  <span class="label">Reference ID</span>
+                  <span class="value code">{{ selectedPayment.razorpayPaymentId }}</span>
+                </div>
+
+                <div class="audit-item highlight">
+                  <span class="label">Net Amount</span>
+                  <span class="value text-primary fw-bold fs-5">
+                    ₹{{ selectedPayment.amount }}
+                  </span>
+                </div>
+
+                <div class="audit-item">
+                  <span class="label">System Status</span>
+                  <span class="badge-pill badge-soft-success">
+                    {{ selectedPayment.status }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- STUDENT -->
+            <div class="col-md-6">
+              <div class="audit-card h-100">
+                <h6 class="audit-title"><i class="bi bi-person-badge me-2"></i> Learner Data</h6>
+
+                <div class="audit-item">
+                  <span class="label">Full Name</span>
+                  <span class="value">{{ selectedPayment.studentName }}</span>
+                </div>
+
+                <div class="audit-item">
+                  <span class="label">Email</span>
+                  <span class="value text-muted">{{ selectedPayment.studentEmail }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- COURSE -->
+            <div class="col-md-6">
+              <div class="audit-card">
+                <h6 class="audit-title"><i class="bi bi-journal-bookmark me-2"></i> Course Data</h6>
+
+                <div class="audit-item">
+                  <span class="label">Course Title</span>
+                  <span class="value">{{ selectedPayment.courseTitle }}</span>
+                </div>
+
+                <div class="audit-item">
+                  <span class="label">Fees</span>
+                  <span class="value">₹{{ selectedPayment.courseFees }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER -->
+            <div class="col-md-6">
+              <div class="audit-card h-100">
+                <h6 class="audit-title"><i class="bi bi-box-seam me-2"></i> Order Data</h6>
+
+                <div class="audit-item">
+                  <span class="label">Order ID</span>
+                  <span class="value code">{{ selectedPayment.orderId }}</span>
+                </div>
+
+                <div class="audit-item">
+                  <span class="label">Subscription</span>
+                  <span class="badge-pill badge-soft-secondary">
+                    {{ selectedPayment.subscriptionStatus }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer border-0 p-4 pt-0">
+        <button class="premium-btn btn-close-audit w-100 py-2" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-2"></i>
+          Close Audit View
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECK MODAL (Live API Audit) -->
+<div class="modal fade premium-modal" #checkModal tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header-premium">
+        <div>
+          <h5 class="modal-title">Live Gateway Audit</h5>
+          <p class="modal-subtitle">Direct verification with payment provider APIs.</p>
+        </div>
+        <button class="btn-close-premium" data-bs-dismiss="modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="mb-4">
+          <label class="premium-label">External Reference ID</label>
+          <div class="d-flex gap-2">
+            <div class="input-group-premium flex-grow-1">
+              <i class="bi bi-key-fill"></i>
+              <input
+                type="text"
+                class="premium-input"
+                [(ngModel)]="checkPaymentId"
+                placeholder="razorpay_payment_id"
+              />
+            </div>
+            <button
+              class="premium-btn btn-primary-animate px-4"
+              (click)="checkPayment()"
+              [disabled]="isChecking || !checkPaymentId.trim()"
+            >
+              {{ isChecking ? 'Connecting...' : 'Run Audit' }}
+            </button>
+          </div>
+          @if (checkValidationError) {
+            <small class="text-danger d-block mt-2">{{ checkValidationError }}</small>
+          }
+        </div>
+
+        @if (checkError) {
+          <div class="alert alert-soft-danger">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ checkError }}
+          </div>
+        }
+
+        @if (checkResult) {
+          <div class="premium-card bg-light border-0">
+            <div class="premium-table-container">
+              <table class="premium-table table-sm">
+                <tbody>
+                  <tr>
+                    <td class="fw-bold py-3">Gateway Ref</td>
+                    <td>
+                      <code>{{ checkResult.razorpayPaymentId }}</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold py-3">Live Status</td>
+                    <td>
+                      <span class="badge-pill badge-soft-primary">{{ checkResult.status }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold py-3">Gross Amount</td>
+                    <td class="fw-800">₹{{ checkResult.amount }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold py-3">Payment Method</td>
+                    <td>
+                      <span class="text-uppercase small fw-bold">{{ checkResult.method }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold py-3">Verified Email</td>
+                    <td>{{ checkResult.email }}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold py-3">Verified Contact</td>
+                    <td>{{ checkResult.contact }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

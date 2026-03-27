@@ -1,0 +1,100 @@
+<div class="bg-image"></div>
+<div class="bg-overlay"></div>
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+    <div class="col-md-6 d-none d-md-block p-0">
+      <img src="/Login_Page_Left.png" class="img-fluid h-100 w-100 object-fit-cover" alt="Learning preview" />
+    </div>
+
+    <div class="col-md-6 d-flex align-items-center justify-content-center px-3 px-lg-5">
+      <div class="login-box p-4 p-lg-5">
+        <div class="text-center mb-3">
+          <img src="/logo.svg" width="200" alt="ExamNest" />
+        </div>
+
+        <h5 class="text-center mb-2">Welcome back</h5>
+        <p class="text-center text-muted small mb-4">Sign in to continue your ExamNest journey.</p>
+
+        <div *ngIf="authError" class="alert alert-warning">{{ authError }}</div>
+
+        <form [formGroup]="loginfrm" (ngSubmit)="Onlogin()">
+          <!-- Email/Username -->
+          <div class="mb-3">
+            <label class="form-label">Username / Email</label>
+            <input
+              type="text"
+              class="form-control form-control-lg"
+              placeholder="example@gmail.com"
+              formControlName="emailOrUsername"
+            />
+            <div *ngIf="loginfrm.get('emailOrUsername')?.touched && loginfrm.get('emailOrUsername')?.invalid">
+              <small class="text-danger" *ngIf="loginfrm.get('emailOrUsername')?.errors?.['required']">
+                Username is required.
+              </small>
+              <small class="text-danger" *ngIf="loginfrm.get('emailOrUsername')?.errors?.['minlength']">
+                Minimum 5 characters required.
+              </small>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+              <input
+                #passwordInput
+                [type]="Isseen ? 'text' : 'password'"
+                class="form-control form-control-lg"
+                placeholder="Enter your password"
+                formControlName="password"
+              />
+              <button type="button" class="input-group-text" (click)="toggleSeen(passwordInput)">
+                {{ Isseen ? '🙈' : '👁️' }}
+              </button>
+            </div>
+            <div *ngIf="loginfrm.get('password')?.touched && loginfrm.get('password')?.invalid">
+              <small class="text-danger" *ngIf="loginfrm.get('password')?.errors?.['required']">
+                Password is required.
+              </small>
+              <small class="text-danger" *ngIf="loginfrm.get('password')?.errors?.['sequenceNotAllowed']">
+                Password cannot contain simple sequences like 12345 or abcde.
+              </small>
+              <small class="text-danger" *ngIf="loginfrm.get('password')?.errors?.['weakPassword']">
+                Password must include uppercase, number, and special character.
+              </small>
+            </div>
+          </div>
+
+          <div class="forgot-psw text-end mb-3">
+            <a routerLink="/registration">Need an account?</a>
+          </div>
+
+          <button class="btn btn-primary btn-lg w-100" [disabled]="loginfrm.invalid || IsLogin">
+            <strong>{{ IsLogin ? 'Signing in...' : 'Sign In' }}</strong>
+          </button>
+        </form>
+
+        <div class="d-flex align-items-center my-3">
+          <hr class="flex-grow-1" />
+          <span class="mx-2 text-muted">OR</span>
+          <hr class="flex-grow-1" />
+        </div>
+
+        <button
+          class="btn btn-outline-dark btn-lg w-100 d-flex align-items-center justify-content-center gap-2"
+          type="button"
+          (click)="onGoogleSignIn()"
+          [disabled]="IsLogin || IsGoogleLogin"
+        >
+          <img src="/google.svg" width="20" alt="Google" />
+          <strong>{{ IsGoogleLogin ? 'Opening Google...' : 'Sign In With Google' }}</strong>
+        </button>
+
+        <p class="text-center mt-3 mb-0">
+          Don’t have an account?
+          <a routerLink="/registration">Create one</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

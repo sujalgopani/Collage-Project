@@ -1,0 +1,211 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Account Settings</h2>
+    <p class="premium-header-subtitle">
+      Manage your personal identity, security credentials, and platform preferences.
+    </p>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="premium-card text-center p-5">
+        <div class="profile-avatar-large mx-auto mb-4">
+          @if (getProfileImageUrl()) {
+            <img [src]="getProfileImageUrl()" alt="Profile image" class="profile-avatar-image" />
+          } @else {
+            {{ userData?.firstName?.charAt(0) }}
+          }
+        </div>
+
+        <div class="profile-image-upload mb-4">
+          <input
+            type="file"
+            class="premium-input-border"
+            accept="image/*"
+            (change)="onProfileImageSelected($event)"
+          />
+          <button
+            class="premium-btn btn-primary-animate w-100 mt-2"
+            (click)="uploadProfileImage()"
+            [disabled]="!selectedProfileImage || isImageUploading"
+          >
+            {{ isImageUploading ? 'Uploading...' : 'Upload Profile Image' }}
+          </button>
+          <small class="text-muted d-block mt-2">Max size: 20 MB</small>
+          @if (profileImageError) {
+            <small class="text-danger d-block mt-1">{{ profileImageError }}</small>
+          }
+        </div>
+
+        <h4 class="fw-bold text-main mb-1">{{ userData?.firstName }} {{ userData?.lastName }}</h4>
+        <p class="text-muted small mb-4">{{ userData?.email }}</p>
+
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+          <span class="badge-pill badge-soft-primary">
+            {{
+              userData?.roleId == 1
+                ? 'Administrator'
+                : userData?.roleId == 2
+                  ? 'Educator'
+                  : 'Student'
+            }}
+          </span>
+          <span
+            class="badge-pill"
+            [ngClass]="userData?.isActive ? 'badge-soft-success' : 'badge-soft-danger'"
+          >
+            {{ userData?.isActive ? 'Active Member' : 'Inactive' }}
+          </span>
+        </div>
+
+        <div class="border-top pt-4 text-start">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="small text-muted">Username</span>
+            <span class="small fw-bold">{{ userData?.username }}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="small text-muted">Registered</span>
+            <span class="small fw-bold">{{ userData?.createdAt | date: 'mediumDate' }}</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span class="small text-muted">Last Activity</span>
+            <span class="small fw-bold">{{ userData?.updatedAt | date: 'shortTime' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="premium-card">
+        <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+          <h5 class="fw-bold mb-0">Personal Identity</h5>
+          <button
+            class="premium-btn profile-edit-btn btn-sm d-flex align-items-center gap-2"
+            [ngClass]="isEditMode ? 'edit-active' : 'edit-idle'"
+            (click)="toggleEdit()"
+          >
+            <i class="bi" [class.bi-pencil-square]="!isEditMode" [class.bi-x-lg]="isEditMode"></i>
+
+            <span class="btn-text">
+              {{ isEditMode ? 'Cancel Edit' : 'Modify Profile' }}
+            </span>
+          </button>
+        </div>
+
+        <div class="p-4">
+          @if (isEditMode) {
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+              <div class="row g-4">
+                <div class="col-md-4">
+                  <label class="premium-label">First Name</label>
+                  <input formControlName="firstName" class="premium-input-border" />
+                  @if (isInvalid('firstName')) {
+                    <small class="text-danger d-block mt-1"
+                      >First name is required (min 2 characters).</small
+                    >
+                  }
+                </div>
+                <div class="col-md-4">
+                  <label class="premium-label">Middle Name</label>
+                  <input formControlName="middleName" class="premium-input-border" />
+                  @if (isInvalid('middleName')) {
+                    <small class="text-danger d-block mt-1"
+                      >Middle name cannot exceed 50 characters.</small
+                    >
+                  }
+                </div>
+                <div class="col-md-4">
+                  <label class="premium-label">Last Name</label>
+                  <input formControlName="lastName" class="premium-input-border" />
+                  @if (isInvalid('lastName')) {
+                    <small class="text-danger d-block mt-1"
+                      >Last name is required (min 2 characters).</small
+                    >
+                  }
+                </div>
+
+                <div class="col-md-6">
+                  <label class="premium-label">Primary Email</label>
+                  <div class="input-group-premium-border">
+                    <i class="bi bi-envelope"></i>
+                    <input formControlName="email" class="premium-input-form" />
+                  </div>
+                  @if (isInvalid('email')) {
+                    <small class="text-danger d-block mt-1">Enter a valid email address.</small>
+                  }
+                </div>
+                <div class="col-md-6">
+                  <label class="premium-label">Mobile Number</label>
+                  <div class="input-group-premium-border">
+                    <i class="bi bi-phone"></i>
+                    <input formControlName="phone" class="premium-input-form" />
+                  </div>
+                  @if (isInvalid('phone')) {
+                    <small class="text-danger d-block mt-1"
+                      >Enter a valid 10-digit phone number.</small
+                    >
+                  }
+                </div>
+
+                <div class="col-12 mt-5">
+                  <button
+                    type="submit"
+                    class="premium-btn save-profile-btn px-5 py-3 d-flex align-items-center justify-content-center gap-2"
+                    [disabled]="isProfileSaving || profileForm.invalid"
+                  >
+                    <i
+                      class="bi"
+                      [class.bi-check-circle-fill]="!isProfileSaving"
+                      [class.spinner-border]="isProfileSaving"
+                      [class.spinner-border-sm]="isProfileSaving"
+                    ></i>
+
+                    <span>
+                      {{ isProfileSaving ? 'Saving Changes...' : 'Save Changes' }}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          } @else {
+            <div class="identity-grid">
+              <div class="identity-item">
+                <div class="label">Full Legal Name</div>
+                <div class="value">
+                  {{ userData?.firstName }} {{ userData?.middleName }} {{ userData?.lastName }}
+                </div>
+              </div>
+              <div class="identity-item">
+                <div class="label">Electronic Mail</div>
+                <div class="value">{{ userData?.email }}</div>
+              </div>
+              <div class="identity-item">
+                <div class="label">Verified Mobile</div>
+                <div class="value">{{ userData?.phone }}</div>
+              </div>
+              <div class="identity-item">
+                <div class="label">Member Since</div>
+                <div class="value">{{ userData?.createdAt | date: 'longDate' }}</div>
+              </div>
+            </div>
+
+            <div class="mt-5 p-4 bg-light rounded-4">
+              <div class="d-flex align-items-center gap-3">
+                <div class="icon-box bg-white shadow-sm rounded-3 p-3">
+                  <i class="bi bi-shield-lock text-primary h3 mb-0"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-1">Security & Sessions</h6>
+                  <p class="text-muted small mb-0">
+                    Your last successful login was recorded on
+                    {{ userData?.lastLoginAt | date: 'medium' }}.
+                  </p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

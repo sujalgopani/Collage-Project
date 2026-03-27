@@ -1,0 +1,103 @@
+<div class="page-header">
+  <div class="page-subtitle">
+    <i class="bi bi-person-gear"></i> User Preferences
+  </div>
+  <h1 class="page-title">Account Settings</h1>
+  <p class="page-description">Manage your profile information and account security.</p>
+</div>
+
+<div class="profile-card card shadow-md p-4 mb-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="d-flex align-items-center gap-4">
+      <div class="profile-image-container">
+        <img [src]="getProfileImageUrl()" alt="Profile Photo" class="profile-img shadow-sm" />
+      </div>
+      <div>
+        <h2 class="mb-1 fw-bold">{{ getDisplayName() }}</h2>
+        <p class="text-muted mb-0">{{ userData?.email }}</p>
+        <span class="badge bg-primary-light text-primary mt-2">Teacher</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="toggleEdit()">
+      <i class="bi" [class.bi-pencil-square]="!isEditMode" [class.bi-x-circle]="isEditMode"></i>
+      {{ isEditMode ? 'Cancel' : 'Edit Profile' }}
+    </button>
+  </div>
+
+  <div class="mb-4">
+    <input type="file" class="form-control" accept="image/*" (change)="onProfileImageSelected($event)" />
+    <button class="btn btn-primary mt-2" (click)="uploadProfileImage()" [disabled]="!selectedProfileImage || isImageUploading">
+      {{ isImageUploading ? 'Uploading...' : 'Upload Profile Image' }}
+    </button>
+    <small class="text-muted d-block mt-2">Max size: 20 MB</small>
+    <small class="text-danger d-block" *ngIf="profileImageError">{{ profileImageError }}</small>
+  </div>
+
+  <hr class="my-4 opacity-10" />
+
+  <form *ngIf="isEditMode" [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="edit-form">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label fw-600">First Name</label>
+        <input formControlName="firstName" class="form-control" />
+        <small class="text-danger" *ngIf="isInvalid('firstName')">First name is required (min 2 characters).</small>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-600">Middle Name</label>
+        <input formControlName="middleName" class="form-control" />
+        <small class="text-danger" *ngIf="isInvalid('middleName')">Middle name cannot exceed 50 characters.</small>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-600">Last Name</label>
+        <input formControlName="lastName" class="form-control" />
+        <small class="text-danger" *ngIf="isInvalid('lastName')">Last name is required (min 2 characters).</small>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-600">Email Address</label>
+        <input formControlName="email" class="form-control" />
+        <small class="text-danger" *ngIf="isInvalid('email')">Enter a valid email address.</small>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-600">Phone Number</label>
+        <input formControlName="phone" class="form-control" />
+        <small class="text-danger" *ngIf="isInvalid('phone')">Enter a valid 10-digit phone number.</small>
+      </div>
+      <div class="col-12 mt-4 text-end">
+        <button type="submit" class="btn btn-primary px-5 py-2" [disabled]="isProfileSaving || profileForm.invalid">
+          <i class="bi bi-check-circle me-2"></i> {{ isProfileSaving ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="!isEditMode" class="profile-info-grid">
+    <div class="info-item">
+      <div class="info-icon"><i class="bi bi-person-vcard"></i></div>
+      <div class="info-content">
+        <label>Username</label>
+        <span>{{ userData?.username || 'Not provided' }}</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon"><i class="bi bi-telephone"></i></div>
+      <div class="info-content">
+        <label>Phone Number</label>
+        <span>{{ userData?.phone || 'Not provided' }}</span>
+      </div>
+    </div>
+    <div class="info-item">
+      <div class="info-icon"><i class="bi bi-envelope"></i></div>
+      <div class="info-content">
+        <label>Email</label>
+        <span>{{ userData?.email || 'Not provided' }}</span>
+      </div>
+    </div>
+    <div class="info-item full-width">
+      <div class="info-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="info-content">
+        <label>Last Login</label>
+        <p class="mb-0">{{ userData?.lastLoginAt ? (userData.lastLoginAt | date:'medium') : 'No recent login found' }}</p>
+      </div>
+    </div>
+  </div>
+</div>

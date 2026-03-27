@@ -1,0 +1,81 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">My Exams</h2>
+    <p class="premium-header-subtitle">View and attempt your scheduled exams to test your knowledge.</p>
+  </div>
+
+  @if (Isload) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else {
+    <div class="exam-grid">
+      @for (exam of exams; track exam.examId) {
+        <div class="premium-card exam-item">
+          <!-- Thumbnail & Status Badge -->
+          <div class="thumbnail-wrapper">
+            <img class="thumbnail" [src]="'https://localhost:44385' + exam.examthumbail" />
+            <div class="status-badge" [ngClass]="{
+              'badge-not-started': isExamNotStarted(exam.startAt),
+              'badge-ended': IsExamEnded(exam.endAt),
+              'badge-completed': exam.attemptStatus === 'Submitted',
+              'badge-in-progress': exam.attemptStatus === 'InProgress',
+              'badge-active': !isExamNotStarted(exam.startAt) && !IsExamEnded(exam.endAt) && exam.attemptStatus === 'None'
+            }">
+              {{ 
+                isExamNotStarted(exam.startAt) ? 'Upcoming' : 
+                IsExamEnded(exam.endAt) ? 'Ended' : 
+                exam.attemptStatus === 'Submitted' ? 'Completed' : 
+                exam.attemptStatus === 'InProgress' ? 'In Progress' : 'Available' 
+              }}
+            </div>
+          </div>
+
+          <div class="card-body-content">
+            <h4 class="exam-title">{{ exam.title }}</h4>
+            <div class="course-tag">
+              <i class="bi bi-journal-text"></i> {{ exam.courseTitle }}
+            </div>
+
+            <p class="exam-desc">{{ exam.description.length > 70 ? (exam.description.slice(0, 70) + '...') : exam.description }}</p>
+
+            <div class="exam-info-grid">
+              <div class="info-item">
+                <i class="bi bi-clock"></i>
+                <span>{{ exam.durationMinutes }}m</span>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-question-circle"></i>
+                <span>{{ exam.totalQuestions }} Que</span>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-calendar3"></i>
+                <span>{{ exam.startAt | date:'MMM d' }}</span>
+              </div>
+            </div>
+
+            <div class="action-footer mt-4">
+              @if (isExamNotStarted(exam.startAt)) {
+                <button class="premium-btn w-100 btn-warning-soft" disabled>Not Started</button>
+              } @else if (IsExamEnded(exam.endAt)) {
+                <button class="premium-btn w-100 btn-danger-soft" disabled>Ended</button>
+              } @else if (exam.attemptStatus === 'Submitted') {
+                <button class="premium-btn w-100 btn-success-soft" disabled>Completed</button>
+              } @else if (exam.attemptStatus === 'InProgress') {
+                <button class="premium-btn w-100 btn-primary-animate" (click)="StartExam(exam.examId)">
+                  <i class="bi bi-play-circle"></i> Continue
+                </button>
+              } @else {
+                <button class="premium-btn w-100 btn-primary-animate" (click)="StartExam(exam.examId)">
+                  <i class="bi bi-lightning-fill"></i> Take Exam
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

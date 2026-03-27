@@ -1,0 +1,109 @@
+Project Backend
+¦
++-- Controllers/
+¦   +-- AccessController.cs
+¦   +-- AdminController.cs
+¦   +-- AuthController.cs
+¦   +-- ExamController.cs
+¦   +-- PaymentController.cs
+¦   +-- StudentController.cs
+¦   +-- TeacherController.cs
+¦
++-- Data/
+¦   +-- AppDbContext.cs
+¦   +-- AppDbContextFactory.cs
+¦   +-- AuthSchema.sql
+¦
++-- Migrations/
+¦   +-- 20260321111217_addteacherside3.cs
+¦   +-- 20260321111217_addteacherside3.Designer.cs
+¦   +-- 20260322111928_InitialCreate.cs
+¦   +-- 20260322111928_InitialCreate.Designer.cs
+¦   +-- 20260322160000_AddUserProfileImage.cs
+¦   +-- AppDbContextModelSnapshot.cs
+¦
++-- Models/
+¦   +-- Course.cs
+¦   +-- CourseMedia.cs
+¦   +-- EmailOtp.cs
+¦   +-- Exam.cs
+¦   +-- ExamAttempt.cs
+¦   +-- ExamAttemptAnswer.cs
+¦   +-- ExamQuestion.cs
+¦   +-- ExamViolationEvent.cs
+¦   +-- Role.cs
+¦   +-- Suggestion.cs
+¦   +-- User.cs
+¦   +-- UserGoogleAuth.cs
+¦   ¦
+¦   +-- DTOs/
+¦   ¦   +-- AuthDtos.cs
+¦   ¦   +-- CourseCreateDTO.cs
+¦   ¦   +-- UpdateProfileDto.cs
+¦   ¦   +-- UpdateProfileImageDto.cs
+¦   ¦   ¦
+¦   ¦   +-- Exam/
+¦   ¦   ¦   +-- ExamlistDTO.cs
+¦   ¦   ¦   +-- ExamStudentDto.cs
+¦   ¦   ¦   +-- ExamUploadFromExcelDto.cs
+¦   ¦   ¦   +-- ExamViolationRequestDto.cs
+¦   ¦   ¦   +-- SubmitExamRequestDto.cs
+¦   ¦   ¦
+¦   ¦   +-- Payment/
+¦   ¦   ¦   +-- CreateOrderRequest.cs
+¦   ¦   ¦   +-- PaymentDetailDto.cs
+¦   ¦   ¦   +-- VerifyPaymentRequest.cs
+¦   ¦   ¦
+¦   ¦   +-- Student/
+¦   ¦   ¦   +-- CourseCardStudentDTO.cs
+¦   ¦   ¦
+¦   ¦   +-- Suggestion/
+¦   ¦   ¦   +-- SuggestionCreateDto.cs
+¦   ¦   ¦   +-- SuggestionReplyDto.cs
+¦   ¦   ¦
+¦   ¦   +-- User/
+¦   ¦       +-- UserCreateDTO.cs
+¦   ¦       +-- UserProfileDto.cs
+¦   ¦       +-- UserResponseDTO.cs
+¦   ¦       +-- UserUpdateDTO.cs
+¦   ¦
+¦   +-- Payment/
+¦       +-- Order.cs
+¦       +-- Payment.cs
+¦       +-- Subscription.cs
+¦
++-- Properties/
+¦   +-- launchSettings.json
+¦
++-- Services/
+¦   +-- AdminServices.cs
+¦   +-- AppActivityEmailService.cs
+¦   +-- AuthService.cs
+¦   +-- EmailTemplateBuilder.cs
+¦   +-- ExamService.cs
+¦   +-- GoogleAuthConfiguration.cs
+¦   +-- GoogleTokenValidator.cs
+¦   +-- IAuthService.cs
+¦   +-- IEmailSender.cs
+¦   +-- IGoogleAuthConfiguration.cs
+¦   +-- IGoogleTokenValidator.cs
+¦   +-- SmtpEmailSender.cs
+¦   +-- Student.cs
+¦   +-- TeacherService.cs
+¦
++-- wwwroot/
+    +-- CourseThumbnail/
+    ¦   +-- 26ecbd94-7e8e-4c04-a46b-e8cd40c57b84.png
+    ¦   +-- 4f046eaf-29e0-40d2-b10b-da4f7f53f1ab.png
+    ¦   +-- dcd5cf3e-3bee-48b1-b3ca-6c6ae633f93f.png
+    ¦   +-- e51eea57-556f-4dd5-a41f-46b93ab3e172.png
+    ¦
+    +-- CourseVideos/
+    ¦   +-- 59b91957-3ee0-46a1-8bf9-5725bc8c50ba.mp4
+    ¦   +-- 7a63949b-cdad-48a7-b28e-4f7a4a8754e0.mp4
+    ¦   +-- 7f1cedf8-2ae6-4a6b-a7a3-9ac2389dab85.mp4
+    ¦   +-- af99a9fe-a0a8-45f6-9893-2d500bc850cc.mp4
+    ¦
+    +-- ProfileImages/
+        +-- 3155da97-a40f-47bd-8107-8aeee342210a.JPG
+        +-- ffa54254-f360-4462-813e-838e2869a870.png

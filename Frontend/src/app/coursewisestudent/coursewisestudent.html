@@ -1,0 +1,122 @@
+<!-- LOADING STATE -->
+@if (loadingcourse) {
+  <div class="sw-loading">
+    <div class="spinner-border text-primary"></div>
+    <h5 class="mt-3 text-muted">Loading Courses...</h5>
+  </div>
+} @else {
+  <div class="sw-page-container">
+
+    <div class="sw-page-header">
+      <h2 class="sw-header-title">Course Enrollments</h2>
+      <p class="sw-header-subtitle">View your published courses and see which students are enrolled in them.</p>
+    </div>
+
+    @if (courses.length === 0) {
+      <div class="sw-empty-state">
+        <i class="bi bi-journal-x"></i>
+        <h4>No Courses Found</h4>
+        <p>You haven't published any courses yet.</p>
+      </div>
+    }
+
+    <div class="sw-exam-list">
+      @for (course of courses; track course.courseId) {
+        
+        <!-- COURSE CARD -->
+        <div class="premium-card sw-exam-card">
+          <div class="sw-card-main">
+            
+            <!-- LEFT: Course Info -->
+            <div class="sw-exam-info">
+              <h4 class="sw-exam-title">{{ course.title }}</h4>
+              
+              <div class="sw-meta-row mb-3">
+                <span class="sw-meta-badge"><i class="bi bi-tag-fill text-primary"></i> ₹{{ course.fees }}</span>
+              </div>
+
+              <div class="sw-date-grid">
+                <div class="sw-date-box">
+                  <span class="sw-date-lbl">Start Date</span>
+                  <span class="sw-date-val">{{ course.startDate | date: 'mediumDate' }}</span>
+                </div>
+                <div class="sw-date-box">
+                  <span class="sw-date-lbl">End Date</span>
+                  <span class="sw-date-val">{{ course.endDate | date: 'mediumDate' }}</span>
+                </div>
+              </div>
+
+              <p class="sw-exam-desc">{{ course.description }}</p>
+            </div>
+
+            <!-- RIGHT: Actions -->
+            <div class="sw-exam-action">
+              <button
+                class="premium-btn"
+                [ngClass]="selectedCourseId === course.courseId ? 'btn-secondary-soft' : 'btn-primary-soft'"
+                (click)="Loadstudent(course.courseId)"
+              >
+                <i class="bi" [ngClass]="selectedCourseId === course.courseId ? 'bi-chevron-up' : 'bi-people-fill'"></i>
+                {{ selectedCourseId === course.courseId ? 'Hide Students' : 'View Students' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- EXPANDABLE: Student Details -->
+          @if (selectedCourseId === course.courseId) {
+            <div class="sw-student-section animate-slide-down">
+              
+              <div class="sw-student-header">
+                <h5><i class="bi bi-people-fill"></i> Enrolled Students</h5>
+              </div>
+
+              <!-- Loader -->
+              @if (loadingStudents) {
+                <div class="sw-inner-loading">
+                  <div class="spinner-border spinner-border-sm text-primary"></div>
+                  <span>Fetching students...</span>
+                </div>
+              }
+
+              <!-- Empty Students -->
+              @else if (!loadingStudents && students.length === 0) {
+                <div class="sw-table-empty">
+                  <i class="bi bi-person-x"></i>
+                  <p>No students have enrolled in this course yet.</p>
+                </div>
+              }
+
+              <!-- Table -->
+              @else {
+                <div class="sw-table-wrapper">
+                  <table class="sw-table">
+                    <thead>
+                      <tr>
+                        <th>Student Name</th>
+                        <th>Contact Number</th>
+                        <th>Email Address</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (s of students; track s.id) {
+                        <tr>
+                          <td class="sw-col-name">
+                            <div class="sw-avatar">{{ s.studentName.charAt(0) }}</div>
+                            <span class="fw-semibold">{{ s.studentName }}</span>
+                          </td>
+                          <td class="sw-date-sm"><i class="bi bi-telephone text-muted me-2"></i> {{ s.phone.slice(0,5) }}XXXXX</td>
+                          <td class="text-muted"><i class="bi bi-envelope text-muted me-2"></i> {{ s.email }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,264 @@
+.avatar-soft-primary-sm {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.75rem;
+}
+
+.btn-action {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: var(--transition);
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  color: #64748b;
+}
+
+.btn-publish:hover {
+  background: #f0fdf4;
+  color: #22c55e;
+  border-color: #22c55e;
+}
+.btn-unpublish {
+  background: #eff6ff;
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+.btn-unpublish:hover {
+  background: #dbeafe;
+}
+.btn-view:hover {
+  background: #f1f5f9;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.btn-students:hover {
+  background: #faf5ff;
+  color: #9333ea;
+  border-color: #9333ea;
+}
+.btn-delete-red:hover {
+  background: #fef2f2;
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.video-inspect-card {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  transition: var(--transition);
+}
+
+.video-inspect-card video {
+  border-bottom: 1px solid var(--border-color);
+}
+.video-inspect-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header-premium {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-close-premium {
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close-premium:hover {
+  background: #f1f5f9;
+  color: #ef4444;
+}
+
+.danger-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  background: #fef2f2;
+  color: #ef4444;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto;
+}
+
+.alert-soft-danger {
+  background: #fef2f2;
+  color: #ef4444;
+  border: 1px solid #fee2e2;
+  border-radius: 8px;
+}
+
+.line-height-lg {
+  line-height: 1.7;
+}
+
+.gradient-header {
+  background: linear-gradient(135deg, #3498db, #5dade2);
+  color: white;
+}
+
+.gradient-header .modal-subtitle {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.inspect-side-card {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+}
+
+.inspect-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.inspect-box {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid #eef2f7;
+}
+
+.enhanced-video:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-soft-neutral {
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-weight: 600;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  transition: all 0.25s ease;
+}
+
+/* 🔥 Hover */
+.btn-soft-neutral:hover {
+  background: #eef2f7;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 🔥 Click */
+.btn-soft-neutral:active {
+  transform: scale(0.97);
+}
+
+/* Cancel Button (Soft + Clean) */
+.btn-cancel-soft {
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.btn-cancel-soft:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+/* 🔥 Delete Button (Danger Style) */
+.btn-delete-danger {
+  position: relative;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Content alignment */
+.btn-delete-danger .btn-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Hover glow */
+.btn-delete-danger:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
+}
+
+/* Click press */
+.btn-delete-danger:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+/* Shine effect */
+.btn-delete-danger::after {
+  content: '';
+  position: absolute;
+  width: 120%;
+  height: 100%;
+  top: 0;
+  left: -120%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: 0.4s ease;
+}
+
+.btn-delete-danger:hover::after {
+  left: 120%;
+}
+
+/* Disabled */
+.btn-delete-danger:disabled {
+  background: #fca5a5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Spinner size */
+.btn-delete-danger .spinner-border {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}

@@ -1,0 +1,308 @@
+<div class="premium-page-container">
+  <div class="premium-page-header">
+    <h2 class="premium-header-title">Examination Oversight</h2>
+    <p class="premium-header-subtitle">
+      Manage platform-wide assessments, monitor student performance, and regulate examination
+      windows.
+    </p>
+  </div>
+
+  @if (isLoading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary scale-sm"></div>
+      <p class="mt-3 text-muted">Loading examination records...</p>
+    </div>
+  } @else {
+    @if (errorMessage) {
+      <div class="alert alert-soft-danger py-2 mb-4">
+        <i class="bi bi-exclamation-octagon-fill me-2"></i> {{ errorMessage }}
+      </div>
+    }
+
+    <div class="premium-card">
+      <div class="p-4 border-bottom">
+        <div class="row g-3">
+          <div class="col-12">
+            <div class="search-shell">
+              <input
+                type="text"
+                class="search-shell-input"
+                placeholder="Search by exam title, description, or ID..."
+                [(ngModel)]="searchTerm"
+                (keyup.enter)="onSearch()"
+              />
+              <button
+                type="button"
+                class="search-shell-btn"
+                aria-label="Search exams"
+                (click)="onSearch()"
+              >
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+            @if (searchTerm.trim()) {
+              <button
+                type="button"
+                class="btn btn-link btn-sm mt-2 px-0 text-decoration-none"
+                (click)="clearSearch()"
+              >
+                Clear search
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="premium-table-container">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Assessment Title</th>
+              <th>Course Reference</th>
+              <th>Schedule</th>
+              <th class="text-center">Duration</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (exam of exams; let i = $index; track exam.examId) {
+              <tr>
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="icon-indicator bg-soft-primary">
+                      <i class="bi bi-journal-check"></i>
+                    </div>
+                    <span class="fw-bold">{{ exam.title }}</span>
+                  </div>
+                </td>
+                <td>
+                  <code class="text-muted small">CID: {{ exam.courseId }}</code>
+                </td>
+                <td>
+                  <div class="small fw-semibold">
+                    <i class="bi bi-calendar-check me-1"></i>
+                    {{ exam.startAt | date: 'mediumDate' }}
+                  </div>
+                  <div class="small text-muted">
+                    <i class="bi bi-alarm me-1"></i> {{ exam.startAt | date: 'shortTime' }} —
+                    {{ exam.endAt | date: 'shortTime' }}
+                  </div>
+                </td>
+                <td class="text-center">
+                  <span class="badge-pill badge-soft-secondary"
+                    >{{ exam.durationMinutes }} Minutes</span
+                  >
+                </td>
+                <td class="text-center">
+                  <div class="d-flex justify-content-center gap-2">
+                    <button
+                      class="btn btn-sm btn-action btn-inspect"
+                      (click)="openDetailModal(exam)"
+                      title="Inspect Setup"
+                    >
+                      <i class="bi bi-sliders"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-action btn-students"
+                      (click)="openStudentsModal(exam.examId)"
+                      title="View Results"
+                    >
+                      <i class="bi bi-person-badge-fill"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-action btn-delete-red"
+                      (click)="openDeleteModal(exam.examId)"
+                      title="Terminate Exam"
+                    >
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+            @if (exams.length === 0) {
+              <tr>
+                <td colspan="6" class="text-center py-5 text-muted">
+                  No examinations scheduled on the platform.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- ============================================== -->
+<!-- MODERN OVERSIGHT MODALS -->
+<!-- ============================================== -->
+
+<!-- DETAIL MODAL -->
+<div class="modal fade premium-modal" #detailModal tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header-premium">
+        <div>
+          <h5 class="modal-title">Assessment Setup</h5>
+          <p class="modal-subtitle">Configuration and metadata for the selected exam.</p>
+        </div>
+        <button class="btn-close-premium" data-bs-dismiss="modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="modal-body p-4">
+        @if (selectedExam) {
+          <div class="premium-card bg-light border-0 p-4 mb-0">
+            <div class="mb-4">
+              <label class="premium-label small">Full Title</label>
+              <p class="fw-bold h5">{{ selectedExam.title }}</p>
+            </div>
+            <div class="mb-4">
+              <label class="premium-label small">Instruction Summary</label>
+              <p class="small text-muted line-height-lg mb-0">{{ selectedExam.description }}</p>
+            </div>
+            <div
+              class="d-flex justify-content-between align-items-center p-3 bg-white rounded-3 border"
+            >
+              <div>
+                <label class="premium-label small mb-1">Time Limit</label>
+                <div class="fw-bold text-primary">
+                  <i class="bi bi-clock-history me-1"></i>
+                  {{ selectedExam.durationMinutes }} Minutes
+                </div>
+              </div>
+              <div class="text-end">
+                <label class="premium-label small mb-1">Schedule</label>
+                <div class="small fw-semibold">{{ selectedExam.startAt | date: 'MMM d' }}</div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="modal-footer border-0 p-4 pt-0">
+        <button class="premium-btn btn-close-inspect w-100 py-2" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-2"></i>
+          Close Inspection
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="modal fade premium-modal modal-danger" #deleteModal tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-body p-5 text-center">
+        <div class="danger-icon-wrapper mb-4">
+          <i class="bi bi-file-earmark-x-fill"></i>
+        </div>
+        <h4 class="fw-bold mb-3">Retract Examination?</h4>
+        <p class="text-muted mb-4">
+          You are about to permanently delete this exam. This will wipe all current attempts and
+          student results. Confirm retraction?
+        </p>
+        <div class="d-flex gap-3 justify-content-center mt-4">
+          <!-- Cancel Button -->
+          <button
+            class="premium-btn btn-cancel-soft px-4 py-2 d-flex align-items-center gap-2"
+            data-bs-dismiss="modal"
+          >
+            <i class="bi bi-arrow-left-circle"></i>
+            Keep Exam
+          </button>
+
+          <!-- Delete Button -->
+          <button
+            class="premium-btn btn-danger-glow px-4 py-2 d-flex align-items-center gap-2 justify-content-center"
+            (click)="confirmDelete()"
+            [disabled]="isDeleting"
+            data-bs-dismiss="modal"
+          >
+            <!-- Spinner -->
+            <span *ngIf="isDeleting" class="spinner-border spinner-border-sm" role="status"></span>
+
+            <!-- Icon -->
+            <i *ngIf="!isDeleting" class="bi bi-trash3-fill"></i>
+
+            <!-- Text -->
+            <span>
+              {{ isDeleting ? 'Deleting...' : 'Delete Permanently' }}
+            </span>
+          </button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STUDENTS/RESULTS MODAL -->
+<div class="modal fade premium-modal" #studentsModal tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header-premium">
+        <div>
+          <h5 class="modal-title">Performance Analytics</h5>
+          <p class="modal-subtitle">Direct view of student performance and attempt status.</p>
+        </div>
+        <button class="btn-close-premium" data-bs-dismiss="modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="modal-body p-4">
+        @if (students.length === 0) {
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-bar-chart h1 d-block mb-3 opacity-25"></i>
+            No candidates have attempted this assessment yet.
+          </div>
+        }
+
+        @if (students.length > 0) {
+          <div class="premium-table-container">
+            <table class="premium-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Candidate</th>
+                  <th>Contact</th>
+                  <th class="text-center">Score</th>
+                  <th class="text-center">Outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (s of students; let i = $index; track s.userId) {
+                  <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      <strong>{{ s.name }}</strong>
+                    </td>
+                    <td>
+                      <small class="text-muted">{{ s.email }}</small>
+                    </td>
+                    <td class="text-center">
+                      <span class="fw-800 h5 text-primary mb-0">{{ s.score }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span
+                        class="badge-pill"
+                        [ngClass]="s.status === 'Pass' ? 'badge-soft-success' : 'badge-soft-danger'"
+                      >
+                        {{ s.status }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

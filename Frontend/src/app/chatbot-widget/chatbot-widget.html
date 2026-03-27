@@ -1,0 +1,74 @@
+﻿<button
+  class="chatbot-fab"
+  type="button"
+  [attr.aria-expanded]="isOpen"
+  [attr.aria-label]="isOpen ? 'Close chatbot' : 'Open chatbot'"
+  (click)="toggleOpen()"
+>
+  <span class="fab-icon" aria-hidden="true">
+    <i class="bi" [class.bi-chat-dots-fill]="!isOpen" [class.bi-x-lg]="isOpen"></i>
+  </span>
+  <span class="fab-label">{{ isOpen ? 'Close' : 'Chatbot' }}</span>
+</button>
+
+@if (isOpen) {
+  <section class="chatbot-window" role="dialog" aria-label="ExamNest Assistant">
+    <header class="chatbot-header">
+      <div>
+        <h4>ExamNest Assistant</h4>
+        <small>{{ role }} panel support</small>
+      </div>
+      <button type="button" class="icon-btn" (click)="closeChat()" aria-label="Close chatbot">
+        &times;
+      </button>
+    </header>
+
+    <div class="chatbot-messages" #messagesContainer (click)="onMessageClick($event)">
+      @for (msg of messages; track trackByIndex($index)) {
+        <div class="chat-row" [class.user]="msg.role === 'user'">
+          <div class="chat-bubble" [class.assistant]="msg.role === 'assistant'">
+            @if (msg.role === 'assistant') {
+              <div class="assistant-content" [innerHTML]="msg.formattedContent ?? ''"></div>
+            } @else {
+              {{ msg.content }}
+            }
+          </div>
+        </div>
+      }
+
+      @if (isSending) {
+        <div class="chat-row">
+          <div class="chat-bubble typing">Thinking...</div>
+        </div>
+      }
+    </div>
+
+    <div class="quick-actions">
+      @for (item of quickActions; track item) {
+        <button
+          type="button"
+          class="quick-btn"
+          [disabled]="isSending"
+          (click)="sendQuickAction(item)"
+        >
+          {{ item }}
+        </button>
+      }
+    </div>
+
+    <footer class="chatbot-input">
+      <textarea
+        [(ngModel)]="draft"
+        [disabled]="isSending"
+        placeholder="Ask about your panel..."
+        rows="2"
+        maxlength="1000"
+        (keydown)="onInputKeydown($event)"
+      ></textarea>
+      <button type="button" (click)="sendMessage()" [disabled]="isSending || !draft.trim()">
+        Send
+      </button>
+    </footer>
+  </section>
+}
+

@@ -1,0 +1,33 @@
+.student-live-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.session-card {
+  border-radius: 18px;
+}
+
+.schedule-block {
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  display: grid;
+  gap: 6px;
+}
+
+.material-note {
+  background: #f8fafc;
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+@media (max-width: 640px) {
+  .student-live-grid {
+    grid-template-columns: 1fr;
+  }
+}

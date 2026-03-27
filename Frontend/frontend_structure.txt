@@ -1,0 +1,76 @@
+Project Root
+│
+├── public/
+│   ├── CEOsign.png
+│   ├── favicon.ico
+│   ├── google.svg
+│   ├── LoginBackground.jpg
+│   ├── Login_Page_Left.png
+│   ├── logo.svg
+│   └── SampleExamUpload.xlsx
+│
+├── src/
+│   ├── index.html
+│   ├── main.server.ts
+│   ├── main.ts
+│   ├── server.ts
+│   ├── styles.css
+│   │
+│   ├── app/
+│   │   ├── app.config.server.ts
+│   │   ├── app.config.ts
+│   │   ├── app.css
+│   │   ├── app.html
+│   │   ├── app.routes.server.ts
+│   │   ├── app.routes.ts
+│   │   ├── app.spec.ts
+│   │   ├── app.ts
+│   │   │
+│   │   ├── admin-dashboard/
+│   │   ├── admincoursemanage/
+│   │   ├── admindashboard/
+│   │   ├── adminprofile/
+│   │   ├── chatbot-widget/
+│   │   ├── coursewisestudent/
+│   │   ├── createcource/
+│   │   ├── emailverify/
+│   │   ├── exam-student-result/
+│   │   ├── learningcourse/
+│   │   ├── login/
+│   │   ├── manage-exmas/
+│   │   ├── manage-payment/
+│   │   ├── mysubscriber/
+│   │   ├── notification-container/
+│   │   ├── owncourse/
+│   │   ├── register/
+│   │   ├── resultsheet/
+│   │   ├── rolemanage/
+│   │   │
+│   │   ├── Service/
+│   │   │   ├── notification.service.ts
+│   │   │   ├── sidebar.service.ts
+│   │   │   │
+│   │   │   ├── AdminService/
+│   │   │   ├── interseptor/
+│   │   │   ├── Login-Register/
+│   │   │   ├── Payment/
+│   │   │   ├── StudentService/
+│   │   │   └── TeacherService/
+│   │   │
+│   │   ├── student-dashboard/
+│   │   ├── student-exam-attempt/
+│   │   ├── studentexam/
+│   │   ├── studentexamwise/
+│   │   ├── studentmain/
+│   │   ├── studentsuggestion/
+│   │   ├── suggestion/
+│   │   ├── teacher-dashboard/
+│   │   ├── teacher-exam-list/
+│   │   ├── teacher-profile/
+│   │   ├── teacherdash/
+│   │   ├── teachergetsuggestion/
+│   │   ├── teachermain/
+│   │   └── videostreaming/
+│   │
+│   ├── publishedcourses/
+│   └── studentmaindash/

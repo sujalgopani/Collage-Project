@@ -1,0 +1,174 @@
+<div class="premium-page-container">
+  <!-- Welcome Banner -->
+  <div class="welcome-banner mb-4">
+    <div class="banner-content">
+      <h1 class="banner-title">Welcome back, {{ username }}! 🍎</h1>
+      <p class="banner-subtitle">Manage your courses, track student progress, and view your earnings all in one place.</p>
+      <button class="btn btn-light btn-banner-cta mt-3" routerLink="/teacher-dashboard/create-couse">
+        <i class="bi bi-plus-circle-fill me-2 text-primary"></i> Create New Course
+      </button>
+    </div>
+    <div class="banner-decoration">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#FFFFFF" fill-opacity="0.1" d="M44.7,-76.4C58.3,-69.2,70.1,-59.1,79.6,-46.5C89.1,-33.9,96.3,-18.8,96.5,-3.6C96.7,11.6,89.9,26.9,80.4,40.4C70.9,53.9,58.7,65.6,44.5,73.1C30.3,80.6,14.1,83.9,-1.9,87.2C-17.9,90.5,-35.8,93.8,-51.1,87.1C-66.4,80.4,-79.1,63.7,-86.3,46.1C-93.5,28.5,-95.2,10,-91.7,-7.1C-88.2,-24.2,-79.5,-39.9,-67.2,-48.9C-54.9,-57.9,-39,-60.2,-25.8,-67.6C-12.6,-75,-2.1,-87.5,10.3,-89.2C22.7,-90.9,31.1,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid mt-4">
+    <div class="premium-card stats-card">
+      <div class="stats-icon icon-primary">
+        <i class="bi bi-journal-bookmark-fill"></i>
+      </div>
+      <div class="stats-info">
+        <h3 class="stats-value">{{ totalcourse }}</h3>
+        <p class="stats-label">Total Courses</p>
+      </div>
+    </div>
+
+    <div class="premium-card stats-card">
+      <div class="stats-icon icon-success">
+        <i class="bi bi-people-fill"></i>
+      </div>
+      <div class="stats-info">
+        <h3 class="stats-value">{{ totalStudents }}</h3>
+        <p class="stats-label">Total Students</p>
+      </div>
+    </div>
+
+    <div class="premium-card stats-card">
+      <div class="stats-icon icon-warning">
+        <i class="bi bi-file-earmark-text-fill"></i>
+      </div>
+      <div class="stats-info">
+        <h3 class="stats-value">{{ totalexam }}</h3>
+        <p class="stats-label">Active Exams</p>
+      </div>
+    </div>
+
+    <div class="premium-card stats-card">
+      <div class="stats-icon icon-danger">
+        <i class="bi bi-currency-rupee"></i>
+      </div>
+      <div class="stats-info">
+        <h3 class="stats-value">{{ totalEarning }}</h3>
+        <p class="stats-label">Total Earnings</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid-row mt-4">
+    <!-- Analytics Chart -->
+    <div class="premium-card chart-container-card">
+      <div class="card-header-inner">
+        <h5 class="mb-0">📊 Performance Analytics</h5>
+        <span class="text-muted small">Overview of your activity</span>
+      </div>
+      <div class="card-body-inner mt-4">
+        <canvas id="dashboardChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Quick Insights -->
+    <div class="premium-card insights-card">
+      <div class="card-header-inner">
+        <h5 class="mb-0">✨ Quick Overview</h5>
+      </div>
+      <div class="card-body-inner mt-4">
+        <div class="insights-list">
+          <div class="insight-item">
+            <div class="insight-status online"></div>
+            <div class="insight-text">Most Popular: <strong>Advanced Web Dev</strong></div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-status warning"></div>
+            <div class="insight-text">Pending Reviews: <strong>12 Students</strong></div>
+          </div>
+          <div class="insight-item">
+            <div class="insight-status success"></div>
+            <div class="insight-text">Top Student: <strong>student7499</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-4">
+    <!-- Recent Exams -->
+    <div class="col-lg-6">
+      <div class="premium-card h-100">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history text-primary me-2"></i> Recent Exams</h5>
+          <a routerLink="/teacher-dashboard/exam-list" class="btn btn-sm btn-outline-primary rounded-pill">View All</a>
+        </div>
+
+        <div class="premium-table-container">
+          <table class="premium-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let exam of recentExams.slice(0, 5)">
+                <td><strong>{{ exam.title }}</strong></td>
+                <td>
+                  <span class="badge-pill badge-soft-primary">Active</span>
+                </td>
+                <td>{{ exam.durationMinutes }} min</td>
+              </tr>
+              <tr *ngIf="!recentExams.length">
+                <td colspan="3" class="text-center py-4 text-muted">No recent exams found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Subscribers -->
+    <div class="col-lg-6">
+      <div class="premium-card h-100">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h5 class="mb-0 fw-bold"><i class="bi bi-people text-success me-2"></i> New Subscribers</h5>
+          <a routerLink="/teacher-dashboard/my-subscriber" class="btn btn-sm btn-outline-success rounded-pill">View All</a>
+        </div>
+
+        <div class="premium-table-container">
+          <table class="premium-table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of recentSubscribers.slice(0, 5)">
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="avatar-soft-success">
+                      {{ s.studentName.charAt(0) }}
+                    </div>
+                    <div>
+                      <div class="fw-bold">{{ s.studentName }}</div>
+                      <small class="text-muted">{{ s.email.slice(0, 15) }}...</small>
+                    </div>
+                  </div>
+                </td>
+                <td class="small">{{ s.courseTitle }}</td>
+                <td><span class="text-muted small">{{ s.joinedAt | date:'MMM d' }}</span></td>
+              </tr>
+              <tr *ngIf="!recentSubscribers.length">
+                <td colspan="3" class="text-center py-4 text-muted">No recent subscribers found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,1418 @@
+[
+  {
+    "ContainingType": "ExamNest.Controllers.AccessController",
+    "Method": "Admin",
+    "RelativePath": "api/Access/admin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AccessController",
+    "Method": "Me",
+    "RelativePath": "api/Access/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AccessController",
+    "Method": "Student",
+    "RelativePath": "api/Access/student",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AccessController",
+    "Method": "Teacher",
+    "RelativePath": "api/Access/teacher",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "CheckPayment",
+    "RelativePath": "api/Admin/CheckPayment/payments/check/{paymentId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "CreateLiveClass",
+    "RelativePath": "api/Admin/CreateLiveClass",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ExamNest.Models.DTOs.LiveClass.LiveClassCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "CreateRole",
+    "RelativePath": "api/Admin/CreateRole",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "role",
+        "Type": "ExamNest.Models.Role",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "CreateUser",
+    "RelativePath": "api/Admin/CreateUser/AddTeacher",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ExamNest.Models.DTOs.User.UserCreateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "DeleteCourseWiseId",
+    "RelativePath": "api/Admin/DeleteCourseWiseId/courses/{courseId}/delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "DeleteExam",
+    "RelativePath": "api/Admin/DeleteExam/exams/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "DeleteLiveClass",
+    "RelativePath": "api/Admin/DeleteLiveClass/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "DeleteRole",
+    "RelativePath": "api/Admin/DeleteRole/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "DeleteStudent",
+    "RelativePath": "api/Admin/DeleteStudent/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "DeleteUser",
+    "RelativePath": "api/Admin/DeleteUser/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetAllCourses",
+    "RelativePath": "api/Admin/GetAllCourses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetAllExams",
+    "RelativePath": "api/Admin/GetAllExams/exams",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetAllPayments",
+    "RelativePath": "api/Admin/GetAllPayments/payments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetAllStudent",
+    "RelativePath": "api/Admin/GetAllStudent",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetAllTeacher",
+    "RelativePath": "api/Admin/GetAllTeacher",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetCourseByid",
+    "RelativePath": "api/Admin/GetCourseByid/CourseById/{CourseId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "CourseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetCourseEarnings",
+    "RelativePath": "api/Admin/GetCourseEarnings/course-earnings",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetDashboardData",
+    "RelativePath": "api/Admin/GetDashboardData/dashboarddata",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetLiveClasses",
+    "RelativePath": "api/Admin/GetLiveClasses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetPaymentDetail",
+    "RelativePath": "api/Admin/GetPaymentDetail/payments/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetRole",
+    "RelativePath": "api/Admin/GetRole/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetRoles",
+    "RelativePath": "api/Admin/GetRoles",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetStudentsByExam",
+    "RelativePath": "api/Admin/GetStudentsByExam/exams/{examId}/students",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "examId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetSuggestions",
+    "RelativePath": "api/Admin/GetSuggestions/suggestions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetTopExams",
+    "RelativePath": "api/Admin/GetTopExams/top-exams",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetUserById",
+    "RelativePath": "api/Admin/GetUserById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GetUserProfile",
+    "RelativePath": "api/Admin/GetUserProfile/MyProfile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "GlobalSearch",
+    "RelativePath": "api/Admin/GlobalSearch",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "q",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "take",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "PublishCourse",
+    "RelativePath": "api/Admin/PublishCourse",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "UpdateProfile",
+    "RelativePath": "api/Admin/UpdateProfile/profile/update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "ExamNest.Models.DTOs.UpdateProfileDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "UpdateRole",
+    "RelativePath": "api/Admin/UpdateRole/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "role",
+        "Type": "ExamNest.Models.Role",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "UpdateStudent",
+    "RelativePath": "api/Admin/UpdateStudent/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "ExamNest.Models.DTOs.User.UserUpdateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/Admin/UpdateUser/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "ExamNest.Models.DTOs.User.UserUpdateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AdminController",
+    "Method": "UploadProfileImage",
+    "RelativePath": "api/Admin/UploadProfileImage/profile/upload-image",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ProfileImage",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "ForgotPassword",
+    "RelativePath": "api/Auth/forgot-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.ForgotPasswordRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "GetGoogleClientId",
+    "RelativePath": "api/Auth/google-client-id",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "GoogleLogin",
+    "RelativePath": "api/Auth/google-login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.GoogleLoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.LoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/Auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.RegisterRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "ResendEmailOtp",
+    "RelativePath": "api/Auth/resend-email-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.ResendEmailOtpRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/Auth/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.ResetPasswordRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "VerifyEmailOtp",
+    "RelativePath": "api/Auth/verify-email-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.VerifyEmailOtpRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.AuthController",
+    "Method": "VerifyForgotPasswordOtp",
+    "RelativePath": "api/Auth/verify-forgot-password-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.VerifyForgotPasswordOtpRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.ChatbotController",
+    "Method": "Ask",
+    "RelativePath": "api/Chatbot/ask",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.Chatbot.ChatbotAskRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.ExamController",
+    "Method": "GetTeacherWiseCourse",
+    "RelativePath": "api/Exam/GetTeacherWiseCourse",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.ExamController",
+    "Method": "PublishResult",
+    "RelativePath": "api/Exam/PublishResult/publish-result/{examId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "examId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.PaymentController",
+    "Method": "CreateOrder",
+    "RelativePath": "api/Payment/create-order",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.Payment.CreateOrderRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.PaymentController",
+    "Method": "VerifyPayment",
+    "RelativePath": "api/Payment/verify-payment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.Payment.VerifyPaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "CheckCourseAccess",
+    "RelativePath": "api/Student/course/{courseId}/access",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetCourseVideos",
+    "RelativePath": "api/Student/course/{courseId}/videos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "ReportViolation",
+    "RelativePath": "api/Student/exam/{examId}/report-violation",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "examId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.Exam.ExamViolationRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetExamResult",
+    "RelativePath": "api/Student/exam/{examId}/result/{attemptId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "examId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "attemptId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "StartExamAttempt",
+    "RelativePath": "api/Student/exam/{examId}/start",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "examId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "SubmitExam",
+    "RelativePath": "api/Student/exam/{examId}/submit",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "examId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "ExamNest.Models.DTOs.Exam.SubmitExamRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetCourses",
+    "RelativePath": "api/Student/Get-Subscribed-course",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetCourseById",
+    "RelativePath": "api/Student/GetCourseById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetStudentLiveClasses",
+    "RelativePath": "api/Student/live-classes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetAttemptedExam",
+    "RelativePath": "api/Student/my-attempted-exams",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetMyExams",
+    "RelativePath": "api/Student/my-exams",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetMyTeachers",
+    "RelativePath": "api/Student/my-teachers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetPublishedCourses",
+    "RelativePath": "api/Student/published-courses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetStudentCourses",
+    "RelativePath": "api/Student/student-courses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetStudentDashboard",
+    "RelativePath": "api/Student/student-dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetStudentExams",
+    "RelativePath": "api/Student/student-exams",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetStudentLast7DaysScores",
+    "RelativePath": "api/Student/student/last-7-days-scores",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "GetStudentSuggestions",
+    "RelativePath": "api/Student/studentgetsuggestion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.StudentController",
+    "Method": "CreateSuggestion",
+    "RelativePath": "api/Student/suggestion/post",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ExamNest.Models.DTOs.suggestion.SuggestionCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "CreateCourse",
+    "RelativePath": "api/Teacher/CreateCourse/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Fees",
+        "Type": "System.Single",
+        "IsRequired": false
+      },
+      {
+        "Name": "StartDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "EndDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "ThumbailUrl",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "Files",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "DeleteCourse",
+    "RelativePath": "api/Teacher/DeleteCourse/delete-course/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "DeleteMedia",
+    "RelativePath": "api/Teacher/DeleteMedia/media/{mediaId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "mediaId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "DeleteSuggestion",
+    "RelativePath": "api/Teacher/DeleteSuggestion/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetCourseDetail",
+    "RelativePath": "api/Teacher/GetCourseDetail/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetLiveClasses",
+    "RelativePath": "api/Teacher/GetLiveClasses/live-classes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetMyCourses",
+    "RelativePath": "api/Teacher/GetMyCourses/mycourses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetRecentExams",
+    "RelativePath": "api/Teacher/GetRecentExams/recent-exams",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetRecentSubscribers",
+    "RelativePath": "api/Teacher/GetRecentSubscribers/recent-subscribers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetStudentsByCourse",
+    "RelativePath": "api/Teacher/GetStudentsByCourse/course/{courseId}/students",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetStudentsByExam",
+    "RelativePath": "api/Teacher/GetStudentsByExam/exams/{examId}/students",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "examId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTeacherSuggestions",
+    "RelativePath": "api/Teacher/GetTeacherSuggestions/teachergetsuggestion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTotalCourses",
+    "RelativePath": "api/Teacher/GetTotalCourses/GetTotalCourses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTotalEarnings",
+    "RelativePath": "api/Teacher/GetTotalEarnings/GetTotalEarnings",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTotalExam",
+    "RelativePath": "api/Teacher/GetTotalExam/GetTotalExam",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "GetTotalStudent",
+    "RelativePath": "api/Teacher/GetTotalStudent/GetTotalStudent",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "ReplySuggestion",
+    "RelativePath": "api/Teacher/ReplySuggestion/reply",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ExamNest.Models.DTOs.suggestion.SuggestionReplyDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "UpdateCourse",
+    "RelativePath": "api/Teacher/UpdateCourse/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "ExamNest.Models.Course",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "UploadExamFromExcel",
+    "RelativePath": "api/Teacher/UploadExamFromExcel/upload-exam-excel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "CourseId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "StartAt",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "EndAt",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "DurationMinutes",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "RandomQuestionCount",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ExcelFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "UploadLiveClassMaterial",
+    "RelativePath": "api/Teacher/UploadLiveClassMaterial/live-classes/{liveClassId}/material",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "liveClassId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "MaterialTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MaterialDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MaterialLink",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MaterialFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamNest.Controllers.TeacherController",
+    "Method": "UploadMedia",
+    "RelativePath": "api/Teacher/UploadMedia/media/upload/{courseId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "files",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
